@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0B0A0C" />
+  <meta name="description" content="JIBEK.STORE — Hogwarts House Hoodie. 450gsm velour, кіріктірілген балаклава. Жеке тігім. Қазақстан бойынша тегін жеткізу." />
+  <title>JIBEK.STORE — The House Hoodie</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { dark: '#0a0a0b', gold: '#D3A625', cream: '#F5F0E8', card: '#141416' }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --accent: #D3A625; }
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    body { background: #0B0A0C; color: #F5F5F5; font-family: 'Inter', system-ui, sans-serif; }
+    .font-display { font-family: 'Playfair Display', serif; }
+    .gold { color: #D3A625; }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    .marquee { overflow: hidden; white-space: nowrap; }
+    .marquee-track { display: inline-flex; animation: marquee 28s linear infinite; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .house-thumb.active, .house-select.active { border-color: #D3A625 !important; background: rgba(211,166,37,0.12); }
+    .size-btn.active { background: #D3A625; color: #0a0a0b; border-color: #D3A625; font-weight: 700; }
+    .bundle-row.selected { border-color: #D3A625; background: rgba(211,166,37,0.08); }
+    .bundle-row.selected .dot { background: #D3A625; }
+    .check { color: #D3A625; font-weight: 700; }
+    .lang-btn.active { color: #D3A625; }
+    details summary::-webkit-details-marker { display: none; }
+  </style>
+  <script src="config.js"></script>
+  <script src="analytics.js"></script>
+</head>
+<body class="pb-28">
+
+  <!-- Kaspi hint -->
+  <div class="bg-[#F5A623]/15 border-b border-[#F5A623]/30 text-center text-[12px] py-2 px-3 text-[#F5A623]">
+    💳 Kaspi Gold / Kaspi QR арқылы төлеуге болады · Оплата через Kaspi
+  </div>
+
+  <!-- Ticker -->
+  <div class="marquee bg-black/40 border-b border-white/5 py-2 text-[11px] text-white/60">
+    <div class="marquee-track">
+      <span class="mx-6">✦ 450gsm velour</span><span class="mx-6">✦ Built-in balaclava</span>
+      <span class="mx-6">✦ Тегін жеткізу KZ</span><span class="mx-6">✦ Жеке тігім 2–7 күн</span>
+      <span class="mx-6">✦ Hogwarts Houses</span><span class="mx-6">✦ Oversize fit</span>
+      <span class="mx-6">✦ 450gsm velour</span><span class="mx-6">✦ Built-in balaclava</span>
+      <span class="mx-6">✦ Тегін жеткізу KZ</span><span class="mx-6">✦ Жеке тігім 2–7 күн</span>
+      <span class="mx-6">✦ Hogwarts Houses</span><span class="mx-6">✦ Oversize fit</span>
+    </div>
+  </div>
+
+  <header class="sticky top-0 z-40 bg-dark/95 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
+      <div class="font-bold tracking-[0.15em] text-sm">JIBEK<span class="gold">.STORE</span></div>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="text-white/50">₸ KZT</span>
+        <button class="lang-btn active" data-lang="kk">ҚАЗ</button>
+        <button class="lang-btn text-white/40" data-lang="ru">РУС</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-lg mx-auto">
+    <!-- HERO -->
+    <section class="relative">
+      <div class="aspect-[3/4] bg-card overflow-hidden">
+        <img id="heroImg" src="gryffindor.jpg" alt="House Hoodie" class="w-full h-full object-cover transition-opacity duration-300" />
+      </div>
+      <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 px-4">
+        <button data-house="gryffindor" class="house-thumb active w-14 h-14 rounded-xl overflow-hidden border-2 border-[#D3A625]"><img src="gryffindor.jpg" class="w-full h-full object-cover" alt="" /></button>
+        <button data-house="slytherin" class="house-thumb w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent"><img src="couple.jpg" class="w-full h-full object-cover" alt="" /></button>
+        <button data-house="ravenclaw" class="house-thumb w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent"><img src="ravenclaw.jpg" class="w-full h-full object-cover" alt="" /></button>
+        <button data-house="hufflepuff" class="house-thumb w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent"><img src="detail.jpg" class="w-full h-full object-cover" alt="" /></button>
+      </div>
+    </section>
+
+    <!-- PRODUCT -->
+    <section class="px-4 pt-6 pb-2">
+      <p class="text-[11px] tracking-[0.15em] uppercase gold font-semibold mb-2" data-i18n="wave">WAVE 1 · HOGWARTS HOUSE COLLECTION</p>
+      <h1 class="font-display text-3xl mb-1">The House Hoodie</h1>
+      <p class="text-sm text-white/55 mb-4" data-i18n="sub">450gsm velour · кіріктірілген балаклава · oversize</p>
+      <div class="flex items-baseline gap-3 mb-1">
+        <span class="text-2xl font-bold" id="priceDisplay">24 990 ₸</span>
+        <span class="text-sm text-white/40 line-through">39 990 ₸</span>
+      </div>
+      <p class="text-[12px] text-white/45 mb-5">★ 4.9 · 340+ пікір · Almaty / Astana</p>
+
+      <!-- BUNDLES -->
+      <div class="mb-6">
+        <div class="text-[11px] font-semibold tracking-widest uppercase text-white/50 mb-3 text-center" data-i18n="buyMore">КӨБІРЕК АЛ · ҮНЕМДЕ</div>
+        <div class="space-y-2">
+          <div class="bundle-row selected border border-white/15 rounded-xl p-3.5 flex items-center justify-between cursor-pointer" data-bundle="1" data-price="24990">
+            <div>
+              <div class="font-semibold text-sm" data-i18n="b1">1 Худи</div>
+              <div class="text-[11px] text-white/45" data-i18n="b1s">15 000 ₸ үнем</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="font-bold">24 990 ₸</span>
+              <div class="w-5 h-5 rounded-full border-2 border-[#D3A625] flex items-center justify-center"><div class="dot w-2.5 h-2.5 rounded-full bg-[#D3A625]"></div></div>
+            </div>
+          </div>
+          <div class="bundle-row border border-white/15 rounded-xl p-3.5 flex items-center justify-between cursor-pointer relative" data-bundle="2" data-price="42990">
+            <div class="absolute -top-2 right-3 bg-[#D3A625] text-dark text-[9px] font-bold px-2 py-0.5 rounded">HIT</div>
+            <div>
+              <div class="font-semibold text-sm" data-i18n="b2">2 Худи</div>
+              <div class="text-[11px] text-white/45" data-i18n="b2s">37 000 ₸ үнем</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="font-bold">42 990 ₸</span>
+              <div class="w-5 h-5 rounded-full border-2 border-white/25 flex items-center justify-center"><div class="dot w-2.5 h-2.5 rounded-full bg-transparent"></div></div>
+            </div>
+          </div>
+          <div class="bundle-row border border-white/15 rounded-xl p-3.5 flex items-center justify-between cursor-pointer" data-bundle="4" data-price="79990">
+            <div>
+              <div class="font-semibold text-sm" data-i18n="b4">4 Худи</div>
+              <div class="text-[11px] text-white/45" data-i18n="b4s">80 000 ₸ үнем</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="font-bold">79 990 ₸</span>
+              <div class="w-5 h-5 rounded-full border-2 border-white/25 flex items-center justify-center"><div class="dot w-2.5 h-2.5 rounded-full bg-transparent"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOUSE -->
+      <div class="mb-5">
+        <div class="text-xs text-white/50 mb-2" data-i18n="chooseHouse">Факультетті таңдаңыз</div>
+        <div class="grid grid-cols-4 gap-2">
+          <button data-house="gryffindor" class="house-select active py-2.5 rounded-xl border border-[#D3A625] text-center text-xs font-medium">🦁 Gryff</button>
+          <button data-house="slytherin" class="house-select py-2.5 rounded-xl border border-white/15 text-center text-xs font-medium">🐍 Slyth</button>
+          <button data-house="ravenclaw" class="house-select py-2.5 rounded-xl border border-white/15 text-center text-xs font-medium">🦅 Raven</button>
+          <button data-house="hufflepuff" class="house-select py-2.5 rounded-xl border border-white/15 text-center text-xs font-medium">🦡 Huff</button>
+        </div>
+      </div>
+
+      <!-- SIZE -->
+      <div class="mb-2 flex items-center justify-between">
+        <div class="text-xs text-white/50" data-i18n="chooseSize">Өлшем</div>
+        <button id="openSizeChart" class="text-xs gold font-medium underline underline-offset-2" data-i18n="sizeChartBtn">Размерная сетка</button>
+      </div>
+      <div class="grid grid-cols-4 gap-2 mb-4">
+        <button data-size="S" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">S</button>
+        <button data-size="M" class="size-btn active py-3 rounded-xl border border-white/15 text-sm font-medium">M</button>
+        <button data-size="L" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">L</button>
+        <button data-size="XL" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">XL</button>
+      </div>
+
+      <!-- PROMO -->
+      <div class="mb-5">
+        <div class="text-xs text-white/50 mb-2" data-i18n="promoLabel">Промокод партнёра</div>
+        <div class="flex gap-2">
+          <input id="promoInput" type="text" placeholder="ALIYA10" autocomplete="off"
+            class="flex-1 bg-card border border-white/15 rounded-xl px-3 py-3 text-sm uppercase tracking-wide outline-none focus:border-[#D3A625]" />
+          <button id="promoApply" type="button" class="px-4 py-3 rounded-xl border border-[#D3A625]/50 text-[#D3A625] text-sm font-semibold">OK</button>
+        </div>
+        <p id="promoMsg" class="text-[11px] mt-1.5 text-white/45 hidden"></p>
+      </div>
+
+      <div class="flex flex-col gap-2 text-[12px] text-white/60 mb-6">
+        <div class="flex items-center gap-2"><span class="check">✓</span> <span data-i18n="t1">Тегін жеткізу · Kazpost / CDEK</span></div>
+        <div class="flex items-center gap-2"><span class="check">✓</span> <span data-i18n="t2">Өлшемді/факультетті жөнелтуге дейін ауыстыру</span></div>
+        <div class="flex items-center gap-2"><span class="check">✓</span> <span data-i18n="t3">Жеке тігім · 2–7 күн</span></div>
+        <div class="flex items-center gap-2"><span class="check">✓</span> <span data-i18n="t4">Kaspi Gold / Kaspi QR</span></div>
+      </div>
+    </section>
+
+    <!-- HIDDEN IN STYLE -->
+    <section class="px-4 py-8 border-t border-white/5">
+      <h2 class="font-display text-2xl mb-3"><span data-i18n="hidden1">Стильге</span> <span class="gold italic" data-i18n="hidden2">жасырылған</span></h2>
+      <p class="text-sm text-white/65 leading-relaxed mb-5" data-i18n="hiddenText">
+        Қалың велюр, кіріктірілген балаклава, металл молния. Күнделікті look пен «hidden in style» — бір худиде.
+      </p>
+      <ul class="space-y-2 text-sm text-white/70">
+        <li class="flex gap-3"><span class="check">✓</span><span data-i18n="h1">Кіріктірілген рибба балаклава</span></li>
+        <li class="flex gap-3"><span class="check">✓</span><span data-i18n="h2">450gsm velour, vintage wash</span></li>
+        <li class="flex gap-3"><span class="check">✓</span><span data-i18n="h3">Металл молния · рибба манжет</span></li>
+        <li class="flex gap-3"><span class="check">✓</span><span data-i18n="h4">Oversize, boxy, drop-shoulder</span></li>
+      </ul>
+    </section>
+
+    <!-- SIZE CHART -->
+    <section class="px-4 py-8 border-t border-white/5">
+      <h2 class="font-display text-2xl mb-2" data-i18n="chartTitle">Размерная сетка</h2>
+      <p class="text-sm text-white/50 mb-4" data-i18n="chartSub">Oversize fit. Қалыпты силуэт үшін өз өлшеміңді ал.</p>
+      <div class="overflow-x-auto rounded-xl border border-white/10">
+        <table class="w-full text-sm text-center">
+          <thead class="bg-white/5 text-white/50 text-xs">
+            <tr><th class="py-2 px-3">Size</th><th class="py-2 px-3">Кеуде</th><th class="py-2 px-3">Ұзындығы</th><th class="py-2 px-3">Жең</th></tr>
+          </thead>
+          <tbody class="text-white/80">
+            <tr class="border-t border-white/5"><td class="py-2.5">S</td><td>112</td><td>68</td><td>60</td></tr>
+            <tr class="border-t border-white/5"><td class="py-2.5">M</td><td>118</td><td>70</td><td>61</td></tr>
+            <tr class="border-t border-white/5"><td class="py-2.5">L</td><td>124</td><td>72</td><td>62</td></tr>
+            <tr class="border-t border-white/5"><td class="py-2.5">XL</td><td>130</td><td>74</td><td>63</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-[11px] text-white/40 mt-2" data-i18n="chartNote">см · жазық өлшем · ±1.5 см</p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="px-4 py-8 border-t border-white/5">
+      <h2 class="font-display text-2xl mb-4" data-i18n="faqTitle">Жиі қойылатын сұрақтар</h2>
+      <div class="space-y-2">
+        <details class="rounded-xl border border-white/10 bg-card">
+          <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer" data-i18n="f1q">Қашан жіберіледі?</summary>
+          <div class="px-4 pb-3.5 text-sm text-white/60" data-i18n="f1a">Жеке тігім 2–7 күн. KZ бойынша 2–5 күн жеткізу.</div>
+        </details>
+        <details class="rounded-xl border border-white/10 bg-card">
+          <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer" data-i18n="f2q">Балаклава қалай?</summary>
+          <div class="px-4 pb-3.5 text-sm text-white/60" data-i18n="f2a">Капюшон астында бөлек рибба. Молниямен жауып маска, немесе ашып кәдімгі худи.</div>
+        </details>
+        <details class="rounded-xl border border-white/10 bg-card">
+          <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer" data-i18n="f3q">Қалай төлеу?</summary>
+          <div class="px-4 pb-3.5 text-sm text-white/60" data-i18n="f3a">WhatsApp арқылы тапсырыс → Kaspi Gold / Kaspi QR.</div>
+        </details>
+      </div>
+    </section>
+
+    <footer class="px-4 py-8 text-center text-[11px] text-white/30 border-t border-white/5">
+      JIBEK.STORE · Қазақстан · <a href="partner.html" class="underline">Партнёрам</a>
+    </footer>
+  </main>
+
+  <!-- STICKY BAR -->
+  <div class="fixed bottom-0 left-0 right-0 z-50 bg-dark/95 backdrop-blur-md border-t border-white/10 safe-bottom">
+    <div class="max-w-lg mx-auto px-4 py-3 flex items-center gap-3">
+      <div class="flex-1 min-w-0">
+        <div class="text-[11px] text-white/45 truncate" id="summaryText">Gryffindor · M</div>
+        <div class="text-[11px] text-white/40 line-through hidden" id="oldPrice"></div>
+        <div class="text-lg font-bold" id="totalPrice">24 990 ₸</div>
+      </div>
+      <button id="checkoutBtn" class="flex-shrink-0 px-6 py-3.5 rounded-2xl bg-[#D3A625] text-dark font-bold text-sm active:scale-[0.97] transition" data-i18n="orderBtn">
+        Тапсырыс беру
+      </button>
+    </div>
+  </div>
+
+  <!-- WhatsApp float -->
+  <a href="https://wa.me/77473911201" target="_blank" rel="noopener"
+     class="fixed bottom-24 right-4 z-40 w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkoutModal" class="fixed inset-0 z-[60] hidden items-end sm:items-center justify-center bg-black/70 p-4">
+    <div class="bg-card w-full max-w-md rounded-2xl border border-white/10 p-5">
+      <h3 class="font-display text-xl mb-1" data-i18n="confirmTitle">Тапсырысты растау</h3>
+      <p class="text-xs text-white/45 mb-4" data-i18n="confirmSub">WhatsApp-қа жіберіледі</p>
+      <pre id="orderPreview" class="text-xs text-white/70 whitespace-pre-wrap bg-black/30 rounded-xl p-3 mb-4 max-h-48 overflow-y-auto"></pre>
+      <div class="flex gap-2">
+        <button id="cancelCheckout" class="flex-1 py-3.5 rounded-2xl border border-white/15 text-sm">Болдырмау</button>
+        <button id="confirmWhatsApp" class="flex-1 py-3.5 rounded-2xl bg-[#25D366] text-white font-bold text-sm">WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIZE MODAL -->
+  <div id="sizeModal" class="fixed inset-0 z-[60] hidden items-end sm:items-center justify-center bg-black/70 p-4">
+    <div class="bg-card w-full max-w-md rounded-2xl border border-white/10 p-5">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-display text-lg" data-i18n="chartTitle">Размерная сетка</h3>
+        <button id="closeSizeModal" class="text-white/50 text-xl leading-none">×</button>
+      </div>
+      <table class="w-full text-sm text-center mb-2">
+        <thead class="text-white/50 text-xs"><tr><th class="py-2">Size</th><th>Кеуде</th><th>Ұз.</th><th>Жең</th></tr></thead>
+        <tbody>
+          <tr class="border-t border-white/10"><td class="py-2">S</td><td>112</td><td>68</td><td>60</td></tr>
+          <tr class="border-t border-white/10"><td class="py-2">M</td><td>118</td><td>70</td><td>61</td></tr>
+          <tr class="border-t border-white/10"><td class="py-2">L</td><td>124</td><td>72</td><td>62</td></tr>
+          <tr class="border-t border-white/10"><td class="py-2">XL</td><td>130</td><td>74</td><td>63</td></tr>
+        </tbody>
+      </table>
+      <p class="text-[11px] text-white/40">Oversize · см · ±1.5</p>
+    </div>
+  </div>
+
+  <script>
+    let lang = 'kk';
+    const I18N = {
+      kk: {
+        wave: 'WAVE 1 · HOGWARTS HOUSE COLLECTION',
+        sub: '450gsm velour · кіріктірілген балаклава · oversize',
+        buyMore: 'КӨБІРЕК АЛ · ҮНЕМДЕ',
+        b1: '1 Худи', b1s: '15 000 ₸ үнем',
+        b2: '2 Худи', b2s: '37 000 ₸ үнем',
+        b4: '4 Худи', b4s: '80 000 ₸ үнем',
+        chooseHouse: 'Факультетті таңдаңыз',
+        chooseSize: 'Өлшем',
+        sizeChartBtn: 'Размерная сетка',
+        promoLabel: 'Промокод партнёра',
+        t1: 'Тегін жеткізу · Kazpost / CDEK',
+        t2: 'Өлшемді/факультетті жөнелтуге дейін ауыстыру',
+        t3: 'Жеке тігім · 2–7 күн',
+        t4: 'Kaspi Gold / Kaspi QR',
+        hidden1: 'Стильге', hidden2: 'жасырылған',
+        hiddenText: 'Қалың велюр, кіріктірілген балаклава, металл молния. Күнделікті look пен «hidden in style» — бір худиде.',
+        h1: 'Кіріктірілген рибба балаклава', h2: '450gsm velour, vintage wash', h3: 'Металл молния · рибба манжет', h4: 'Oversize, boxy, drop-shoulder',
+        chartTitle: 'Размерная сетка', chartSub: 'Oversize fit. Қалыпты силуэт үшін өз өлшеміңді ал.', chartNote: 'см · жазық өлшем · ±1.5 см',
+        faqTitle: 'Жиі қойылатын сұрақтар',
+        f1q: 'Қашан жіберіледі?', f1a: 'Жеке тігім 2–7 күн. KZ бойынша 2–5 күн жеткізу.',
+        f2q: 'Балаклава қалай?', f2a: 'Капюшон астында бөлек рибба. Молниямен жауып маска, немесе ашып кәдімгі худи.',
+        f3q: 'Қалай төлеу?', f3a: 'WhatsApp арқылы тапсырыс → Kaspi Gold / Kaspi QR.',
+        orderBtn: 'Тапсырыс беру',
+        confirmTitle: 'Тапсырысты растау', confirmSub: 'WhatsApp-қа жіберіледі'
+      },
+      ru: {
+        wave: 'WAVE 1 · HOGWARTS HOUSE COLLECTION',
+        sub: '450gsm velour · встроенная балаклава · oversize',
+        buyMore: 'БОЛЬШЕ — ВЫГОДНЕЕ',
+        b1: '1 Худи', b1s: 'экономия 15 000 ₸',
+        b2: '2 Худи', b2s: 'экономия 37 000 ₸',
+        b4: '4 Худи', b4s: 'экономия 80 000 ₸',
+        chooseHouse: 'Выберите факультет',
+        chooseSize: 'Размер',
+        sizeChartBtn: 'Размерная сетка',
+        promoLabel: 'Промокод партнёра',
+        t1: 'Бесплатная доставка · Kazpost / CDEK',
+        t2: 'Размер/факультет можно сменить до отправки',
+        t3: 'Индивидуальный пошив · 2–7 дней',
+        t4: 'Kaspi Gold / Kaspi QR',
+        hidden1: 'Скрыто', hidden2: 'в стиле',
+        hiddenText: 'Плотный велюр, встроенная балаклава, металлическая молния. Повседневный look и «hidden in style» — в одном худи.',
+        h1: 'Встроенная рибба-балаклава', h2: '450gsm velour, vintage wash', h3: 'Металл молния · рибба манжеты', h4: 'Oversize, boxy, drop-shoulder',
+        chartTitle: 'Размерная сетка', chartSub: 'Oversize. Для обычной посадки бери свой размер.', chartNote: 'см · в разложенном виде · ±1.5 см',
+        faqTitle: 'Частые вопросы',
+        f1q: 'Когда отправка?', f1a: 'Пошив 2–7 дней. По Казахстану доставка 2–5 дней.',
+        f2q: 'Как балаклава?', f2a: 'Отдельный рибба-слой под капюшоном. Молния — маска или обычный худи.',
+        f3q: 'Как оплатить?', f3a: 'Заказ в WhatsApp → Kaspi Gold / Kaspi QR.',
+        orderBtn: 'Оформить заказ',
+        confirmTitle: 'Подтверждение заказа', confirmSub: 'Отправим в WhatsApp'
+      }
+    };
+
+    const state = { house: 'gryffindor', size: 'M', bundle: 1, price: 24990, basePrice: 24990, promo: '' };
+    const HOUSES = {
+      gryffindor: { name: 'Gryffindor', emoji: '🦁', img: 'gryffindor.jpg' },
+      slytherin:  { name: 'Slytherin',  emoji: '🐍', img: 'couple.jpg' },
+      ravenclaw:  { name: 'Ravenclaw',  emoji: '🦅', img: 'ravenclaw.jpg' },
+      hufflepuff: { name: 'Hufflepuff', emoji: '🦡', img: 'detail.jpg' }
+    };
+    const cfg = window.JIBEK_CONFIG || {};
+    const PARTNERS = cfg.PARTNERS || {};
+    const DISCOUNT = cfg.PROMO_DISCOUNT || 0.1;
+    const ORDERS_KEY = 'jibek_orders';
+    const jibekTrack = window.jibekTrack || function () {};
+
+    function t(key) {
+      const parts = key.split('.');
+      let obj = I18N[lang];
+      for (const p of parts) obj = obj?.[p];
+      return obj || key;
+    }
+    function applyLang(l) {
+      lang = l;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const val = t(el.dataset.i18n);
+        if (val && typeof val === 'string') el.innerHTML = val;
+      });
+    }
+    document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
+    function formatPrice(n) {
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₸';
+    }
+    function recalcPrice() {
+      state.price = state.promo ? Math.round(state.basePrice * (1 - DISCOUNT)) : state.basePrice;
+    }
+    function updateUI() {
+      const h = HOUSES[state.house];
+      document.getElementById('summaryText').textContent = h.name + ' · ' + state.size;
+      document.getElementById('totalPrice').textContent = formatPrice(state.price);
+      document.getElementById('priceDisplay').textContent = formatPrice(state.price);
+      const oldPrice = document.getElementById('oldPrice');
+      if (state.promo && state.price < state.basePrice) {
+        oldPrice.textContent = formatPrice(state.basePrice);
+        oldPrice.classList.remove('hidden');
+      } else oldPrice.classList.add('hidden');
+    }
+
+    function applyPromoCode(code, silent) {
+      code = (code || '').toUpperCase().trim();
+      const msg = document.getElementById('promoMsg');
+      const input = document.getElementById('promoInput');
+      if (!code) {
+        state.promo = '';
+        recalcPrice();
+        msg.classList.add('hidden');
+        updateUI();
+        return false;
+      }
+      if (!PARTNERS[code]) {
+        state.promo = '';
+        recalcPrice();
+        msg.textContent = lang === 'kk' ? 'Промокод табылмады' : 'Промокод не найден';
+        msg.className = 'text-[11px] mt-1.5 text-red-400';
+        msg.classList.remove('hidden');
+        if (!silent) jibekTrack('promo_invalid', { code });
+        updateUI();
+        return false;
+      }
+      state.promo = code;
+      recalcPrice();
+      if (input) input.value = code;
+      msg.textContent = (lang === 'kk' ? '−10% қолданылды · ' : '−10% · ') + PARTNERS[code].name;
+      msg.className = 'text-[11px] mt-1.5 text-emerald-400';
+      msg.classList.remove('hidden');
+      if (!silent) jibekTrack('apply_promo', { code, partner: PARTNERS[code].name });
+      updateUI();
+      return true;
+    }
+
+    function setHouse(house) {
+      state.house = house;
+      const img = document.getElementById('heroImg');
+      img.style.opacity = '0';
+      setTimeout(() => { img.src = HOUSES[house].img; img.style.opacity = '1'; }, 150);
+      document.querySelectorAll('.house-thumb').forEach(b => b.classList.toggle('active', b.dataset.house === house));
+      document.querySelectorAll('.house-select').forEach(b => {
+        const on = b.dataset.house === house;
+        b.classList.toggle('active', on);
+        b.classList.toggle('border-[#D3A625]', on);
+        b.classList.toggle('border-white/15', !on);
+      });
+      jibekTrack('select_house', { house });
+      updateUI();
+    }
+    document.querySelectorAll('.house-thumb, .house-select').forEach(b => b.addEventListener('click', () => setHouse(b.dataset.house)));
+    document.querySelectorAll('.size-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.size = btn.dataset.size;
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('active', b === btn));
+        jibekTrack('select_size', { size: state.size });
+        updateUI();
+      });
+    });
+    document.querySelectorAll('.bundle-row').forEach(row => {
+      row.addEventListener('click', () => {
+        state.bundle = parseInt(row.dataset.bundle, 10);
+        state.basePrice = parseInt(row.dataset.price, 10);
+        recalcPrice();
+        document.querySelectorAll('.bundle-row').forEach(r => {
+          const on = r === row;
+          r.classList.toggle('selected', on);
+          const dot = r.querySelector('.dot');
+          if (dot) { dot.classList.toggle('bg-[#D3A625]', on); dot.classList.toggle('bg-transparent', !on); }
+          const ring = r.querySelector('.w-5');
+          if (ring) { ring.classList.toggle('border-[#D3A625]', on); ring.classList.toggle('border-white/25', !on); }
+        });
+        jibekTrack('select_bundle', { bundle: state.bundle });
+        updateUI();
+      });
+    });
+
+    document.getElementById('promoApply').addEventListener('click', () => applyPromoCode(document.getElementById('promoInput').value));
+    document.getElementById('promoInput').addEventListener('keydown', e => { if (e.key === 'Enter') applyPromoCode(e.target.value); });
+    if (window.JIBEK_ATTR && window.JIBEK_ATTR.ref) applyPromoCode(window.JIBEK_ATTR.ref, true);
+
+    const sizeModal = document.getElementById('sizeModal');
+    document.getElementById('openSizeChart').addEventListener('click', () => { sizeModal.classList.remove('hidden'); sizeModal.classList.add('flex'); });
+    document.getElementById('closeSizeModal').addEventListener('click', () => { sizeModal.classList.add('hidden'); sizeModal.classList.remove('flex'); });
+    sizeModal.addEventListener('click', e => { if (e.target === sizeModal) { sizeModal.classList.add('hidden'); sizeModal.classList.remove('flex'); } });
+
+    function buildOrderMessage() {
+      const h = HOUSES[state.house];
+      let msg = '🔥 *Заказ с jibek.store*\n\n';
+      if (state.bundle === 1) msg += '📦 *1 Худи*\n🏠 ' + h.emoji + ' ' + h.name + '\n📏 ' + state.size + '\n💰 ' + formatPrice(state.price);
+      else if (state.bundle === 2) msg += '📦 *2 Худи*\n🏠 ' + h.emoji + ' ' + h.name + ' · ' + state.size + '\n💰 ' + formatPrice(state.price) + '\n\n(2-й факультет/размер — напишите)';
+      else msg += '📦 *4 Худи (Full)*\n🦁🐍🦅🦡\n📏 ' + state.size + '\n💰 ' + formatPrice(state.price);
+      if (state.promo) msg += '\n🏷 Промокод: *' + state.promo + '* (−10%)';
+      const attr = window.JIBEK_ATTR || {};
+      if (attr.utm_source) msg += '\n📊 utm: ' + attr.utm_source;
+      msg += '\n\n📍 Қазақстан · Kazpost / CDEK\nЖду подтверждения! ✨';
+      return msg;
+    }
+
+    function saveOrderLocal(order) {
+      try {
+        const all = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
+        all.unshift(order);
+        localStorage.setItem(ORDERS_KEY, JSON.stringify(all.slice(0, 200)));
+      } catch (e) {}
+    }
+
+    const checkoutModal = document.getElementById('checkoutModal');
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+      const msg = buildOrderMessage();
+      document.getElementById('orderPreview').textContent = msg.replace(/\*/g, '');
+      checkoutModal.dataset.message = msg;
+      checkoutModal.classList.remove('hidden');
+      checkoutModal.classList.add('flex');
+      jibekTrack('begin_checkout', { value: state.price, currency: 'KZT', promo: state.promo || undefined });
+    });
+    document.getElementById('cancelCheckout').addEventListener('click', () => {
+      checkoutModal.classList.add('hidden'); checkoutModal.classList.remove('flex');
+    });
+    checkoutModal.addEventListener('click', e => {
+      if (e.target === checkoutModal) { checkoutModal.classList.add('hidden'); checkoutModal.classList.remove('flex'); }
+    });
+    document.getElementById('confirmWhatsApp').addEventListener('click', () => {
+      const attr = window.JIBEK_ATTR || {};
+      const order = {
+        id: 'local_' + Date.now(),
+        created_at: new Date().toISOString(),
+        promo_code: state.promo || '',
+        house: state.house, size: state.size, bundle: state.bundle,
+        amount_kzt: state.price, discount_kzt: state.basePrice - state.price,
+        status: 'pending',
+        utm_source: attr.utm_source || '', ref: attr.ref || state.promo || ''
+      };
+      saveOrderLocal(order);
+      jibekTrack('purchase', { value: state.price, currency: 'KZT', transaction_id: order.id });
+      window.open('https://wa.me/77473911201?text=' + encodeURIComponent(checkoutModal.dataset.message), '_blank');
+      checkoutModal.classList.add('hidden'); checkoutModal.classList.remove('flex');
+    });
+
+    applyLang('kk');
+    updateUI();
+  </script>
+</body>
+</html>
