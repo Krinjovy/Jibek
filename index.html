@@ -6,6 +6,11 @@
   <meta name="theme-color" content="#0B0A0C" />
   <meta name="description" content="JIBEK.STORE — худи факультетов. Плотная тёплая ткань, встроенная балаклава. Пошив под заказ, доставка 14–21 день по всему Казахстану. Оплата Kaspi." />
   <title>JIBEK.STORE — Худи факультета</title>
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+  <meta property="og:title" content="JIBEK.STORE — Худи факультета" />
+  <meta property="og:description" content="Худи факультетов. Плотная тёплая ткань, встроенная балаклава. Доставка 14–21 день по всему Казахстану." />
+  <meta property="og:image" content="images/og-jibek.png" />
+  <meta property="og:type" content="website" />
   <link rel="preload" as="image" href="images/gryffindor-front.jpg" fetchpriority="high" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -34,6 +39,7 @@
     .accent { color: var(--accent); }
     .accent-fill { background: var(--accent); color: var(--accent-ink); }
     .accent-line { border-color: var(--accent); }
+    .jibek-mark { height: 46px; width: auto; display: block; }
     .sky { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: min(100%, 480px); height: 100vh; z-index: 0; pointer-events: none; }
     .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
     .house-select.active { border-color: var(--accent) !important; background: var(--accent-soft); }
@@ -108,7 +114,28 @@
 
     <header class="sticky top-0 z-40 bg-[#0B0A0C]/95 backdrop-blur-md border-b border-white/5">
       <div class="px-4 h-14 flex items-center justify-between">
-        <div class="font-display text-[15px] tracking-[0.18em]">JIBEK<span class="accent">.STORE</span></div>
+        <a href="./" class="flex items-end gap-1.5" aria-label="JIBEK.STORE"><svg class="jibek-mark" viewBox="0 0 3095 1460" role="img" aria-label="JIBEK">
+  <defs>
+    <linearGradient id="jibekGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF6D0"/>
+      <stop offset="40%" stop-color="#F0D078"/>
+      <stop offset="100%" stop-color="#8C6414"/>
+    </linearGradient>
+    <filter id="jibekGlow" x="-12%" y="-18%" width="130%" height="150%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="22" result="blur"/>
+      <feFlood flood-color="#FFE7A3" flood-opacity="0.9" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g fill="url(#jibekGold)" filter="url(#jibekGlow)" transform="translate(0 760) scale(1 -1)">
+    <g transform="translate(80 0)"><path d="M272 700V30Q272 -25 250.0 -69.5Q228 -114 190.5 -145.0Q153 -176 105.0 -190.5Q57 -205 5 -200V-191Q47 -173 73.0 -137.5Q99 -102 110.5 -57.5Q122 -13 122 33V700ZM125 627H122Q121 653 102.5 671.5Q84 690 58 690Q58 690 51.5 690.0Q45 690 45 690V700H125ZM269 627V700H349V690Q349 690 342.5 690.0Q336 690 336 690Q310 690 291.5 671.5Q273 653 272 627Z"/></g><g transform="translate(493 0)"><path d="M269 700V0H119V700ZM122 73V0H42V10Q42 10 48.5 10.0Q55 10 55 10Q81 10 99.5 28.5Q118 47 119 73ZM122 627H119Q118 653 99.5 671.5Q81 690 55 690Q55 690 48.5 690.0Q42 690 42 690V700H122ZM266 73H269Q270 47 288.5 28.5Q307 10 333 10Q333 10 339.0 10.0Q345 10 346 10V0H266ZM266 627V700H346V690Q345 690 339.0 690.0Q333 690 333 690Q307 690 288.5 671.5Q270 653 269 627Z"/></g><g transform="translate(908 0)"><path d="M158 700H331Q404 700 461.5 682.5Q519 665 552.0 627.5Q585 590 585 529Q585 483 567.5 451.0Q550 419 522.0 402.0Q494 385 463 381Q513 377 553.5 353.0Q594 329 617.0 289.0Q640 249 640 195Q640 131 605.0 87.5Q570 44 506.5 22.0Q443 0 359 0H260Q260 0 260.5 11.5Q261 23 261.0 34.0Q261 45 261 45H315Q360 45 394.5 62.0Q429 79 448.5 115.0Q468 151 468 207Q468 251 454.5 282.0Q441 313 418.5 332.5Q396 352 366.0 361.0Q336 370 303 370V379Q326 379 348.0 386.5Q370 394 387.5 410.0Q405 426 415.0 452.5Q425 479 425 516Q425 567 409.5 598.0Q394 629 365.0 643.0Q336 657 298 657H168Q168 658 165.5 668.5Q163 679 160.5 689.5Q158 700 158 700ZM269 700V0H119V700ZM122 73V0H42V10Q44 10 49.0 10.0Q54 10 55 10Q81 10 99.5 28.5Q118 47 119 73ZM122 627H119Q118 653 99.5 671.5Q81 690 55 690Q54 690 49.0 690.0Q44 690 42 690V700H122Z"/></g><g transform="translate(1610 0)"><path d="M269 700V0H119V700ZM533 43 557 0H266V43ZM496 366V324H266V366ZM545 700V657H266V700ZM606 205 560 0H364L400 43Q450 43 488.0 62.5Q526 82 553.0 118.5Q580 155 596 205ZM496 326V230H486V238Q486 275 462.0 299.0Q438 323 401 324V326ZM496 460V364H401V366Q438 367 462.0 391.5Q486 416 486 453V460ZM545 660V543H535V555Q535 601 507.5 629.0Q480 657 433 658V660ZM545 718V689L423 700Q445 700 469.5 703.0Q494 706 515.0 710.0Q536 714 545 718ZM122 73V0H42V10Q42 10 48.5 10.0Q55 10 55 10Q81 10 99.5 28.5Q118 47 119 73ZM122 627H119Q118 653 99.5 671.5Q81 690 55 690Q55 690 48.5 690.0Q42 690 42 690V700H122Z"/></g><g transform="translate(2270 0)"><path d="M413 431 675 72Q698 42 722.0 26.5Q746 11 777 10V0H695Q684 0 658.5 1.0Q633 2 601.0 9.0Q569 16 536.5 33.5Q504 51 480 83Q475 90 460.0 110.0Q445 130 425.0 158.0Q405 186 383.5 215.5Q362 245 343.0 271.0Q324 297 312.5 313.5Q301 330 301 330ZM664 693 363 336 301 330 576 693ZM734 700V691H730Q697 691 668.5 677.5Q640 664 620 642L539 644Q551 661 543.0 676.0Q535 691 515 691H505V700H730ZM269 700V0H119V700ZM122 73V0H42V10Q43 10 48.5 10.0Q54 10 55 10Q81 10 99.5 28.5Q118 47 119 73ZM122 627H119Q118 653 99.5 671.5Q81 690 55 690Q54 690 48.5 690.0Q43 690 42 690V700H122ZM266 73H269Q270 47 288.5 28.5Q307 10 333 10Q334 10 339.5 10.0Q345 10 346 10V0H266ZM266 627V700H346V690Q345 690 339.5 690.0Q334 690 333 690Q307 690 288.5 671.5Q270 653 269 627Z"/></g>
+    <polyline points="145,-175 58,-315 128,-332 22,-530" fill="none" stroke="url(#jibekGold)" stroke-width="26" stroke-linejoin="miter" stroke-linecap="butt"/>
+  </g>
+</svg><span class="font-display text-[11px] tracking-[0.28em] text-[#E8C96A] leading-none -translate-y-2">.STORE</span></a>
         <span class="text-xs text-white/50">₸ KZT</span>
       </div>
     </header>
