@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0B0A0C" />
-  <meta name="description" content="JIBEK.STORE — худи факультетов. Велюр 450 г/м², встроенная балаклава. Пошив под заказ, доставка по Казахстану. Оплата Kaspi." />
+  <meta name="description" content="JIBEK.STORE — худи факультетов. Велюр 450 г/м², встроенная балаклава. Пошив под заказ, доставка 14–21 день по всему Казахстану. Оплата Kaspi." />
   <title>JIBEK.STORE — Худи факультета</title>
   <link rel="preload" as="image" href="images/gryffindor-front.jpg" fetchpriority="high" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -55,6 +55,20 @@
     @keyframes looks { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     .hotspot { position: absolute; transform: translate(-50%, -50%); width: 28px; height: 28px; border-radius: 999px; background: rgba(11,10,12,0.78); color: #F3EEE4; border: 1.5px solid #D3A625; font-size: 18px; line-height: 1; display: flex; align-items: center; justify-content: center; z-index: 2; }
     .hotspot[aria-expanded="true"] { background: #D3A625; color: #0B0A0C; }
+    .kaspi-sticker {
+      display: inline-block;
+      background: #F14635;
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      padding: 8px 12px;
+      border-radius: 3px 12px 4px 11px;
+      transform: rotate(-8deg);
+      box-shadow: 3px 5px 0 rgba(0,0,0,0.35), 0 8px 16px rgba(241,70,53,0.35);
+      border: 2px dashed rgba(255,255,255,0.7);
+    }
     @media (prefers-reduced-motion: reduce) {
       .looks-track { animation: none; }
       .looks-viewport { overflow-x: auto; }
@@ -71,7 +85,7 @@
       Оплата через Kaspi Gold и Kaspi QR
     </div>
     <div class="bg-black/40 border-b border-white/5 py-2 text-center text-[11px] text-white/60 px-3">
-      Пошив под заказ · доставка по Казахстану 3–5 недель
+      Пошив под заказ · 14–21 день по всему Казахстану
     </div>
 
     <header class="sticky top-0 z-40 bg-[#0B0A0C]/95 backdrop-blur-md border-b border-white/5">
@@ -127,11 +141,17 @@
         <p class="text-[11px] tracking-[0.16em] uppercase gold font-semibold mb-2">Волна 1 · факультеты</p>
         <h1 class="font-display text-[2rem] leading-tight mb-1">The House Hoodie</h1>
         <p class="text-sm text-white/55 mb-4">Велюр 450 г/м² · встроенная балаклава · oversize</p>
-        <div class="flex items-baseline gap-3 mb-1">
-          <span class="text-2xl font-bold" id="priceDisplay">24 990 ₸</span>
-          <span class="text-sm text-white/40 line-through" id="comparePrice">39 990 ₸</span>
+        <div class="flex items-start justify-between gap-3 mb-5">
+          <div class="min-w-0">
+            <div class="flex items-baseline gap-3 flex-wrap">
+              <span class="text-2xl font-bold" id="priceDisplay">24 990 ₸</span>
+              <span class="text-sm text-white/40 line-through" id="comparePrice">39 990 ₸</span>
+            </div>
+            <p id="priceNote" class="text-[11px] text-white/40 mt-1 hidden"></p>
+            <p id="promoTimer" class="hidden text-[13px] text-white/80 mt-3">Акционная цена доступна ещё: <span id="promoClock" class="font-semibold tabular-nums text-[#F3EEE4]"></span></p>
+          </div>
+          <div id="kaspiSticker" class="kaspi-sticker shrink-0 mt-1"></div>
         </div>
-        <p id="priceNote" class="text-[11px] text-white/40 mb-5 hidden"></p>
 
         <div class="mb-6">
           <div class="text-[11px] font-semibold tracking-widest uppercase text-white/50 mb-3 text-center">Больше — выгоднее</div>
@@ -209,7 +229,7 @@
         <div class="grid grid-cols-3 gap-2 mb-4">
           <div class="rounded-2xl border border-white/10 bg-card px-2 py-3 text-center">
             <div class="text-lg mb-1" aria-hidden="true">🚚</div>
-            <div class="text-[11px] leading-tight text-white/75">Доставка по Казахстану</div>
+            <div class="text-[11px] leading-tight text-white/75">14–21 день по всему Казахстану</div>
           </div>
           <div class="rounded-2xl border border-white/10 bg-card px-2 py-3 text-center">
             <div class="text-lg mb-1" aria-hidden="true">↻</div>
@@ -227,7 +247,7 @@
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Сроки доставки <span class="chev text-white/40">⌄</span></summary>
-            <div class="px-4 pb-3.5 text-sm text-white/60 leading-relaxed">Шьём под заказ, не со склада. После подтверждения в WhatsApp посылка едет по Казахстану. Обычно весь путь занимает 3–5 недель.</div>
+            <div class="px-4 pb-3.5 text-sm text-white/60 leading-relaxed">Шьём под заказ, не со склада. После подтверждения в WhatsApp доставка занимает 14–21 день по всему Казахстану.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Условия заказа <span class="chev text-white/40">⌄</span></summary>
@@ -271,17 +291,19 @@
         <div class="rounded-xl border border-white/10 overflow-hidden" id="sizeTableFull"></div>
       </section>
 
+      <section id="reviews" class="hidden px-4 py-8 border-t border-white/5" hidden></section>
+
       <!-- h. FAQ -->
       <section id="faq" class="px-4 py-8 border-t border-white/5">
         <h2 class="font-display text-2xl mb-4">Частые вопросы</h2>
         <div class="space-y-2">
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Когда отправите заказ? <span class="chev text-white/40">⌄</span></summary>
-            <div class="px-4 pb-3.5 text-sm text-white/60">Шьём под заказ. После подтверждения в WhatsApp худи едет по Казахстану. Обычно это 3–5 недель.</div>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Шьём под заказ. После подтверждения в WhatsApp доставка занимает 14–21 день по всему Казахстану.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как отследить заказ? <span class="chev text-white/40">⌄</span></summary>
-            <div class="px-4 pb-3.5 text-sm text-white/60">Когда передадим посылку, пришлём номер для отслеживания в тот же чат WhatsApp. Точный вид ссылки зависит от службы — уточним в переписке.</div>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Трек-номер пришлём в WhatsApp, когда передадим посылку. Отследить отправление Казпочты можно на <a href="https://post.kz/services/postal" class="text-[#D3A625] underline underline-offset-2" target="_blank" rel="noopener">post.kz</a>.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Качество худи <span class="chev text-white/40">⌄</span></summary>
@@ -293,7 +315,7 @@
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Доставка по Казахстану <span class="chev text-white/40">⌄</span></summary>
-            <div class="px-4 pb-3.5 text-sm text-white/60">Отправляем по Казахстану. Срок вместе с пошивом — около 3–5 недель. Если доставка окажется отдельной строкой, сумму напишем до оплаты.</div>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Доставка 14–21 день по всему Казахстану. Если доставка окажется отдельной строкой, сумму напишем до оплаты.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как работает балаклава? <span class="chev text-white/40">⌄</span></summary>
@@ -347,6 +369,18 @@
   </div>
 
   <script>
+    /* Текст наклейки у цены. Можно заменить, например, на «Рассрочка Kaspi». */
+    const KASPI_STICKER = 'Оплата Kaspi';
+
+    /* Конец акционной цены, время Алматы (UTC+5).
+       Таймер считает до этой даты и сам скрывается, когда она проходит. */
+    const PROMO_END = '2026-12-01T00:00:00+05:00';
+
+    /* Отзывы. Пустой массив — блок на странице не показывается.
+       Элемент: { name, city, rating: 1–5, text, avatar, photo }
+       photo можно не указывать. Не добавляйте выдуманные отзывы. */
+    const REVIEWS = [];
+
     /* --- Справочники. Цены худи зашиты в кнопках наборов (data-price). --- */
     const HOUSES = {
       gryffindor: { name: 'Гриффиндор', emoji: '🦁' },
@@ -922,12 +956,91 @@
       checkoutModal.classList.remove('flex');
     });
 
+    function escapeHtml(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[ch]));
+    }
+    function starRow(rating) {
+      const full = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
+      let stars = '';
+      for (let i = 1; i <= 5; i++) stars += i <= full ? '★' : '☆';
+      return stars;
+    }
+    function reviewWord(n) {
+      const n10 = n % 10;
+      const n100 = n % 100;
+      if (n10 === 1 && n100 !== 11) return 'отзыв';
+      if (n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)) return 'отзыва';
+      return 'отзывов';
+    }
+    function renderReviews() {
+      const section = document.getElementById('reviews');
+      if (!section) return;
+      if (!Array.isArray(REVIEWS) || !REVIEWS.length) {
+        section.hidden = true;
+        section.classList.add('hidden');
+        return;
+      }
+      const avg = REVIEWS.reduce((sum, review) => sum + Number(review.rating || 0), 0) / REVIEWS.length;
+      section.innerHTML = '<h2 class="font-display text-2xl mb-1">Отзывы</h2><p id="reviewsSummary" class="text-sm mb-4"></p><div id="reviewsList" class="space-y-3"></div>';
+      document.getElementById('reviewsSummary').innerHTML =
+        '<span class="text-[#D3A625] tracking-wide">' + starRow(avg) + '</span> ' +
+        '<span class="font-semibold">' + avg.toFixed(1) + '</span> ' +
+        '<span class="text-white/50">· ' + REVIEWS.length + ' ' + reviewWord(REVIEWS.length) + '</span>';
+      document.getElementById('reviewsList').innerHTML = REVIEWS.map(review => {
+        const avatar = review.avatar
+          ? '<img src="' + escapeHtml(review.avatar) + '" alt="" width="40" height="40" loading="lazy" class="w-10 h-10 rounded-full object-cover" />'
+          : '<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold">' + escapeHtml((review.name || '?').slice(0, 1)) + '</div>';
+        const photo = review.photo
+          ? '<img src="' + escapeHtml(review.photo) + '" alt="" loading="lazy" class="mt-3 w-full max-h-52 object-cover rounded-xl" />'
+          : '';
+        return '<article class="rounded-2xl border border-white/10 bg-card p-3">' +
+          '<div class="flex items-center gap-3">' + avatar +
+          '<div class="min-w-0"><div class="text-sm font-semibold">' + escapeHtml(review.name) + '</div>' +
+          '<div class="text-[11px] text-white/45">' + escapeHtml(review.city) + '</div></div>' +
+          '<div class="ml-auto text-[#D3A625] text-sm tracking-wide" aria-label="' + escapeHtml(review.rating) + ' из 5">' + starRow(review.rating) + '</div></div>' +
+          '<p class="text-sm text-white/75 mt-2 leading-relaxed">' + escapeHtml(review.text) + '</p>' + photo +
+          '</article>';
+      }).join('');
+      section.hidden = false;
+      section.classList.remove('hidden');
+    }
+    function renderPromoTimer() {
+      const el = document.getElementById('promoTimer');
+      const clock = document.getElementById('promoClock');
+      const end = Date.parse(PROMO_END);
+      if (!el || !clock || !Number.isFinite(end) || Date.now() >= end) {
+        if (el) el.classList.add('hidden');
+        return false;
+      }
+      const total = Math.floor((end - Date.now()) / 1000);
+      const hours = Math.floor(total / 3600);
+      const minutes = Math.floor((total % 3600) / 60);
+      const seconds = total % 60;
+      const pad = n => String(n).padStart(2, '0');
+      clock.textContent = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+      el.classList.remove('hidden');
+      return true;
+    }
+    const kaspiSticker = document.getElementById('kaspiSticker');
+    if (kaspiSticker) {
+      if (KASPI_STICKER) kaspiSticker.textContent = KASPI_STICKER;
+      else kaspiSticker.remove();
+    }
+
     const table = sizeTableHTML();
     document.getElementById('sizeTableInline').innerHTML = table;
     document.getElementById('sizeTableFull').innerHTML = table;
     renderAddons();
     renderLooks();
     renderHotspots();
+    renderReviews();
+    if (renderPromoTimer()) {
+      const promoTick = setInterval(() => {
+        if (!renderPromoTimer()) clearInterval(promoTick);
+      }, 1000);
+    }
     updateGalleryChrome(0);
     updateUI();
   </script>
