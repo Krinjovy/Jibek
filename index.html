@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0B0A0C" />
-  <meta name="description" content="JIBEK.STORE — худи факультетов. Мягкий бейби-велюр, капюшон-маска, свободный крой. Пошив под заказ, доставка 14–21 день по всему Казахстану. Оплата Kaspi." />
+  <meta name="description" content="JIBEK.STORE — худи факультетов на молнии. Мягкий бейби-велюр, капюшон-маска, свободный крой. Доставка 14–21 день по всему Казахстану. Оплата Kaspi." />
   <title>JIBEK.STORE — Худи факультета</title>
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   <meta property="og:title" content="JIBEK.STORE — Худи факультета" />
-  <meta property="og:description" content="Худи факультетов. Мягкий бейби-велюр, капюшон-маска, свободный крой. Доставка 14–21 день по всему Казахстану." />
+  <meta property="og:description" content="Худи факультетов на молнии. Мягкий бейби-велюр, капюшон-маска, свободный крой. Доставка 14–21 день по всему Казахстану." />
   <meta property="og:image" content="images/og-jibek.png" />
   <meta property="og:type" content="website" />
   <link rel="preload" as="image" href="images/gryffindor-front.jpg" fetchpriority="high" />
@@ -185,7 +185,7 @@
       <section id="options" class="px-4 pt-6">
         <p class="text-[11px] tracking-[0.18em] uppercase accent font-display mb-2">Книга факультетов</p>
         <h1 class="font-display text-[2rem] leading-tight mb-1">The House Hoodie</h1>
-        <p class="text-sm text-white/55 mb-4">Мягкий бейби-велюр · капюшон-маска · свободный крой · осень и зима</p>
+        <p class="text-sm text-white/55 mb-4">Мягкий бейби-велюр · худи на молнии · капюшон-маска · свободный крой</p>
         <div class="flex items-start justify-between gap-3 mb-5">
           <div class="min-w-0">
             <div class="flex items-baseline gap-3 flex-wrap">
@@ -305,7 +305,7 @@
       <section id="looks" class="py-8 border-t border-white/5">
         <div class="px-4 mb-4">
           <h2 class="font-display text-2xl mb-1">При свечах</h2>
-          <p class="text-sm text-white/50">Капюшон-маску можно накинуть или носить как обычный капюшон. Видео добавим сюда, пока стоят фото.</p>
+          <p class="text-sm text-white/50">Молния доходит до самой маски: лицо можно закрыть или оставить капюшон открытым. Видео добавим сюда, пока стоят фото.</p>
         </div>
         <div class="looks-viewport" id="looksViewport">
           <div class="looks-track" id="looksTrack"></div>
@@ -352,7 +352,7 @@
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Качество худи <span class="chev text-white/40">⌄</span></summary>
-            <div class="px-4 pb-3.5 text-sm text-white/60">Мягкий флис бейби-велюр обычной толщины, без подкладки — на осень и зиму. Это худи-пуловер со встроенной маской-балаклавой: надевается через голову. Рисунок нанесён цифровой 3D-печатью, не вышивкой. Есть карман-кенгуру и манжеты в рубчик. Крой свободный.</div>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Мягкий флис бейби-велюр обычной толщины, без подкладки — на осень и зиму. Худи на молнии: она идёт во всю длину, до самой маски в капюшоне. Рисунок — цифровая 3D-печать, не вышивка. Карман-кенгуру и манжеты в рубчик с полосками. Крой свободный.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как стирать? <span class="chev text-white/40">⌄</span></summary>
@@ -364,7 +364,7 @@
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как работает балаклава? <span class="chev text-white/40">⌄</span></summary>
-            <div class="px-4 pb-3.5 text-sm text-white/60">Это худи-пуловер: надевается через голову. Маска-балаклава встроена в капюшон — её можно накинуть на лицо или оставить как обычный капюшон.</div>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Маска встроена в капюшон, а молния доходит до неё. Закроешь — лицо под маской, откроешь — обычный капюшон.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Можно ли смешать факультеты и размеры в наборе? <span class="chev text-white/40">⌄</span></summary>
@@ -502,12 +502,14 @@
 
     /* Плюсы на фото Гриффиндора. x/y — проценты от кадра. */
     const HOTSPOTS = [
-      { id: 'balaclava', x: 50, y: 17, title: 'Капюшон-маска', text: 'Худи-пуловер надевается через голову. Маска-балаклава встроена в капюшон: её можно накинуть на лицо или оставить как обычный капюшон.' },
-      { id: 'crest', x: 60, y: 29, title: 'Герб факультета', text: 'Герб на капюшоне — цифровая 3D-печать, не вышивка. У каждого дома свой.' },
-      { id: 'print', x: 64, y: 41, title: 'Принт факультета', text: 'Имя факультета и символ на груди нанесены цифровой 3D-печатью, это не вышивка.' },
-      { id: 'pocket', x: 40, y: 73, title: 'Карман-кенгуру', text: 'Широкий карман спереди, как у классического худи.' },
-      { id: 'platform', x: 84, y: 72, title: 'Принт на рукаве', text: 'На рукаве — «9¾», тоже цифровая 3D-печать.' },
-      { id: 'cuffs', x: 23, y: 91, title: 'Манжеты в рубчик', text: 'Манжеты в рубчик, с полосками в цветах факультета. У Гриффиндора это золото.' }
+      { id: 'zipper', x: 50, y: 56, title: 'Молния во всю длину', text: 'Молния идёт во всю длину, до самой маски. Можно закрыть лицо или оставить капюшон открытым.' },
+      { id: 'balaclava', x: 50, y: 16, title: 'Капюшон-маска', text: 'Маска-балаклава встроена в капюшон и застёгивается той же молнией.' },
+      { id: 'crest', x: 61, y: 29, title: 'Герб факультета', text: 'Небольшой герб на маске у шеи. Цифровая 3D-печать, не вышивка. У каждого дома свой.' },
+      { id: 'print', x: 36, y: 46, title: 'Принт на груди', text: 'Крупное имя факультета и зверь на груди — цифровая 3D-печать, не вышивка.' },
+      { id: 'pocket', x: 34, y: 75, title: 'Карман-кенгуру', text: 'Широкий карман спереди.' },
+      { id: 'platform', x: 83, y: 71, title: '«9¾» на рукаве', text: 'На левом рукаве — «9¾», тоже цифровая 3D-печать.' },
+      { id: 'est', x: 50, y: 81, title: 'EST. 990', text: 'На резинке подола — EST. 990.' },
+      { id: 'cuffs', x: 22, y: 91, title: 'Манжеты в рубчик', text: 'Манжеты в рубчик с полосками в цветах факультета. У Гриффиндора это золото.' }
     ];
 
     const GALLERY = [
