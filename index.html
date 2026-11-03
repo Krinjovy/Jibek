@@ -80,10 +80,28 @@
     .switch[aria-checked="true"] { background: var(--accent); }
     .switch i { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 999px; background: #fff; transition: transform .2s ease; }
     .switch[aria-checked="true"] i { transform: translateX(18px); }
-    .looks-viewport { overflow: hidden; }
-    .looks-track { display: flex; width: max-content; animation: looks 42s linear infinite; }
-    .looks-viewport.is-paused .looks-track { animation-play-state: paused; }
-    @keyframes looks { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .looks-scroller {
+      display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory; scroll-padding-inline: 16px;
+      padding: 2px 16px 10px; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .looks-scroller::-webkit-scrollbar { display: none; height: 0; }
+    .look-card {
+      position: relative; flex: 0 0 78%; aspect-ratio: 3 / 4;
+      scroll-snap-align: start; scroll-snap-stop: always;
+      border-radius: 1.35rem; overflow: hidden; background: #141210;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.35);
+    }
+    .look-chip {
+      position: absolute; left: 12px; bottom: 12px; z-index: 2;
+      padding: 8px 12px 7px; border-radius: 12px;
+      background: rgba(10,9,8,0.72);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(212,175,55,0.32);
+      color: #E8C872; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; line-height: 1; text-transform: uppercase;
+    }
     .hotspot { position: absolute; transform: translate(-50%, -50%); width: 28px; height: 28px; border-radius: 999px; background: rgba(11,10,12,0.78); color: #F3EEE4; border: 1.5px solid var(--accent); font-size: 18px; line-height: 1; display: flex; align-items: center; justify-content: center; z-index: 2; }
     .hotspot[aria-expanded="true"] { background: var(--accent); color: var(--accent-ink); }
     .kaspi-sticker {
@@ -203,8 +221,6 @@
     html.js .reveal { opacity: 0; transform: translateY(16px); }
     html.js .reveal.in { opacity: 1; transform: none; transition: opacity .7s ease, transform .7s ease; }
     @media (prefers-reduced-motion: reduce) {
-      .looks-track { animation: none; }
-      .looks-viewport { overflow-x: auto; }
       #heroImg, .jibek-mark, .btn-gold::after, .hotspot::after, .bundle-row.selected { animation: none; }
       html.js .reveal { opacity: 1; transform: none; }
     }
@@ -414,13 +430,11 @@
 
       <!-- e. Looks -->
       <section id="looks" class="reveal py-12">
-        <div class="px-4 mb-4">
-          <h2 class="font-display text-2xl mb-1">Худи в жизни</h2>
-          <p class="text-sm text-white/50">Как худи смотрится на самом деле</p>
+        <div class="px-6 mb-5 text-center">
+          <h2 class="font-display text-[2.15rem] leading-[1.05] mb-3">Смотри, как <span class="accent">сидит.</span></h2>
+          <p class="text-[15px] text-white/55 leading-relaxed">Застёгнутым, с капюшоном-маской или нараспашку, как обычное худи.</p>
         </div>
-        <div class="looks-viewport" id="looksViewport">
-          <div class="looks-track" id="looksTrack"></div>
-        </div>
+        <div class="looks-scroller" id="looksTrack" tabindex="0" aria-label="Как сидит худи"></div>
       </section>
 
       <!-- f. Hotspots -->
@@ -598,10 +612,12 @@
       }
     ];
 
-    /* Блок «Худи в жизни». video — путь к mp4 или пусто.
-       Пока video пустой, покупатель видит фото. Не пишите на странице, что ролики появятся позже.
-       Ролик: autoplay, без звука, по кругу, playsinline, ленивая загрузка. */
+    /* Блок «Смотри, как сидит». Первый слот — распаковка.
+       video — путь к mp4 или пустая строка. Пока video пустой, покупатель видит image.
+       Не пишите на странице, что ролики появятся позже.
+       Ролик сам крутится без звука, только пока карточка в кадре. */
     const LOOKS = [
+      { label: 'РАСПАКОВКА', video: '', image: 'images/gryffindor-back.jpg' },
       { house: 'gryffindor', video: '', image: 'images/gryffindor-front.jpg' },
       { house: 'gryffindor', video: '', image: 'images/gryffindor-back.jpg' },
       { house: 'slytherin', video: '', image: 'images/slytherin-front.jpg' },
@@ -894,38 +910,50 @@
     }
 
     function lookCard(item) {
-      const label = HOUSES[item.house].name;
+      const raw = item.label || (HOUSES[item.house] ? HOUSES[item.house].name : '');
+      const label = raw.toLocaleUpperCase('ru-RU');
       let media;
       if (item.video) {
-        media = '<video class="look-video absolute inset-0 w-full h-full object-cover" muted loop playsinline preload="none" poster="' + item.image + '" data-src="' + item.video + '"></video>';
-      } else {
+        media = '<video class="look-video absolute inset-0 w-full h-full object-cover" muted loop playsinline webkit-playsinline preload="none" poster="' + item.image + '" data-src="' + item.video + '"></video>';
+      } else if (item.image) {
         media = '<img src="' + item.image + '" alt="" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" />';
+      } else {
+        media = '';
       }
-      return '<article class="relative shrink-0 w-[148px] aspect-[9/16] mr-3 rounded-2xl overflow-hidden bg-[#F3EEE4]">' +
+      return '<article class="look-card">' +
         media +
-        '<span class="absolute bottom-2 left-2 rounded-full bg-black/65 px-2 py-1 text-[10px] tracking-wide">' + label + '</span>' +
+        '<span class="look-chip">' + label + '</span>' +
         '</article>';
     }
     function renderLooks() {
-      const html = LOOKS.map(lookCard).join('');
-      document.getElementById('looksTrack').innerHTML =
-        '<div class="flex">' + html + '</div><div class="flex" aria-hidden="true">' + html + '</div>';
-      const videos = document.querySelectorAll('.look-video');
-      if (!videos.length || !('IntersectionObserver' in window)) {
-        videos.forEach(v => { if (v.dataset.src) { v.src = v.dataset.src; v.play().catch(() => {}); } });
+      const scroller = document.getElementById('looksTrack');
+      scroller.innerHTML = LOOKS.map(lookCard).join('');
+      const videos = scroller.querySelectorAll('.look-video');
+      if (!videos.length) return;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const arm = v => {
+        if (v.dataset.src && !v.getAttribute('src')) v.src = v.dataset.src;
+        v.muted = true;
+        v.defaultMuted = true;
+        v.playsInline = true;
+      };
+      const play = v => {
+        arm(v);
+        const attempt = v.play();
+        if (attempt) attempt.catch(() => {});
+      };
+      if (reduceMotion) return;
+      if (!('IntersectionObserver' in window)) {
+        videos.forEach(play);
         return;
       }
       const io = new IntersectionObserver(entries => {
         entries.forEach(en => {
-          if (!en.isIntersecting) return;
           const v = en.target;
-          if (v.dataset.src && !v.getAttribute('src')) {
-            v.src = v.dataset.src;
-            v.play().catch(() => {});
-          }
-          io.unobserve(v);
+          if (en.isIntersecting && en.intersectionRatio >= 0.55) play(v);
+          else v.pause();
         });
-      }, { rootMargin: '240px' });
+      }, { root: scroller, threshold: [0, 0.25, 0.55, 0.85] });
       videos.forEach(v => io.observe(v));
     }
 
@@ -1111,11 +1139,6 @@
       if (Math.abs(dx) >= 50 && Math.abs(dx) > Math.abs(dy)) goTo(slideIndex + (dx < 0 ? 1 : -1), 'swipe');
     });
     stage.addEventListener('dragstart', e => e.preventDefault());
-
-    const looksViewport = document.getElementById('looksViewport');
-    looksViewport.addEventListener('touchstart', () => looksViewport.classList.add('is-paused'), { passive: true });
-    looksViewport.addEventListener('touchend', () => looksViewport.classList.remove('is-paused'), { passive: true });
-    looksViewport.addEventListener('touchcancel', () => looksViewport.classList.remove('is-paused'), { passive: true });
 
     document.getElementById('hotspotLayer').addEventListener('click', e => {
       const btn = e.target.closest('[data-hotspot]');
