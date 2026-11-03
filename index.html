@@ -646,20 +646,19 @@
       { id: '2XL', chest: 74, length: 77, sleeve: 70 },
       { id: '3XL', chest: 77, length: 80, sleeve: 72 }
     ];
-    /* Блок «Смотри, как сидит». Первый слот — распаковка.
-       video — путь к mp4 или пустая строка. Пока video пустой, покупатель видит image.
-       Не пишите на странице, что ролики появятся позже.
-       Ролик сам крутится без звука, только пока карточка в кадре. */
+    /* Блок «Смотри, как сидит». video — mp4, image — постер.
+       Ролик без звука, по кругу, только пока карточка в кадре.
+       «-mask» — капюшон-маска закрыта. */
     const LOOKS = [
-      { label: 'РАСПАКОВКА', video: '', image: 'images/gryffindor-back.jpg' },
-      { house: 'gryffindor', video: '', image: 'images/gryffindor-front.jpg' },
-      { house: 'gryffindor', video: '', image: 'images/gryffindor-back.jpg' },
-      { house: 'slytherin', video: '', image: 'images/slytherin-front.jpg' },
-      { house: 'slytherin', video: '', image: 'images/slytherin-back.jpg' },
-      { house: 'ravenclaw', video: '', image: 'images/ravenclaw-front.jpg' },
-      { house: 'ravenclaw', video: '', image: 'images/ravenclaw-back.jpg' },
-      { house: 'hufflepuff', video: '', image: 'images/hufflepuff-front.jpg' },
-      { house: 'hufflepuff', video: '', image: 'images/hufflepuff-back.jpg' }
+      { label: 'РАСПАКОВКА', video: 'videos/unboxing.mp4', image: 'videos/unboxing.jpg' },
+      { house: 'gryffindor', video: 'videos/gryffindor-mask.mp4', image: 'videos/gryffindor-mask.jpg' },
+      { house: 'gryffindor', video: 'videos/gryffindor.mp4', image: 'videos/gryffindor.jpg' },
+      { house: 'slytherin', video: 'videos/slytherin-mask.mp4', image: 'videos/slytherin-mask.jpg' },
+      { house: 'slytherin', video: 'videos/slytherin.mp4', image: 'videos/slytherin.jpg' },
+      { house: 'ravenclaw', video: 'videos/ravenclaw-mask.mp4', image: 'videos/ravenclaw-mask.jpg' },
+      { house: 'ravenclaw', video: 'videos/ravenclaw.mp4', image: 'videos/ravenclaw.jpg' },
+      { house: 'hufflepuff', video: 'videos/hufflepuff-mask.mp4', image: 'videos/hufflepuff-mask.jpg' },
+      { house: 'hufflepuff', video: 'videos/hufflepuff.mp4', image: 'videos/hufflepuff.jpg' }
     ];
 
     /* Плюсы на фото Гриффиндора. x/y — проценты от кадра. */
