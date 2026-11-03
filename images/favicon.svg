@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-220 -40 1600 1600" role="img" aria-label="JIBEK">
+  <rect x="-220" y="-40" width="1600" height="1600" rx="280" fill="#0B0A0C"/>
+  <defs>
+    <linearGradient id="jibekGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF6D0"/>
+      <stop offset="40%" stop-color="#F0D078"/>
+      <stop offset="100%" stop-color="#8C6414"/>
+    </linearGradient>
+    <filter id="jibekGlow" x="-12%" y="-18%" width="130%" height="150%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="22" result="blur"/>
+      <feFlood flood-color="#FFE7A3" flood-opacity="0.9" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g fill="url(#jibekGold)" filter="url(#jibekGlow)" transform="translate(0 760) scale(1 -1)">
+    <g transform="translate(80 0)"><path d="M272 700V30Q272 -25 250.0 -69.5Q228 -114 190.5 -145.0Q153 -176 105.0 -190.5Q57 -205 5 -200V-191Q47 -173 73.0 -137.5Q99 -102 110.5 -57.5Q122 -13 122 33V700ZM125 627H122Q121 653 102.5 671.5Q84 690 58 690Q58 690 51.5 690.0Q45 690 45 690V700H125ZM269 627V700H349V690Q349 690 342.5 690.0Q336 690 336 690Q310 690 291.5 671.5Q273 653 272 627Z"/></g>
+    <polyline points="145,-175 58,-315 128,-332 22,-530" fill="none" stroke="url(#jibekGold)" stroke-width="26" stroke-linejoin="miter" stroke-linecap="butt"/>
+  </g>
+</svg>

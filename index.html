@@ -1,489 +1,1089 @@
 <!DOCTYPE html>
-<html lang="kk">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0B0A0C" />
-  <meta name="description" content="JIBEK.STORE — Hogwarts House Hoodie. 450gsm velour, кіріктірілген балаклава. Жеке тігім. Қазақстан бойынша тегін жеткізу." />
-  <title>JIBEK.STORE — The House Hoodie</title>
+  <meta name="description" content="JIBEK.STORE — худи факультетов на молнии. Мягкий бейби-велюр, капюшон-маска, свободный крой. Доставка 14–21 день по всему Казахстану. Оплата Kaspi." />
+  <title>JIBEK.STORE — Худи факультета</title>
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+  <meta property="og:title" content="JIBEK.STORE — Худи факультета" />
+  <meta property="og:description" content="Худи факультетов на молнии. Мягкий бейби-велюр, капюшон-маска, свободный крой. Доставка 14–21 день по всему Казахстану." />
+  <meta property="og:image" content="images/og-jibek.png" />
+  <meta property="og:type" content="website" />
+  <link rel="preload" as="image" href="images/gryffindor-front.jpg" fetchpriority="high" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: { dark: '#0a0a0b', gold: '#D3A625', cream: '#F5F0E8', card: '#141416' }
+          colors: { dark: '#0B0A0C', gold: '#D3A625', cream: '#F3EEE4', card: '#141416' }
         }
       }
     }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    :root { --accent: #D3A625; }
+    :root {
+      --accent: #D3A625;
+      --accent-ink: #1A0E00;
+      --accent-soft: rgba(211,166,37,0.16);
+      --seal: #740001;
+    }
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-    body { background: #0B0A0C; color: #F5F5F5; font-family: 'Inter', system-ui, sans-serif; }
-    .font-display { font-family: 'Playfair Display', serif; }
-    .gold { color: #D3A625; }
+    body { background: #07060b; color: #F5F5F5; font-family: 'Inter', system-ui, sans-serif; }
+    #app { position: relative; z-index: 1; background: transparent; }
+    .font-display { font-family: 'Cinzel', serif; letter-spacing: 0.03em; }
+    .accent { color: var(--accent-text, var(--accent)); }
+    .accent-fill { background: var(--accent); color: var(--accent-ink); }
+    .accent-line { border-color: var(--accent); }
+    .jibek-mark { height: 46px; width: auto; display: block; }
+    .sky { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: min(100%, 480px); height: 100vh; z-index: 0; pointer-events: none; }
     .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
-    .marquee { overflow: hidden; white-space: nowrap; }
-    .marquee-track { display: inline-flex; animation: marquee 28s linear infinite; }
-    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .house-thumb.active, .house-select.active { border-color: #D3A625 !important; background: rgba(211,166,37,0.12); }
-    .size-btn.active { background: #D3A625; color: #0a0a0b; border-color: #D3A625; font-weight: 700; }
-    .bundle-row.selected { border-color: #D3A625; background: rgba(211,166,37,0.08); }
-    .bundle-row.selected .dot { background: #D3A625; }
-    .check { color: #D3A625; font-weight: 700; }
-    .lang-btn.active { color: #D3A625; }
+    .house-mark {
+      width: 14px; height: 16px; flex-shrink: 0;
+      clip-path: polygon(50% 0, 100% 16%, 100% 62%, 50% 100%, 0 62%, 0 16%);
+    }
+    .house-select[data-house="gryffindor"] .house-mark { background: linear-gradient(#740001 52%, #D3A625 52%); }
+    .house-select[data-house="slytherin"] .house-mark { background: linear-gradient(#1A472A 52%, #C5C9CC 52%); }
+    .house-select[data-house="ravenclaw"] .house-mark { background: linear-gradient(#0E1A40 46%, #222F5B 46% 72%, #946B2D 72%); }
+    .house-select[data-house="hufflepuff"] .house-mark { background: linear-gradient(#E6B325 52%, #14120C 52%); }
+    .house-select.active { border-color: var(--accent) !important; background: var(--accent-soft); }
+    .size-btn.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+    .bundle-row.selected { border-color: var(--accent); background: var(--accent-soft); }
+    .check { color: var(--accent); font-weight: 700; }
+    input:focus { border-color: var(--accent); }
+    .wax-seal {
+      position: absolute; top: 50%; right: 7.25rem; transform: translateY(-50%);
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(circle at 35% 30%, color-mix(in srgb, white 28%, var(--seal)), var(--seal) 64%, #12080a);
+      color: #f6e7c1; font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.08em;
+      box-shadow: inset 0 0 0 2px rgba(246,231,193,0.55), 0 5px 10px rgba(0,0,0,0.45);
+    }
     details summary::-webkit-details-marker { display: none; }
+    details summary { list-style: none; }
+    details[open] .chev { transform: rotate(180deg); }
+    .chev { transition: transform .2s ease; }
+    section { scroll-margin-top: 4.5rem; }
+    #galleryStage { touch-action: pan-y; cursor: grab; }
+    #galleryStage.is-grabbing { cursor: grabbing; }
+    #heroImg { transition: opacity .22s ease; }
+    .gal-thumb { border: 2px solid transparent; background: #F3EEE4; }
+    .gal-thumb.active { border-color: var(--accent); }
+    .gal-dot { width: 6px; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.28); transition: width .2s ease, background .2s ease; }
+    .gal-dot.active { width: 18px; background: var(--accent); }
+    select { color-scheme: dark; }
+    .looks-scroller {
+      display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory; scroll-padding-inline: 16px;
+      padding: 2px 16px 10px; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .looks-scroller::-webkit-scrollbar { display: none; height: 0; }
+    .look-card {
+      position: relative; flex: 0 0 78%; aspect-ratio: 3 / 4;
+      scroll-snap-align: start; scroll-snap-stop: always;
+      border-radius: 1.35rem; overflow: hidden; background: #141210;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.35);
+    }
+    .look-chip {
+      position: absolute; left: 12px; bottom: 12px; z-index: 2;
+      padding: 8px 12px 7px; border-radius: 12px;
+      background: rgba(10,9,8,0.72);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(212,175,55,0.32);
+      color: #E8C872; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; line-height: 1; text-transform: uppercase;
+    }
+    .hotspot { position: absolute; transform: translate(-50%, -50%); width: 28px; height: 28px; border-radius: 999px; background: rgba(11,10,12,0.78); color: #F3EEE4; border: 1.5px solid var(--accent); font-size: 18px; line-height: 1; display: flex; align-items: center; justify-content: center; z-index: 2; }
+    .hotspot[aria-expanded="true"] { background: var(--accent); color: var(--accent-ink); }
+    .kaspi-sticker {
+      display: inline-block;
+      background: #F14635;
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+      padding: 8px 12px;
+      border-radius: 3px 12px 4px 11px;
+      transform: rotate(-8deg);
+      box-shadow: 3px 5px 0 rgba(0,0,0,0.35), 0 8px 16px rgba(241,70,53,0.35);
+      border: 2px dashed rgba(255,255,255,0.7);
+    }
+    h1.font-display, h2.font-display, h3.font-display {
+      font-family: 'Cormorant Garamond', 'Cinzel', serif;
+      font-weight: 500;
+      letter-spacing: 0.015em;
+    }
+    .label-caps { letter-spacing: 0.16em; text-transform: uppercase; font-size: 11px; }
+    .btn-gold {
+      position: relative; overflow: hidden; border: 0; border-radius: 14px;
+      color: #1A1206; font-family: 'Cinzel', serif; font-weight: 600; letter-spacing: 0.08em;
+      background: linear-gradient(180deg, #F6E3A1 0%, #D4AF37 48%, #9C7A2B 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 22px rgba(156,122,43,0.35);
+      transition: transform .2s ease, filter .2s ease;
+    }
+    .btn-gold::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(105deg, transparent 32%, rgba(255,255,255,0.55) 50%, transparent 68%);
+      transform: translateX(-130%);
+      animation: goldShine 5.5s ease-in-out infinite;
+    }
+    .btn-gold:active { transform: scale(0.97); filter: brightness(0.82); }
+    @keyframes goldShine { 0%, 68% { transform: translateX(-130%); } 100% { transform: translateX(130%); } }
+    .glass, .house-select, .size-btn, .bundle-row, details.rounded-xl, #promoInput, .lux-select {
+      background: rgba(14,13,16,0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212,175,55,0.22);
+      box-shadow: inset 0 1px 0 rgba(255,236,190,0.06), 0 10px 24px rgba(0,0,0,0.28);
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease, transform .2s ease;
+    }
+    .house-select.active, .size-btn.active {
+      border-color: #E4C56A !important;
+      color: #F7F3EA;
+      background: var(--accent-soft);
+      box-shadow: inset 0 1px 0 rgba(255,236,190,0.12), 0 0 18px rgba(212,175,55,0.28);
+    }
+    .size-btn.active { font-weight: 600; }
+    .bundle-row.selected {
+      border-color: transparent;
+      background: var(--accent-soft);
+      animation: bundleGlow 2.8s ease-in-out infinite;
+    }
+    @keyframes bundleGlow {
+      0%, 100% { box-shadow: 0 0 0 1px rgba(212,175,55,0.65), 0 0 14px rgba(212,175,55,0.16), inset 0 1px 0 rgba(255,236,190,0.08); }
+      50% { box-shadow: 0 0 0 1px #F6E3A1, 0 0 26px rgba(212,175,55,0.42), inset 0 1px 0 rgba(255,236,190,0.16); }
+    }
+    .lux-select {
+      appearance: none; -webkit-appearance: none;
+      background-color: rgba(12,11,14,0.92);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23D4AF37' stroke-width='1.4'/></svg>");
+      background-repeat: no-repeat; background-position: right 10px center;
+      border: 1px solid rgba(212,175,55,0.28); border-radius: 12px;
+      color: #F5F5F5; padding: 10px 28px 10px 12px; font-size: 13px;
+    }
+    .wa-float {
+      position: fixed; z-index: 80;
+      right: calc(max(0px, (100vw - 480px) / 2) + 16px);
+      bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+      width: 52px; height: 52px; border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      background: #100e0c; border: 1.5px solid rgba(228,197,106,0.9);
+      box-shadow: 0 0 18px rgba(212,175,55,0.32), 0 10px 22px rgba(0,0,0,0.45);
+    }
+    .ship-label { display: block; font-size: 12px; color: rgba(255,255,255,0.62); margin: 0 0 6px; }
+    .ship-optional { color: rgba(255,255,255,0.35); }
+    .ship-input, .ship-select {
+      width: 100%; min-height: 52px; border-radius: 14px;
+      border: 1px solid rgba(212,175,55,0.28);
+      background: rgba(12,11,14,0.92); color: #F5F5F5;
+      font-size: 16px; padding: 14px 16px; outline: none;
+    }
+    .ship-select {
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23D4AF37' stroke-width='1.4'/></svg>");
+      background-repeat: no-repeat; background-position: right 16px center;
+      padding-right: 42px;
+    }
+    textarea.ship-input { min-height: 96px; resize: vertical; }
+    .ship-input:focus, .ship-select:focus { border-color: #E4C56A; }
+    .ship-input.is-invalid, .ship-select.is-invalid { border-color: #e07a72; }
+    .ship-error { color: #f0a8a2; font-size: 12px; line-height: 1.35; margin-top: 6px; }
+    body.checkout-open { overflow: hidden; }
+    #galleryStage { border-radius: 0; }
+    #galleryStage::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      background: radial-gradient(ellipse at center, transparent 46%, rgba(0,0,0,0.5) 100%);
+    }
+    #heroImg { transform-origin: center; animation: heroIn 1.5s ease both; }
+    @keyframes heroIn { from { transform: scale(1.07); } to { transform: scale(1); } }
+    .jibek-mark { animation: logoGlow 3.6s ease-in-out infinite; }
+    @keyframes logoGlow {
+      0%, 100% { filter: drop-shadow(0 0 3px rgba(246,227,161,0.35)); }
+      50% { filter: drop-shadow(0 0 9px rgba(246,227,161,0.8)); }
+    }
+    .gal-dot { background: rgba(212,175,55,0.28); }
+    .gal-dot.active { background: #D4AF37; }
+    .gal-thumb { border-radius: 12px; transition: border-color .2s ease, box-shadow .2s ease; }
+    .gal-thumb.active { border-color: #E4C56A; box-shadow: 0 0 12px rgba(212,175,55,0.35); }
+    .hotspot { background: rgba(10,9,8,0.8); border-color: #E4C56A; color: #F6E3A1; }
+    .hotspot::after {
+      content: ""; position: absolute; inset: -6px; border-radius: inherit; pointer-events: none;
+      border: 1px solid rgba(228,197,106,0.75); animation: hotPulse 2.4s ease-out infinite;
+    }
+    @keyframes hotPulse { to { transform: scale(1.45); opacity: 0; } }
+    .hotspot[aria-expanded="true"] { background: #D4AF37; color: #1A1206; }
+    #hotspotPop {
+      background: rgba(12,11,14,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(212,175,55,0.35);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+    }
+    main > section + section { position: relative; padding-top: 3.4rem; }
+    main > section + section::after {
+      content: ""; position: absolute; top: 0; left: 14%; right: 14%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.7), transparent);
+    }
+    main > section + section::before {
+      content: "✦"; position: absolute; top: 0; left: 50%; transform: translate(-50%, -52%);
+      color: #D4AF37; font-size: 11px; background: #07060b; padding: 0 8px; z-index: 1;
+    }
+    html.js .reveal { opacity: 0; transform: translateY(16px); }
+    html.js .reveal.in { opacity: 1; transform: none; transition: opacity .7s ease, transform .7s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      #heroImg, .jibek-mark, .btn-gold::after, .hotspot::after, .bundle-row.selected { animation: none; }
+      html.js .reveal { opacity: 1; transform: none; }
+    }
   </style>
   <script src="config.js"></script>
   <script src="analytics.js"></script>
 </head>
-<body class="pb-28">
+<body>
+  <canvas id="sky" class="sky" aria-hidden="true"></canvas>
+  <div id="app" class="max-w-[480px] mx-auto min-h-screen pb-28">
 
-  <!-- Kaspi hint -->
-  <div class="bg-[#F5A623]/15 border-b border-[#F5A623]/30 text-center text-[12px] py-2 px-3 text-[#F5A623]">
-    💳 Kaspi Gold / Kaspi QR арқылы төлеуге болады · Оплата через Kaspi
-  </div>
-
-  <!-- Ticker -->
-  <div class="marquee bg-black/40 border-b border-white/5 py-2 text-[11px] text-white/60">
-    <div class="marquee-track">
-      <span class="mx-6">✦ 450gsm velour</span><span class="mx-6">✦ Built-in balaclava</span>
-      <span class="mx-6">✦ Тегін жеткізу KZ</span><span class="mx-6">✦ Жеке тігім 2–7 күн</span>
-      <span class="mx-6">✦ Hogwarts Houses</span><span class="mx-6">✦ Oversize fit</span>
-      <span class="mx-6">✦ 450gsm velour</span><span class="mx-6">✦ Built-in balaclava</span>
-      <span class="mx-6">✦ Тегін жеткізу KZ</span><span class="mx-6">✦ Жеке тігім 2–7 күн</span>
-      <span class="mx-6">✦ Hogwarts Houses</span><span class="mx-6">✦ Oversize fit</span>
+    <div class="bg-[#F5A623]/15 border-b border-[#F5A623]/30 text-center text-[12px] py-2 px-3 text-[#F5A623]">
+      Оплата через Kaspi Gold и Kaspi QR
     </div>
-  </div>
-
-  <header class="sticky top-0 z-40 bg-dark/95 backdrop-blur-md border-b border-white/5">
-    <div class="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
-      <div class="font-bold tracking-[0.15em] text-sm">JIBEK<span class="gold">.STORE</span></div>
-      <div class="flex items-center gap-3 text-xs">
-        <span class="text-white/50">₸ KZT</span>
-        <button class="lang-btn active" data-lang="kk">ҚАЗ</button>
-        <button class="lang-btn text-white/40" data-lang="ru">РУС</button>
-      </div>
+    <div class="bg-black/40 border-b border-white/5 py-2 text-center text-[11px] text-white/60 px-3">
+      Пошив под заказ · 14–21 день по всему Казахстану
     </div>
-  </header>
 
-  <main class="max-w-lg mx-auto">
-    <!-- HERO -->
-    <section class="relative">
-      <div class="aspect-[3/4] bg-card overflow-hidden">
-        <img id="heroImg" src="gryffindor.jpg" alt="House Hoodie" class="w-full h-full object-cover transition-opacity duration-300" />
+    <header class="sticky top-0 z-40 bg-[#0B0A0C]/95 backdrop-blur-md border-b border-white/5">
+      <div class="px-4 h-14 flex items-center justify-between">
+        <a href="./" class="flex items-end gap-1.5" aria-label="JIBEK.STORE"><svg class="jibek-mark" viewBox="0 0 3095 1460" role="img" aria-label="JIBEK">
+  <defs>
+    <linearGradient id="jibekGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF6D0"/>
+      <stop offset="40%" stop-color="#F0D078"/>
+      <stop offset="100%" stop-color="#8C6414"/>
+    </linearGradient>
+    <filter id="jibekGlow" x="-12%" y="-18%" width="130%" height="150%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="22" result="blur"/>
+      <feFlood flood-color="#FFE7A3" flood-opacity="0.9" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g fill="url(#jibekGold)" filter="url(#jibekGlow)" transform="translate(0 760) scale(1 -1)">
+    <g transform="translate(80 0)"><path d="M272 700V30Q272 -25 250.0 -69.5Q228 -114 190.5 -145.0Q153 -176 105.0 -190.5Q57 -205 5 -200V-191Q47 -173 73.0 -137.5Q99 -102 110.5 -57.5Q122 -13 122 33V700ZM125 627H122Q121 653 102.5 671.5Q84 690 58 690Q58 690 51.5 690.0Q45 690 45 690V700H125ZM269 627V700H349V690Q349 690 342.5 690.0Q336 690 336 690Q310 690 291.5 671.5Q273 653 272 627Z"/></g><g transform="translate(493 0)"><path d="M269 700V0H119V700ZM122 73V0H42V10Q42 10 48.5 10.0Q55 10 55 10Q81 10 99.5 28.5Q118 47 119 73ZM122 627H119Q118 653 99.5 671.5Q81 690 55 690Q55 690 48.5 690.0Q42 690 42 690V700H122ZM266 73H269Q270 47 288.5 28.5Q307 10 333 10Q333 10 339.0 10.0Q345 10 346 10V0H266ZM266 627V700H346V690Q345 690 339.0 690.0Q333 690 333 690Q307 690 288.5 671.5Q270 653 269 627Z"/></g><g transform="translate(908 0)"><path d="M158 700H331Q404 700 461.5 682.5Q519 665 552.0 627.5Q585 590 585 529Q585 483 567.5 451.0Q550 419 522.0 402.0Q494 385 463 381Q513 377 553.5 353.0Q594 329 617.0 289.0Q640 249 640 195Q640 131 605.0 87.5Q570 44 506.5 22.0Q443 0 359 0H260Q260 0 260.5 11.5Q261 23 261.0 34.0Q261 45 261 45H315Q360 45 394.5 62.0Q429 79 448.5 115.0Q468 151 468 207Q468 251 454.5 282.0Q441 313 418.5 332.5Q396 352 366.0 361.0Q336 370 303 370V379Q326 379 348.0 386.5Q370 394 387.5 410.0Q405 426 415.0 452.5Q425 479 425 516Q425 567 409.5 598.0Q394 629 365.0 643.0Q336 657 298 657H168Q168 658 165.5 668.5Q163 679 160.5 689.5Q158 700 158 700ZM269 700V0H119V700ZM122 73V0H42V10Q44 10 49.0 10.0Q54 10 55 10Q81 10 99.5 28.5Q118 47 119 73ZM122 627H119Q118 653 99.5 671.5Q81 690 55 690Q54 690 49.0 690.0Q44 690 42 690V700H122Z"/></g><g transform="translate(1610 0)"><path d="M269 700V0H119V700ZM533 43 557 0H266V43ZM496 366V324H266V366ZM545 700V657H266V700ZM606 205 560 0H364L400 43Q450 43 488.0 62.5Q526 82 553.0 118.5Q580 155 596 205ZM496 326V230H486V238Q486 275 462.0 299.0Q438 323 401 324V326ZM496 460V364H401V366Q438 367 462.0 391.5Q486 416 486 453V460ZM545 660V543H535V555Q535 601 507.5 629.0Q480 657 433 658V660ZM545 718V689L423 700Q445 700 469.5 703.0Q494 706 515.0 710.0Q536 714 545 718ZM122 73V0H42V10Q42 10 48.5 10.0Q55 10 55 10Q81 10 99.5 28.5Q118 47 119 73ZM122 627H119Q118 653 99.5 671.5Q81 690 55 690Q55 690 48.5 690.0Q42 690 42 690V700H122Z"/></g><g transform="translate(2270 0)"><path d="M413 431 675 72Q698 42 722.0 26.5Q746 11 777 10V0H695Q684 0 658.5 1.0Q633 2 601.0 9.0Q569 16 536.5 33.5Q504 51 480 83Q475 90 460.0 110.0Q445 130 425.0 158.0Q405 186 383.5 215.5Q362 245 343.0 271.0Q324 297 312.5 313.5Q301 330 301 330ZM664 693 363 336 301 330 576 693ZM734 700V691H730Q697 691 668.5 677.5Q640 664 620 642L539 644Q551 661 543.0 676.0Q535 691 515 691H505V700H730ZM269 700V0H119V700ZM122 73V0H42V10Q43 10 48.5 10.0Q54 10 55 10Q81 10 99.5 28.5Q118 47 119 73ZM122 627H119Q118 653 99.5 671.5Q81 690 55 690Q54 690 48.5 690.0Q43 690 42 690V700H122ZM266 73H269Q270 47 288.5 28.5Q307 10 333 10Q334 10 339.5 10.0Q345 10 346 10V0H266ZM266 627V700H346V690Q345 690 339.5 690.0Q334 690 333 690Q307 690 288.5 671.5Q270 653 269 627Z"/></g>
+    <polyline points="145,-175 58,-315 128,-332 22,-530" fill="none" stroke="url(#jibekGold)" stroke-width="26" stroke-linejoin="miter" stroke-linecap="butt"/>
+  </g>
+</svg><span class="font-display text-[11px] tracking-[0.28em] text-[#E8C96A] leading-none -translate-y-2">.STORE</span></a>
+        <span class="text-xs text-white/50">₸ KZT</span>
       </div>
-      <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 px-4">
-        <button data-house="gryffindor" class="house-thumb active w-14 h-14 rounded-xl overflow-hidden border-2 border-[#D3A625]"><img src="gryffindor.jpg" class="w-full h-full object-cover" alt="" /></button>
-        <button data-house="slytherin" class="house-thumb w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent"><img src="couple.jpg" class="w-full h-full object-cover" alt="" /></button>
-        <button data-house="ravenclaw" class="house-thumb w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent"><img src="ravenclaw.jpg" class="w-full h-full object-cover" alt="" /></button>
-        <button data-house="hufflepuff" class="house-thumb w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent"><img src="detail.jpg" class="w-full h-full object-cover" alt="" /></button>
-      </div>
-    </section>
+    </header>
 
-    <!-- PRODUCT -->
-    <section class="px-4 pt-6 pb-2">
-      <p class="text-[11px] tracking-[0.15em] uppercase gold font-semibold mb-2" data-i18n="wave">WAVE 1 · HOGWARTS HOUSE COLLECTION</p>
-      <h1 class="font-display text-3xl mb-1">The House Hoodie</h1>
-      <p class="text-sm text-white/55 mb-4" data-i18n="sub">450gsm velour · кіріктірілген балаклава · oversize</p>
-      <div class="flex items-baseline gap-3 mb-1">
-        <span class="text-2xl font-bold" id="priceDisplay">24 990 ₸</span>
-        <span class="text-sm text-white/40 line-through">39 990 ₸</span>
-      </div>
-      <p class="text-[12px] text-white/45 mb-5">★ 4.9 · 340+ пікір · Almaty / Astana</p>
+    <main>
+      <!-- a. Gallery -->
+      <section id="gallery" class="pt-0" aria-roledescription="carousel" aria-label="Галерея худи">
+        <div id="galleryStage" class="relative aspect-square overflow-hidden bg-[#F3EEE4]">
+          <img id="heroImg" src="images/gryffindor-front.jpg" alt="Гриффиндор — спереди" width="1024" height="1024" fetchpriority="high" decoding="async" draggable="false" class="absolute inset-0 w-full h-full object-cover select-none" />
+          <button type="button" id="galPrev" aria-label="Предыдущее фото" class="absolute left-2.5 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-black/55 text-white backdrop-blur-md flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <button type="button" id="galNext" aria-label="Следующее фото" class="absolute right-2.5 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-black/55 text-white backdrop-blur-md flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-2 pointer-events-none">
+            <div class="rounded-full bg-black/60 backdrop-blur-md px-3 py-1.5 text-[12px] font-medium">
+              <span id="galleryHouse">Гриффиндор</span><span class="text-white/40"> · </span><span id="galleryView">Спереди</span>
+            </div>
+            <div id="galleryCount" class="rounded-full bg-black/60 backdrop-blur-md px-2.5 py-1.5 text-[11px] tabular-nums text-white/80">1 / 8</div>
+          </div>
+        </div>
+        <div id="dots" class="flex justify-center items-center gap-1.5 mt-3 px-4">
+          <button type="button" class="gal-dot active h-1.5" data-index="0" aria-label="1"></button>
+          <button type="button" class="gal-dot h-1.5" data-index="1" aria-label="2"></button>
+          <button type="button" class="gal-dot h-1.5" data-index="2" aria-label="3"></button>
+          <button type="button" class="gal-dot h-1.5" data-index="3" aria-label="4"></button>
+          <button type="button" class="gal-dot h-1.5" data-index="4" aria-label="5"></button>
+          <button type="button" class="gal-dot h-1.5" data-index="5" aria-label="6"></button>
+          <button type="button" class="gal-dot h-1.5" data-index="6" aria-label="7"></button>
+          <button type="button" class="gal-dot h-1.5" data-index="7" aria-label="8"></button>
+        </div>
+        <div id="thumbs" class="mt-3 px-4 grid grid-cols-4 gap-2">
+          <button type="button" class="gal-thumb active rounded-xl overflow-hidden" data-index="0" data-house="gryffindor" data-view="front" aria-label="Гриффиндор — спереди"><img src="images/gryffindor-front.jpg" alt="" width="160" height="160" decoding="async" draggable="false" class="w-full aspect-square object-cover" /></button>
+          <button type="button" class="gal-thumb rounded-xl overflow-hidden" data-index="1" data-house="gryffindor" data-view="back" aria-label="Гриффиндор — сзади"><img src="images/gryffindor-back.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" draggable="false" class="w-full aspect-square object-cover" /></button>
+          <button type="button" class="gal-thumb rounded-xl overflow-hidden" data-index="2" data-house="slytherin" data-view="front" aria-label="Слизерин — спереди"><img src="images/slytherin-front.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" draggable="false" class="w-full aspect-square object-cover" /></button>
+          <button type="button" class="gal-thumb rounded-xl overflow-hidden" data-index="3" data-house="slytherin" data-view="back" aria-label="Слизерин — сзади"><img src="images/slytherin-back.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" draggable="false" class="w-full aspect-square object-cover" /></button>
+          <button type="button" class="gal-thumb rounded-xl overflow-hidden" data-index="4" data-house="ravenclaw" data-view="front" aria-label="Когтевран — спереди"><img src="images/ravenclaw-front.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" draggable="false" class="w-full aspect-square object-cover" /></button>
+          <button type="button" class="gal-thumb rounded-xl overflow-hidden" data-index="5" data-house="ravenclaw" data-view="back" aria-label="Когтевран — сзади"><img src="images/ravenclaw-back.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" draggable="false" class="w-full aspect-square object-cover" /></button>
+          <button type="button" class="gal-thumb rounded-xl overflow-hidden" data-index="6" data-house="hufflepuff" data-view="front" aria-label="Пуффендуй — спереди"><img src="images/hufflepuff-front.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" draggable="false" class="w-full aspect-square object-cover" /></button>
+          <button type="button" class="gal-thumb rounded-xl overflow-hidden" data-index="7" data-house="hufflepuff" data-view="back" aria-label="Пуффендуй — сзади"><img src="images/hufflepuff-back.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" draggable="false" class="w-full aspect-square object-cover" /></button>
+        </div>
+        <p class="text-[11px] text-white/35 text-center mt-2 px-10">Листайте или нажмите миниатюру</p>
+      </section>
 
-      <!-- BUNDLES -->
-      <div class="mb-6">
-        <div class="text-[11px] font-semibold tracking-widest uppercase text-white/50 mb-3 text-center" data-i18n="buyMore">КӨБІРЕК АЛ · ҮНЕМДЕ</div>
+      <!-- b. Options -->
+      <section id="options" class="reveal px-4 pt-8">
+        <p class="text-[11px] tracking-[0.18em] uppercase accent font-display mb-2">Коллекция факультетов</p>
+        <h1 class="font-display text-[2rem] leading-tight mb-1">Худи факультета</h1>
+        <p class="text-sm text-white/55 mb-4">Мягкий бейби-велюр · худи на молнии · капюшон-маска · свободный крой</p>
+        <div class="flex items-start justify-between gap-3 mb-5">
+          <div class="min-w-0">
+            <div class="flex items-baseline gap-3 flex-wrap">
+              <span class="text-2xl font-bold" id="priceDisplay">23 000 ₸</span>
+              <span class="text-sm text-white/40 line-through" id="comparePrice">35 000 ₸</span>
+            </div>
+            <p id="promoTimer" class="hidden text-[13px] text-white/80 mt-3">Акционная цена действует ещё <span id="promoClock" class="font-semibold tabular-nums text-[#F3EEE4]"></span></p>
+          </div>
+          <div id="kaspiSticker" class="kaspi-sticker shrink-0 mt-1"></div>
+        </div>
+
+        <div class="mb-6">
+          <div class="text-[11px] font-semibold tracking-widest uppercase text-white/50 mb-3 text-center">Больше — выгоднее</div>
+          <div class="space-y-2" id="bundleList">
+            <button type="button" class="bundle-row selected w-full border border-white/15 rounded-xl p-3.5 flex items-center justify-between text-left" data-bundle="1">
+              <span><span class="block font-semibold text-sm">1 худи</span><span class="block text-[11px] text-white/45" data-bundle-save>экономия 12 000 ₸</span></span>
+              <span class="font-bold" data-bundle-price>23 000 ₸</span>
+            </button>
+            <button type="button" class="bundle-row relative w-full border border-white/15 rounded-xl p-3.5 flex items-center justify-between text-left" data-bundle="2">
+              <span class="wax-seal" aria-hidden="true">ХИТ</span>
+              <span><span class="block font-semibold text-sm">2 худи</span><span class="block text-[11px] text-white/45" data-bundle-save>экономия 26 010 ₸</span></span>
+              <span class="font-bold" data-bundle-price>43 990 ₸</span>
+            </button>
+            <button type="button" class="bundle-row w-full border border-white/15 rounded-xl p-3.5 flex items-center justify-between text-left" data-bundle="4">
+              <span><span class="block font-semibold text-sm">4 худи</span><span class="block text-[11px] text-white/45" data-bundle-save>экономия 57 010 ₸</span></span>
+              <span class="font-bold" data-bundle-price>82 990 ₸</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-xs accent font-display tracking-wide">Выбери свой факультет</div>
+            <div id="primaryLabel" class="text-[11px] accent hidden">Худи 1</div>
+          </div>
+          <div id="housePicker" class="grid grid-cols-2 gap-2">
+            <button type="button" data-house="gryffindor" class="house-select active flex items-center gap-2.5 px-3 py-3 rounded-xl border border-white/15 text-sm font-medium"><span class="house-mark" aria-hidden="true"></span>Гриффиндор</button>
+            <button type="button" data-house="slytherin" class="house-select flex items-center gap-2.5 px-3 py-3 rounded-xl border border-white/15 text-sm font-medium"><span class="house-mark" aria-hidden="true"></span>Слизерин</button>
+            <button type="button" data-house="ravenclaw" class="house-select flex items-center gap-2.5 px-3 py-3 rounded-xl border border-white/15 text-sm font-medium"><span class="house-mark" aria-hidden="true"></span>Когтевран</button>
+            <button type="button" data-house="hufflepuff" class="house-select flex items-center gap-2.5 px-3 py-3 rounded-xl border border-white/15 text-sm font-medium"><span class="house-mark" aria-hidden="true"></span>Пуффендуй</button>
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <div class="mb-2 flex items-center justify-between">
+            <div class="text-xs text-white/50">Размер</div>
+            <a href="#sizeChart" class="text-xs accent font-display tracking-wide underline underline-offset-2">Размерная сетка</a>
+          </div>
+          <div id="sizePicker" class="grid grid-cols-6 gap-1.5">
+            <button type="button" data-size="S" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">S</button>
+            <button type="button" data-size="M" class="size-btn active py-3 rounded-xl border border-white/15 text-sm font-medium">M</button>
+            <button type="button" data-size="L" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">L</button>
+            <button type="button" data-size="XL" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">XL</button>
+            <button type="button" data-size="2XL" class="size-btn py-3 rounded-xl border border-white/15 text-[13px] font-medium">2XL</button>
+            <button type="button" data-size="3XL" class="size-btn py-3 rounded-xl border border-white/15 text-[13px] font-medium">3XL</button>
+          </div>
+        </div>
+
+        <div id="extraWrap" class="hidden mb-5 rounded-2xl border border-white/10 bg-card p-3">
+          <p class="text-xs text-white/70 mb-1">В наборе можно смешать факультеты и размеры</p>
+          <p class="text-[11px] text-white/40 mb-3">Худи 1 задаётся кнопками выше. Остальные — здесь.</p>
+          <div id="extraItems" class="space-y-2"></div>
+        </div>
+
+        <div class="mb-2">
+          <div class="text-xs text-white/50 mb-2">Промокод</div>
+          <div class="flex gap-2">
+            <input id="promoInput" type="text" placeholder="Введите промокод" autocomplete="off" class="flex-1 bg-card border border-white/15 rounded-xl px-3 py-3 text-sm outline-none" />
+            <button id="promoApply" type="button" class="px-4 py-3 rounded-xl border accent accent-line text-sm font-semibold">ОК</button>
+          </div>
+          <p id="promoMsg" class="text-[11px] mt-1.5 hidden"></p>
+          <p class="text-[11px] text-white/35 mt-1.5">Скидка −10% считается с худи.</p>
+        </div>
+      </section>
+
+      <!-- d. Trust + accordions -->
+      <section id="trust" class="reveal px-4 pb-12">
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <div class="rounded-2xl border border-white/10 bg-card px-2 py-3 text-center">
+            <div class="text-lg mb-1" aria-hidden="true">🚚</div>
+            <div class="text-[11px] leading-tight text-white/75">14–21 день по всему Казахстану</div>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-card px-2 py-3 text-center">
+            <div class="text-lg mb-1" aria-hidden="true">↻</div>
+            <div class="text-[11px] leading-tight text-white/75">Замена размера до отправки</div>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-card px-2 py-3 text-center">
+            <div class="text-lg mb-1" aria-hidden="true">💳</div>
+            <div class="text-[11px] leading-tight text-white/75">Оплата Kaspi</div>
+          </div>
+        </div>
         <div class="space-y-2">
-          <div class="bundle-row selected border border-white/15 rounded-xl p-3.5 flex items-center justify-between cursor-pointer" data-bundle="1" data-price="24990">
-            <div>
-              <div class="font-semibold text-sm" data-i18n="b1">1 Худи</div>
-              <div class="text-[11px] text-white/45" data-i18n="b1s">15 000 ₸ үнем</div>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Размерная сетка <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-3 pb-3" id="sizeTableInline"></div>
+          </details>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Доставка <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60 leading-relaxed">Шьём под заказ, не со склада. После подтверждения в WhatsApp доставка занимает 14–21 день по всему Казахстану.</div>
+          </details>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Условия заказа <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60 leading-relaxed">Состав заказа уходит в WhatsApp. Оплата — Kaspi Gold или Kaspi QR, реквизиты пришлём в чате. Факультет и размер можно заменить, пока худи не сдали в доставку.</div>
+          </details>
+        </div>
+      </section>
+
+      <!-- e. Looks -->
+      <section id="looks" class="reveal py-12">
+        <div class="px-6 mb-5 text-center">
+          <h2 class="font-display text-[2.15rem] leading-[1.05] mb-3">Смотри, как <span class="accent">сидит.</span></h2>
+          <p class="text-[15px] text-white/55 leading-relaxed">Застёгнутым, с капюшоном-маской или нараспашку, как обычное худи.</p>
+        </div>
+        <div class="looks-scroller" id="looksTrack" tabindex="0" aria-label="Как сидит худи"></div>
+      </section>
+
+      <!-- f. Hotspots -->
+      <section id="details" class="reveal px-4 py-12">
+        <h2 class="font-display text-2xl mb-1">Детали худи</h2>
+        <p class="text-sm text-white/50 mb-4">Нажмите на «+», чтобы узнать подробнее</p>
+        <div id="detailStage" class="relative aspect-square rounded-[1.6rem] overflow-hidden bg-[#F3EEE4] ring-1 ring-white/10">
+          <img src="images/gryffindor-front.jpg" alt="Детали худи Гриффиндора" width="1024" height="1024" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" />
+          <div id="hotspotLayer"></div>
+          <div id="hotspotPop" class="hidden absolute z-10 w-[196px] rounded-2xl bg-[#141416]/95 text-white shadow-2xl border border-white/10 p-3 backdrop-blur-md">
+            <div class="flex items-start justify-between gap-2">
+              <h3 id="hotspotTitle" class="text-sm font-semibold leading-snug"></h3>
+              <button type="button" id="hotspotClose" class="text-white/50 text-lg leading-none px-1" aria-label="Закрыть">×</button>
             </div>
-            <div class="flex items-center gap-3">
-              <span class="font-bold">24 990 ₸</span>
-              <div class="w-5 h-5 rounded-full border-2 border-[#D3A625] flex items-center justify-center"><div class="dot w-2.5 h-2.5 rounded-full bg-[#D3A625]"></div></div>
-            </div>
-          </div>
-          <div class="bundle-row border border-white/15 rounded-xl p-3.5 flex items-center justify-between cursor-pointer relative" data-bundle="2" data-price="42990">
-            <div class="absolute -top-2 right-3 bg-[#D3A625] text-dark text-[9px] font-bold px-2 py-0.5 rounded">HIT</div>
-            <div>
-              <div class="font-semibold text-sm" data-i18n="b2">2 Худи</div>
-              <div class="text-[11px] text-white/45" data-i18n="b2s">37 000 ₸ үнем</div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="font-bold">42 990 ₸</span>
-              <div class="w-5 h-5 rounded-full border-2 border-white/25 flex items-center justify-center"><div class="dot w-2.5 h-2.5 rounded-full bg-transparent"></div></div>
-            </div>
-          </div>
-          <div class="bundle-row border border-white/15 rounded-xl p-3.5 flex items-center justify-between cursor-pointer" data-bundle="4" data-price="79990">
-            <div>
-              <div class="font-semibold text-sm" data-i18n="b4">4 Худи</div>
-              <div class="text-[11px] text-white/45" data-i18n="b4s">80 000 ₸ үнем</div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="font-bold">79 990 ₸</span>
-              <div class="w-5 h-5 rounded-full border-2 border-white/25 flex items-center justify-center"><div class="dot w-2.5 h-2.5 rounded-full bg-transparent"></div></div>
-            </div>
+            <p id="hotspotText" class="text-[12px] text-white/70 mt-1 leading-relaxed"></p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- HOUSE -->
-      <div class="mb-5">
-        <div class="text-xs text-white/50 mb-2" data-i18n="chooseHouse">Факультетті таңдаңыз</div>
-        <div class="grid grid-cols-4 gap-2">
-          <button data-house="gryffindor" class="house-select active py-2.5 rounded-xl border border-[#D3A625] text-center text-xs font-medium">🦁 Gryff</button>
-          <button data-house="slytherin" class="house-select py-2.5 rounded-xl border border-white/15 text-center text-xs font-medium">🐍 Slyth</button>
-          <button data-house="ravenclaw" class="house-select py-2.5 rounded-xl border border-white/15 text-center text-xs font-medium">🦅 Raven</button>
-          <button data-house="hufflepuff" class="house-select py-2.5 rounded-xl border border-white/15 text-center text-xs font-medium">🦡 Huff</button>
+      <!-- g. Size chart -->
+      <section id="sizeChart" class="reveal px-4 py-12">
+        <h2 class="font-display text-2xl mb-1">Размерная сетка</h2>
+        <p class="text-sm text-white/50 mb-4">Ориентировочные замеры. Крой свободный — если сомневаешься, бери свой обычный размер.</p>
+        <div class="rounded-xl border border-white/10 overflow-hidden" id="sizeTableFull"></div>
+      </section>
+
+      <section id="reviews" class="hidden px-4 py-8 border-t border-white/5" hidden></section>
+
+      <!-- h. FAQ -->
+      <section id="faq" class="reveal px-4 py-12">
+        <h2 class="font-display text-2xl mb-4">Частые вопросы</h2>
+        <div class="space-y-2">
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Когда отправите заказ? <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Шьём под заказ. После подтверждения в WhatsApp доставка занимает 14–21 день по всему Казахстану.</div>
+          </details>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как отследить заказ? <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Трек-номер пришлём в WhatsApp, когда передадим посылку. Отследить отправление Казпочты можно на <a href="https://post.kz/services/postal" class="accent underline underline-offset-2" target="_blank" rel="noopener">post.kz</a>.</div>
+          </details>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Качество худи <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Мягкий флис бейби-велюр обычной толщины, без подкладки — на осень и зиму. Худи на молнии: она идёт во всю длину, до самой маски в капюшоне. Рисунок — цифровая 3D-печать, не вышивка. Карман-кенгуру и манжеты в рубчик с полосками. Крой свободный.</div>
+          </details>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как стирать? <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Деликатная стирка наизнанку в холодной воде 30°C. Без отбеливателя и без сушки в машине. Принт не гладить.</div>
+          </details>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Доставка по Казахстану <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Доставка 14–21 день по всему Казахстану. Если доставка окажется отдельной строкой, сумму напишем до оплаты.</div>
+          </details>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как работает балаклава? <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Маска встроена в капюшон, а молния доходит до неё. Закроешь — лицо под маской, откроешь — обычный капюшон.</div>
+          </details>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Можно ли смешать факультеты и размеры в наборе? <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Да. В наборе из 2 или 4 худи у каждой позиции свой факультет и свой размер.</div>
+          </details>
+          <details class="rounded-xl border border-white/10 bg-card">
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как оплатить? <span class="chev text-white/40">⌄</span></summary>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Заказ уходит в WhatsApp. Оплата — Kaspi Gold или Kaspi QR. Реквизиты пришлём в чате после подтверждения состава.</div>
+          </details>
         </div>
-      </div>
+      </section>
 
-      <!-- SIZE -->
-      <div class="mb-2 flex items-center justify-between">
-        <div class="text-xs text-white/50" data-i18n="chooseSize">Өлшем</div>
-        <button id="openSizeChart" class="text-xs gold font-medium underline underline-offset-2" data-i18n="sizeChartBtn">Размерная сетка</button>
-      </div>
-      <div class="grid grid-cols-4 gap-2 mb-4">
-        <button data-size="S" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">S</button>
-        <button data-size="M" class="size-btn active py-3 rounded-xl border border-white/15 text-sm font-medium">M</button>
-        <button data-size="L" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">L</button>
-        <button data-size="XL" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">XL</button>
-      </div>
-
-      <!-- PROMO -->
-      <div class="mb-5">
-        <div class="text-xs text-white/50 mb-2" data-i18n="promoLabel">Промокод партнёра</div>
-        <div class="flex gap-2">
-          <input id="promoInput" type="text" placeholder="ALIYA10" autocomplete="off"
-            class="flex-1 bg-card border border-white/15 rounded-xl px-3 py-3 text-sm uppercase tracking-wide outline-none focus:border-[#D3A625]" />
-          <button id="promoApply" type="button" class="px-4 py-3 rounded-xl border border-[#D3A625]/50 text-[#D3A625] text-sm font-semibold">OK</button>
-        </div>
-        <p id="promoMsg" class="text-[11px] mt-1.5 text-white/45 hidden"></p>
-      </div>
-
-      <div class="flex flex-col gap-2 text-[12px] text-white/60 mb-6">
-        <div class="flex items-center gap-2"><span class="check">✓</span> <span data-i18n="t1">Тегін жеткізу · Kazpost / CDEK</span></div>
-        <div class="flex items-center gap-2"><span class="check">✓</span> <span data-i18n="t2">Өлшемді/факультетті жөнелтуге дейін ауыстыру</span></div>
-        <div class="flex items-center gap-2"><span class="check">✓</span> <span data-i18n="t3">Жеке тігім · 2–7 күн</span></div>
-        <div class="flex items-center gap-2"><span class="check">✓</span> <span data-i18n="t4">Kaspi Gold / Kaspi QR</span></div>
-      </div>
-    </section>
-
-    <!-- HIDDEN IN STYLE -->
-    <section class="px-4 py-8 border-t border-white/5">
-      <h2 class="font-display text-2xl mb-3"><span data-i18n="hidden1">Стильге</span> <span class="gold italic" data-i18n="hidden2">жасырылған</span></h2>
-      <p class="text-sm text-white/65 leading-relaxed mb-5" data-i18n="hiddenText">
-        Қалың велюр, кіріктірілген балаклава, металл молния. Күнделікті look пен «hidden in style» — бір худиде.
-      </p>
-      <ul class="space-y-2 text-sm text-white/70">
-        <li class="flex gap-3"><span class="check">✓</span><span data-i18n="h1">Кіріктірілген рибба балаклава</span></li>
-        <li class="flex gap-3"><span class="check">✓</span><span data-i18n="h2">450gsm velour, vintage wash</span></li>
-        <li class="flex gap-3"><span class="check">✓</span><span data-i18n="h3">Металл молния · рибба манжет</span></li>
-        <li class="flex gap-3"><span class="check">✓</span><span data-i18n="h4">Oversize, boxy, drop-shoulder</span></li>
-      </ul>
-    </section>
-
-    <!-- SIZE CHART -->
-    <section class="px-4 py-8 border-t border-white/5">
-      <h2 class="font-display text-2xl mb-2" data-i18n="chartTitle">Размерная сетка</h2>
-      <p class="text-sm text-white/50 mb-4" data-i18n="chartSub">Oversize fit. Қалыпты силуэт үшін өз өлшеміңді ал.</p>
-      <div class="overflow-x-auto rounded-xl border border-white/10">
-        <table class="w-full text-sm text-center">
-          <thead class="bg-white/5 text-white/50 text-xs">
-            <tr><th class="py-2 px-3">Size</th><th class="py-2 px-3">Кеуде</th><th class="py-2 px-3">Ұзындығы</th><th class="py-2 px-3">Жең</th></tr>
-          </thead>
-          <tbody class="text-white/80">
-            <tr class="border-t border-white/5"><td class="py-2.5">S</td><td>112</td><td>68</td><td>60</td></tr>
-            <tr class="border-t border-white/5"><td class="py-2.5">M</td><td>118</td><td>70</td><td>61</td></tr>
-            <tr class="border-t border-white/5"><td class="py-2.5">L</td><td>124</td><td>72</td><td>62</td></tr>
-            <tr class="border-t border-white/5"><td class="py-2.5">XL</td><td>130</td><td>74</td><td>63</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="text-[11px] text-white/40 mt-2" data-i18n="chartNote">см · жазық өлшем · ±1.5 см</p>
-    </section>
-
-    <!-- FAQ -->
-    <section class="px-4 py-8 border-t border-white/5">
-      <h2 class="font-display text-2xl mb-4" data-i18n="faqTitle">Жиі қойылатын сұрақтар</h2>
-      <div class="space-y-2">
-        <details class="rounded-xl border border-white/10 bg-card">
-          <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer" data-i18n="f1q">Қашан жіберіледі?</summary>
-          <div class="px-4 pb-3.5 text-sm text-white/60" data-i18n="f1a">Жеке тігім 2–7 күн. KZ бойынша 2–5 күн жеткізу.</div>
-        </details>
-        <details class="rounded-xl border border-white/10 bg-card">
-          <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer" data-i18n="f2q">Балаклава қалай?</summary>
-          <div class="px-4 pb-3.5 text-sm text-white/60" data-i18n="f2a">Капюшон астында бөлек рибба. Молниямен жауып маска, немесе ашып кәдімгі худи.</div>
-        </details>
-        <details class="rounded-xl border border-white/10 bg-card">
-          <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer" data-i18n="f3q">Қалай төлеу?</summary>
-          <div class="px-4 pb-3.5 text-sm text-white/60" data-i18n="f3a">WhatsApp арқылы тапсырыс → Kaspi Gold / Kaspi QR.</div>
-        </details>
-      </div>
-    </section>
-
-    <footer class="px-4 py-8 text-center text-[11px] text-white/30 border-t border-white/5">
-      JIBEK.STORE · Қазақстан · <a href="partner.html" class="underline">Партнёрам</a>
-    </footer>
-  </main>
-
-  <!-- STICKY BAR -->
-  <div class="fixed bottom-0 left-0 right-0 z-50 bg-dark/95 backdrop-blur-md border-t border-white/10 safe-bottom">
-    <div class="max-w-lg mx-auto px-4 py-3 flex items-center gap-3">
-      <div class="flex-1 min-w-0">
-        <div class="text-[11px] text-white/45 truncate" id="summaryText">Gryffindor · M</div>
-        <div class="text-[11px] text-white/40 line-through hidden" id="oldPrice"></div>
-        <div class="text-lg font-bold" id="totalPrice">24 990 ₸</div>
-      </div>
-      <button id="checkoutBtn" class="flex-shrink-0 px-6 py-3.5 rounded-2xl bg-[#D3A625] text-dark font-bold text-sm active:scale-[0.97] transition" data-i18n="orderBtn">
-        Тапсырыс беру
-      </button>
-    </div>
+      <footer class="px-4 py-8 text-center text-[11px] text-white/30 border-t border-white/5">
+        JIBEK.STORE · Казахстан · <a href="partner.html" class="underline">Партнёрам</a>
+      </footer>
+    </main>
   </div>
 
-  <!-- WhatsApp float -->
-  <a href="https://wa.me/77473911201" target="_blank" rel="noopener"
-     class="fixed bottom-24 right-4 z-40 w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <a id="waFloat" class="wa-float" href="https://wa.me/77473911201?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A3%20%D0%BC%D0%B5%D0%BD%D1%8F%20%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81%20%D0%BF%D0%BE%20%D1%85%D1%83%D0%B4%D0%B8%20JIBEK" target="_blank" rel="noopener" aria-label="Вопрос в WhatsApp">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#E4C56A" aria-hidden="true"><path d="M12.04 2C6.58 2 2.15 6.4 2.15 11.83c0 1.74.46 3.44 1.34 4.94L2 22l5.39-1.4a10.1 10.1 0 0 0 4.65 1.18h.01c5.46 0 9.89-4.4 9.89-9.83C21.94 6.4 17.5 2 12.04 2zm5.76 14.15c-.24.68-1.4 1.3-1.94 1.38-.5.07-1.12.1-1.81-.11-.41-.13-.95-.31-1.64-.61-2.89-1.25-4.77-4.16-4.92-4.35-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.26-.29.58-.36.77-.36h.55c.18 0 .42-.07.66.5.24.58.82 2 .89 2.15.07.14.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.37-.42.49-.14.14-.28.29-.12.56.16.27.7 1.16 1.51 1.88 1.04.92 1.91 1.21 2.18 1.35.27.13.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.54.73 1.8.86.27.13.44.2.51.31.06.11.06.64-.18 1.32z"/></svg>
   </a>
 
-  <!-- CHECKOUT MODAL -->
-  <div id="checkoutModal" class="fixed inset-0 z-[60] hidden items-end sm:items-center justify-center bg-black/70 p-4">
-    <div class="bg-card w-full max-w-md rounded-2xl border border-white/10 p-5">
-      <h3 class="font-display text-xl mb-1" data-i18n="confirmTitle">Тапсырысты растау</h3>
-      <p class="text-xs text-white/45 mb-4" data-i18n="confirmSub">WhatsApp-қа жіберіледі</p>
-      <pre id="orderPreview" class="text-xs text-white/70 whitespace-pre-wrap bg-black/30 rounded-xl p-3 mb-4 max-h-48 overflow-y-auto"></pre>
-      <div class="flex gap-2">
-        <button id="cancelCheckout" class="flex-1 py-3.5 rounded-2xl border border-white/15 text-sm">Болдырмау</button>
-        <button id="confirmWhatsApp" class="flex-1 py-3.5 rounded-2xl bg-[#25D366] text-white font-bold text-sm">WhatsApp</button>
+  <div class="fixed inset-x-0 bottom-0 z-50 flex justify-center pointer-events-none">
+    <div class="relative w-full max-w-[480px] pointer-events-auto">
+      <div id="stickyBar" class="bg-[#0c0b0e]/92 backdrop-blur-md border-t border-[rgba(212,175,55,0.28)] safe-bottom">
+        <div class="px-4 py-3 flex items-center gap-3">
+          <div class="flex-1 min-w-0">
+            <div class="text-[11px] text-white/45 truncate">Худи факультета</div>
+            <div class="text-[11px] text-white/55 truncate" id="summaryText">Гриффиндор · M</div>
+            <div class="text-lg font-bold leading-none mt-0.5" id="totalPrice">23 000 ₸</div>
+          </div>
+          <button type="button" id="checkoutBtn" class="btn-gold flex-shrink-0 px-6 py-3.5 text-sm">Заказать</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- SIZE MODAL -->
-  <div id="sizeModal" class="fixed inset-0 z-[60] hidden items-end sm:items-center justify-center bg-black/70 p-4">
-    <div class="bg-card w-full max-w-md rounded-2xl border border-white/10 p-5">
-      <div class="flex justify-between items-center mb-3">
-        <h3 class="font-display text-lg" data-i18n="chartTitle">Размерная сетка</h3>
-        <button id="closeSizeModal" class="text-white/50 text-xl leading-none">×</button>
-      </div>
-      <table class="w-full text-sm text-center mb-2">
-        <thead class="text-white/50 text-xs"><tr><th class="py-2">Size</th><th>Кеуде</th><th>Ұз.</th><th>Жең</th></tr></thead>
-        <tbody>
-          <tr class="border-t border-white/10"><td class="py-2">S</td><td>112</td><td>68</td><td>60</td></tr>
-          <tr class="border-t border-white/10"><td class="py-2">M</td><td>118</td><td>70</td><td>61</td></tr>
-          <tr class="border-t border-white/10"><td class="py-2">L</td><td>124</td><td>72</td><td>62</td></tr>
-          <tr class="border-t border-white/10"><td class="py-2">XL</td><td>130</td><td>74</td><td>63</td></tr>
-        </tbody>
-      </table>
-      <p class="text-[11px] text-white/40">Oversize · см · ±1.5</p>
+  <div id="checkoutSheet" class="fixed inset-0 z-[70] hidden bg-[#07060b]" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div class="mx-auto flex h-full w-full max-w-[480px] flex-col">
+      <header class="flex items-center gap-3 px-4 py-3 border-b border-[rgba(212,175,55,0.22)]">
+        <button type="button" id="closeCheckout" class="glass w-11 h-11 rounded-full text-lg leading-none" aria-label="Назад">←</button>
+        <h2 id="checkoutTitle" class="font-display text-[1.7rem] leading-none" tabindex="-1">Оформление</h2>
+      </header>
+      <form id="checkoutForm" class="flex-1 overflow-y-auto px-4 pt-5 pb-28" novalidate autocomplete="on">
+        <section class="rounded-2xl border border-[rgba(212,175,55,0.22)] bg-[rgba(14,13,16,0.72)] p-4 mb-6" aria-label="Состав заказа">
+          <div id="shipSummary"></div>
+        </section>
+
+        <h3 class="font-display text-xl mb-1">Доставка Казпочтой</h3>
+        <p class="text-sm text-white/45 mb-4">По Казахстану, 14–21 день после подтверждения.</p>
+
+        <div class="mb-3">
+          <label class="ship-label" for="shipName">ФИО получателя</label>
+          <input id="shipName" name="name" class="ship-input" type="text" autocomplete="name" enterkeyhint="next" required />
+          <p id="shipNameError" class="ship-error hidden" role="alert"></p>
+        </div>
+        <div class="mb-3">
+          <label class="ship-label" for="shipPhone">Телефон</label>
+          <input id="shipPhone" name="tel" class="ship-input" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 700 000-00-00" enterkeyhint="next" required />
+          <p id="shipPhoneError" class="ship-error hidden" role="alert"></p>
+        </div>
+        <div class="mb-3">
+          <label class="ship-label" for="shipRegion">Область</label>
+          <select id="shipRegion" name="address-level1" class="ship-select" autocomplete="address-level1" required>
+            <option value="">Выберите область</option>
+          </select>
+          <p id="shipRegionError" class="ship-error hidden" role="alert"></p>
+        </div>
+        <div class="mb-3">
+          <label class="ship-label" for="shipCity">Город / населённый пункт</label>
+          <input id="shipCity" name="address-level2" class="ship-input" type="text" autocomplete="address-level2" enterkeyhint="next" required />
+          <p id="shipCityError" class="ship-error hidden" role="alert"></p>
+        </div>
+        <div class="mb-3">
+          <label class="ship-label" for="shipStreet">Улица / микрорайон <span class="ship-optional">необязательно</span></label>
+          <input id="shipStreet" name="street-address" class="ship-input" type="text" autocomplete="street-address" enterkeyhint="next" />
+        </div>
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label class="ship-label" for="shipHouse">Дом <span class="ship-optional">необязательно</span></label>
+            <input id="shipHouse" name="address-line2" class="ship-input" type="text" autocomplete="address-line2" enterkeyhint="next" />
+          </div>
+          <div>
+            <label class="ship-label" for="shipApartment">Квартира <span class="ship-optional">необязательно</span></label>
+            <input id="shipApartment" name="address-line3" class="ship-input" type="text" autocomplete="address-line3" enterkeyhint="next" />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="ship-label" for="shipIndex">Почтовый индекс</label>
+          <input id="shipIndex" name="postal-code" class="ship-input" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="6" placeholder="010000" enterkeyhint="next" required />
+          <p class="text-[12px] text-white/40 mt-1.5">6 цифр. <a href="https://qazpost.kz/ru/help/search-index" class="accent underline underline-offset-2" target="_blank" rel="noopener">Найти индекс на Казпочте</a></p>
+          <p id="shipIndexError" class="ship-error hidden" role="alert"></p>
+        </div>
+        <div class="mb-3">
+          <label class="ship-label" for="shipComment">Комментарий <span class="ship-optional">необязательно</span></label>
+          <textarea id="shipComment" name="comment" class="ship-input" rows="3" maxlength="400" autocomplete="off"></textarea>
+        </div>
+        <div class="mb-2">
+          <label class="ship-label" for="shipPromo">Промокод</label>
+          <div class="flex gap-2">
+            <input id="shipPromo" class="ship-input" type="text" autocomplete="off" placeholder="Если есть" enterkeyhint="done" />
+            <button id="shipPromoApply" type="button" class="px-4 rounded-xl border accent accent-line text-sm font-semibold shrink-0">ОК</button>
+          </div>
+          <p id="shipPromoMsg" class="text-[12px] mt-1.5 hidden"></p>
+        </div>
+        <p class="text-[12px] text-white/35 mt-4">Оплата появится на этом шаге. Сейчас заказ подтверждается в WhatsApp.</p>
+      </form>
+      <footer class="px-4 pt-3 pb-3 border-t border-[rgba(212,175,55,0.22)] bg-[#07060b] safe-bottom">
+        <button type="submit" form="checkoutForm" id="confirmOrder" class="btn-gold w-full py-4 text-sm">Подтвердить заказ</button>
+      </footer>
     </div>
   </div>
 
   <script>
-    let lang = 'kk';
-    const I18N = {
-      kk: {
-        wave: 'WAVE 1 · HOGWARTS HOUSE COLLECTION',
-        sub: '450gsm velour · кіріктірілген балаклава · oversize',
-        buyMore: 'КӨБІРЕК АЛ · ҮНЕМДЕ',
-        b1: '1 Худи', b1s: '15 000 ₸ үнем',
-        b2: '2 Худи', b2s: '37 000 ₸ үнем',
-        b4: '4 Худи', b4s: '80 000 ₸ үнем',
-        chooseHouse: 'Факультетті таңдаңыз',
-        chooseSize: 'Өлшем',
-        sizeChartBtn: 'Размерная сетка',
-        promoLabel: 'Промокод партнёра',
-        t1: 'Тегін жеткізу · Kazpost / CDEK',
-        t2: 'Өлшемді/факультетті жөнелтуге дейін ауыстыру',
-        t3: 'Жеке тігім · 2–7 күн',
-        t4: 'Kaspi Gold / Kaspi QR',
-        hidden1: 'Стильге', hidden2: 'жасырылған',
-        hiddenText: 'Қалың велюр, кіріктірілген балаклава, металл молния. Күнделікті look пен «hidden in style» — бір худиде.',
-        h1: 'Кіріктірілген рибба балаклава', h2: '450gsm velour, vintage wash', h3: 'Металл молния · рибба манжет', h4: 'Oversize, boxy, drop-shoulder',
-        chartTitle: 'Размерная сетка', chartSub: 'Oversize fit. Қалыпты силуэт үшін өз өлшеміңді ал.', chartNote: 'см · жазық өлшем · ±1.5 см',
-        faqTitle: 'Жиі қойылатын сұрақтар',
-        f1q: 'Қашан жіберіледі?', f1a: 'Жеке тігім 2–7 күн. KZ бойынша 2–5 күн жеткізу.',
-        f2q: 'Балаклава қалай?', f2a: 'Капюшон астында бөлек рибба. Молниямен жауып маска, немесе ашып кәдімгі худи.',
-        f3q: 'Қалай төлеу?', f3a: 'WhatsApp арқылы тапсырыс → Kaspi Gold / Kaspi QR.',
-        orderBtn: 'Тапсырыс беру',
-        confirmTitle: 'Тапсырысты растау', confirmSub: 'WhatsApp-қа жіберіледі'
-      },
-      ru: {
-        wave: 'WAVE 1 · HOGWARTS HOUSE COLLECTION',
-        sub: '450gsm velour · встроенная балаклава · oversize',
-        buyMore: 'БОЛЬШЕ — ВЫГОДНЕЕ',
-        b1: '1 Худи', b1s: 'экономия 15 000 ₸',
-        b2: '2 Худи', b2s: 'экономия 37 000 ₸',
-        b4: '4 Худи', b4s: 'экономия 80 000 ₸',
-        chooseHouse: 'Выберите факультет',
-        chooseSize: 'Размер',
-        sizeChartBtn: 'Размерная сетка',
-        promoLabel: 'Промокод партнёра',
-        t1: 'Бесплатная доставка · Kazpost / CDEK',
-        t2: 'Размер/факультет можно сменить до отправки',
-        t3: 'Индивидуальный пошив · 2–7 дней',
-        t4: 'Kaspi Gold / Kaspi QR',
-        hidden1: 'Скрыто', hidden2: 'в стиле',
-        hiddenText: 'Плотный велюр, встроенная балаклава, металлическая молния. Повседневный look и «hidden in style» — в одном худи.',
-        h1: 'Встроенная рибба-балаклава', h2: '450gsm velour, vintage wash', h3: 'Металл молния · рибба манжеты', h4: 'Oversize, boxy, drop-shoulder',
-        chartTitle: 'Размерная сетка', chartSub: 'Oversize. Для обычной посадки бери свой размер.', chartNote: 'см · в разложенном виде · ±1.5 см',
-        faqTitle: 'Частые вопросы',
-        f1q: 'Когда отправка?', f1a: 'Пошив 2–7 дней. По Казахстану доставка 2–5 дней.',
-        f2q: 'Как балаклава?', f2a: 'Отдельный рибба-слой под капюшоном. Молния — маска или обычный худи.',
-        f3q: 'Как оплатить?', f3a: 'Заказ в WhatsApp → Kaspi Gold / Kaspi QR.',
-        orderBtn: 'Оформить заказ',
-        confirmTitle: 'Подтверждение заказа', confirmSub: 'Отправим в WhatsApp'
-      }
+    /* Текст наклейки у цены. Можно заменить, например, на «Рассрочка Kaspi». */
+    const KASPI_STICKER = 'Оплата Kaspi';
+
+    /* Цены. Акционная действует PROMO_HOURS часов с первого визита этого браузера
+       (метка jibek_promo_start), потом включается обычная. Промокод −10%
+       считается уже от активной цены набора. */
+    const PROMO_PRICE = 23000;
+    const REGULAR_PRICE = 29000;
+    const COMPARE_AT_PRICE = 35000;
+    const PROMO_HOURS = 48;
+    const PROMO_START_KEY = 'jibek_promo_start';
+    /* Скидка набора от активной цены за штуку. 0.05 = −5%. Сумма округляется до ближайших …990 или …000. */
+    const BUNDLE_OFF = { 1: 0, 2: 0.05, 4: 0.10 };
+
+    /* Отзывы. Пустой массив — блок на странице не показывается.
+       Элемент: { name, city, rating: 1–5, text, avatar, photo }
+       photo можно не указывать. Не добавляйте выдуманные отзывы. */
+    const REVIEWS = [];
+
+    /* --- Справочники. --- */
+    const HOUSES = {
+      gryffindor: { name: 'Гриффиндор' },
+      slytherin:  { name: 'Слизерин' },
+      ravenclaw:  { name: 'Когтевран' },
+      hufflepuff: { name: 'Пуффендуй' }
+    };
+    const HOUSE_ORDER = ['gryffindor', 'slytherin', 'ravenclaw', 'hufflepuff'];
+    const SIZES = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
+    const SIZE_TABLE = [
+      { id: 'S', chest: 58, length: 67, sleeve: 60 },
+      { id: 'M', chest: 62, length: 70, sleeve: 62 },
+      { id: 'L', chest: 66, length: 72, sleeve: 65 },
+      { id: 'XL', chest: 70, length: 75, sleeve: 67 },
+      { id: '2XL', chest: 74, length: 77, sleeve: 70 },
+      { id: '3XL', chest: 77, length: 80, sleeve: 72 }
+    ];
+    /* Блок «Смотри, как сидит». Первый слот — распаковка.
+       video — путь к mp4 или пустая строка. Пока video пустой, покупатель видит image.
+       Не пишите на странице, что ролики появятся позже.
+       Ролик сам крутится без звука, только пока карточка в кадре. */
+    const LOOKS = [
+      { label: 'РАСПАКОВКА', video: '', image: 'images/gryffindor-back.jpg' },
+      { house: 'gryffindor', video: '', image: 'images/gryffindor-front.jpg' },
+      { house: 'gryffindor', video: '', image: 'images/gryffindor-back.jpg' },
+      { house: 'slytherin', video: '', image: 'images/slytherin-front.jpg' },
+      { house: 'slytherin', video: '', image: 'images/slytherin-back.jpg' },
+      { house: 'ravenclaw', video: '', image: 'images/ravenclaw-front.jpg' },
+      { house: 'ravenclaw', video: '', image: 'images/ravenclaw-back.jpg' },
+      { house: 'hufflepuff', video: '', image: 'images/hufflepuff-front.jpg' },
+      { house: 'hufflepuff', video: '', image: 'images/hufflepuff-back.jpg' }
+    ];
+
+    /* Плюсы на фото Гриффиндора. x/y — проценты от кадра. */
+    const HOTSPOTS = [
+      { id: 'zipper', x: 50, y: 56, title: 'Молния во всю длину', text: 'Молния идёт во всю длину, до самой маски. Можно закрыть лицо или оставить капюшон открытым.' },
+      { id: 'balaclava', x: 50, y: 16, title: 'Капюшон-маска', text: 'Маска-балаклава встроена в капюшон и застёгивается той же молнией.' },
+      { id: 'crest', x: 61, y: 29, title: 'Герб факультета', text: 'Небольшой герб на маске у шеи. Цифровая 3D-печать, не вышивка. У каждого дома свой.' },
+      { id: 'print', x: 36, y: 46, title: 'Принт на груди', text: 'Крупное имя факультета и зверь на груди — цифровая 3D-печать, не вышивка.' },
+      { id: 'pocket', x: 34, y: 75, title: 'Карман-кенгуру', text: 'Широкий карман спереди.' },
+      { id: 'platform', x: 83, y: 71, title: '«9¾» на рукаве', text: 'На левом рукаве — «9¾», тоже цифровая 3D-печать.' },
+      { id: 'est', x: 50, y: 81, title: 'EST. 990', text: 'На резинке подола — EST. 990.' },
+      { id: 'cuffs', x: 22, y: 91, title: 'Манжеты в рубчик', text: 'Манжеты в рубчик с полосками в цветах факультета. У Гриффиндора это золото.' }
+    ];
+
+    const GALLERY = [
+      { house: 'gryffindor', view: 'front', src: 'images/gryffindor-front.jpg' },
+      { house: 'gryffindor', view: 'back', src: 'images/gryffindor-back.jpg' },
+      { house: 'slytherin', view: 'front', src: 'images/slytherin-front.jpg' },
+      { house: 'slytherin', view: 'back', src: 'images/slytherin-back.jpg' },
+      { house: 'ravenclaw', view: 'front', src: 'images/ravenclaw-front.jpg' },
+      { house: 'ravenclaw', view: 'back', src: 'images/ravenclaw-back.jpg' },
+      { house: 'hufflepuff', view: 'front', src: 'images/hufflepuff-front.jpg' },
+      { house: 'hufflepuff', view: 'back', src: 'images/hufflepuff-back.jpg' }
+    ];
+
+    const state = {
+      items: [{ house: 'gryffindor', size: 'M' }],
+      bundle: 1,
+      basePrice: 23000,
+      promo: ''
     };
 
-    const state = { house: 'gryffindor', size: 'M', bundle: 1, price: 24990, basePrice: 24990, promo: '' };
-    const HOUSES = {
-      gryffindor: { name: 'Gryffindor', emoji: '🦁', img: 'gryffindor.jpg' },
-      slytherin:  { name: 'Slytherin',  emoji: '🐍', img: 'couple.jpg' },
-      ravenclaw:  { name: 'Ravenclaw',  emoji: '🦅', img: 'ravenclaw.jpg' },
-      hufflepuff: { name: 'Hufflepuff', emoji: '🦡', img: 'detail.jpg' }
-    };
+    let slideIndex = 0;
+    let shownSrc = GALLERY[0].src;
+    let fadeToken = 0;
+    let openHotspot = null;
+
     const cfg = window.JIBEK_CONFIG || {};
     const PARTNERS = cfg.PARTNERS || {};
     const DISCOUNT = cfg.PROMO_DISCOUNT || 0.1;
     const ORDERS_KEY = 'jibek_orders';
+    const DELIVERY_KEY = 'jibek_delivery';
+    const WA_NUMBER = '77473911201';
+    /* Точка оплаты. Сейчас заказ уходит в WhatsApp.
+       Чтобы подключить Freedom Pay или Kaspi, смените provider и submit:
+       откройте оплату по order.payload, а событие purchase отправляйте
+       только после успешной оплаты. purchase-intent — это намерение, не оплата. */
+    const checkoutPayment = {
+      provider: 'whatsapp',
+      submit(order) {
+        if (this.provider !== 'whatsapp') return { ok: false, reason: 'provider-not-connected' };
+        const url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(order.message);
+        window.open(url, '_blank');
+        return { ok: true, channel: 'whatsapp' };
+      }
+    };
     const jibekTrack = window.jibekTrack || function () {};
 
-    function t(key) {
-      const parts = key.split('.');
-      let obj = I18N[lang];
-      for (const p of parts) obj = obj?.[p];
-      return obj || key;
+    function formatPrice(n) {
+      return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₸';
     }
-    function applyLang(l) {
-      lang = l;
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const val = t(el.dataset.i18n);
-        if (val && typeof val === 'string') el.innerHTML = val;
+    function roundTo990or000(n) {
+      const thousand = Math.floor(n / 1000) * 1000;
+      const options = [thousand - 10, thousand, thousand + 990, thousand + 1000].filter(v => v > 0);
+      return options.reduce((best, v) => Math.abs(v - n) < Math.abs(best - n) ? v : best);
+    }
+    function promoStartMs() {
+      let stored = NaN;
+      try { stored = Number(localStorage.getItem(PROMO_START_KEY)); } catch (e) {}
+      if (Number.isFinite(stored) && stored > 0) return stored;
+      const now = Date.now();
+      try { localStorage.setItem(PROMO_START_KEY, String(now)); } catch (e) {}
+      return now;
+    }
+    function visitorPromoOn() {
+      return Date.now() < promoStartMs() + PROMO_HOURS * 3600000;
+    }
+    function activeUnitPrice() {
+      return visitorPromoOn() ? PROMO_PRICE : REGULAR_PRICE;
+    }
+    function bundleAmount(qty) {
+      const off = BUNDLE_OFF[qty] || 0;
+      const raw = activeUnitPrice() * qty * (1 - off);
+      return off ? roundTo990or000(raw) : Math.round(raw);
+    }
+    function hoodieTotal() {
+      return state.promo ? Math.round(state.basePrice * (1 - DISCOUNT)) : state.basePrice;
+    }
+    function grandTotal() { return hoodieTotal(); }
+    function primary() { return state.items[0]; }
+    function viewName(view) { return view === 'front' ? 'Спереди' : 'Сзади'; }
+
+    function summaryLine() {
+      if (state.items.length === 1) return HOUSES[primary().house].name + ' · ' + primary().size;
+      return state.items.length + ' худи';
+    }
+
+    function updateUI() {
+      const total = grandTotal();
+      document.getElementById('priceDisplay').textContent = formatPrice(total);
+      document.getElementById('totalPrice').textContent = formatPrice(total);
+      document.getElementById('summaryText').textContent = summaryLine();
+      const compareEl = document.getElementById('comparePrice');
+      const strike = COMPARE_AT_PRICE * state.bundle;
+      if (strike > total) {
+        compareEl.textContent = formatPrice(strike);
+        compareEl.classList.remove('hidden');
+      } else compareEl.classList.add('hidden');
+      renderShipSummary();
+    }
+
+    const HOUSE_THEME = {
+      gryffindor: { accent: '#D3A625', ink: '#1A0E00', soft: 'rgba(211,166,37,0.16)', seal: '#740001' },
+      slytherin:  { accent: '#D5D8DC', ink: '#0C1612', soft: 'rgba(213,216,220,0.16)', seal: '#1A472A' },
+      ravenclaw:  { accent: '#222F5B', ink: '#F6F1E6', soft: 'rgba(34,47,91,0.55)', seal: '#946B2D', text: '#946B2D' },
+      hufflepuff: { accent: '#F0C75E', ink: '#1A1408', soft: 'rgba(240,199,94,0.18)', seal: '#14120C' }
+    };
+    function applyHouseTheme(house) {
+      const theme = HOUSE_THEME[house] || HOUSE_THEME.gryffindor;
+      const root = document.documentElement;
+      root.style.setProperty('--accent', theme.accent);
+      root.style.setProperty('--accent-ink', theme.ink);
+      root.style.setProperty('--accent-soft', theme.soft);
+      root.style.setProperty('--accent-text', theme.text || theme.accent);
+      root.style.setProperty('--seal', theme.seal);
+      document.body.dataset.house = house;
+    }
+    function paintHouse() {
+      const house = primary().house;
+      applyHouseTheme(house);
+      document.querySelectorAll('.house-select').forEach(b => {
+        b.classList.toggle('active', b.dataset.house === house);
       });
     }
-    document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
-
-    function formatPrice(n) {
-      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₸';
-    }
-    function recalcPrice() {
-      state.price = state.promo ? Math.round(state.basePrice * (1 - DISCOUNT)) : state.basePrice;
-    }
-    function updateUI() {
-      const h = HOUSES[state.house];
-      document.getElementById('summaryText').textContent = h.name + ' · ' + state.size;
-      document.getElementById('totalPrice').textContent = formatPrice(state.price);
-      document.getElementById('priceDisplay').textContent = formatPrice(state.price);
-      const oldPrice = document.getElementById('oldPrice');
-      if (state.promo && state.price < state.basePrice) {
-        oldPrice.textContent = formatPrice(state.basePrice);
-        oldPrice.classList.remove('hidden');
-      } else oldPrice.classList.add('hidden');
+    function paintSize() {
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('active', b.dataset.size === primary().size));
     }
 
+    function updateGalleryChrome(index) {
+      const slide = GALLERY[index];
+      document.getElementById('galleryCount').textContent = (index + 1) + ' / ' + GALLERY.length;
+      document.getElementById('galleryHouse').textContent = HOUSES[slide.house].name;
+      document.getElementById('galleryView').textContent = viewName(slide.view);
+      document.getElementById('heroImg').alt = HOUSES[slide.house].name + ' — ' + viewName(slide.view).toLowerCase();
+      document.querySelectorAll('.gal-thumb').forEach((b, i) => {
+        const on = i === index;
+        b.classList.toggle('active', on);
+        if (on) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+      });
+      document.querySelectorAll('.gal-dot').forEach((b, i) => {
+        const on = i === index;
+        b.classList.toggle('active', on);
+        if (on) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+      });
+    }
+    function renderSlide(index) {
+      const slide = GALLERY[index];
+      updateGalleryChrome(index);
+      if (shownSrc === slide.src) return;
+      const img = document.getElementById('heroImg');
+      const my = ++fadeToken;
+      const commit = () => {
+        if (my !== fadeToken) return;
+        img.src = slide.src;
+        shownSrc = slide.src;
+        img.style.opacity = '1';
+      };
+      img.style.opacity = '0.35';
+      const pre = new Image();
+      pre.onload = commit;
+      pre.onerror = commit;
+      pre.src = slide.src;
+      if (pre.complete) commit();
+    }
+    function goTo(index, via) {
+      const next = (index + GALLERY.length) % GALLERY.length;
+      if (next === slideIndex && via !== 'force') return;
+      slideIndex = next;
+      renderSlide(slideIndex);
+      const house = GALLERY[slideIndex].house;
+      if (primary().house !== house) {
+        primary().house = house;
+        paintHouse();
+        jibekTrack('select_house', { house, via: via || 'gallery' });
+        updateUI();
+      }
+    }
+    function setPrimaryHouse(house) {
+      if (!HOUSES[house]) return;
+      primary().house = house;
+      paintHouse();
+      const idx = GALLERY.findIndex(s => s.house === house && s.view === 'front');
+      if (idx !== -1 && idx !== slideIndex) {
+        slideIndex = idx;
+        renderSlide(slideIndex);
+      }
+      jibekTrack('select_house', { house, via: 'selector' });
+      updateUI();
+    }
+    function setPrimarySize(size) {
+      primary().size = size;
+      paintSize();
+      jibekTrack('select_size', { size });
+      updateUI();
+    }
+
+    function houseOptions(selected) {
+      return HOUSE_ORDER.map(id => '<option value="' + id + '"' + (id === selected ? ' selected' : '') + '>' + HOUSES[id].name + '</option>').join('');
+    }
+    function sizeOptions(selected) {
+      return SIZES.map(id => '<option value="' + id + '"' + (id === selected ? ' selected' : '') + '>' + id + '</option>').join('');
+    }
+    function renderExtras() {
+      const wrap = document.getElementById('extraWrap');
+      const label = document.getElementById('primaryLabel');
+      if (state.items.length < 2) {
+        wrap.classList.add('hidden');
+        label.classList.add('hidden');
+        document.getElementById('extraItems').innerHTML = '';
+        return;
+      }
+      wrap.classList.remove('hidden');
+      label.classList.remove('hidden');
+      document.getElementById('extraItems').innerHTML = state.items.slice(1).map((item, idx) => {
+        const i = idx + 1;
+        return '<div class="flex items-center gap-2">' +
+          '<div class="text-[11px] text-white/45 w-12 shrink-0">Худи ' + (i + 1) + '</div>' +
+          '<select data-extra-house="' + i + '" class="lux-select flex-1 min-w-0">' + houseOptions(item.house) + '</select>' +
+          '<select data-extra-size="' + i + '" class="lux-select w-[5.2rem]">' + sizeOptions(item.size) + '</select>' +
+          '</div>';
+      }).join('');
+    }
+    function renderBundles() {
+      document.querySelectorAll('.bundle-row').forEach(row => {
+        const qty = Number(row.dataset.bundle);
+        const price = bundleAmount(qty);
+        const priceEl = row.querySelector('[data-bundle-price]');
+        const saveEl = row.querySelector('[data-bundle-save]');
+        if (priceEl) priceEl.textContent = formatPrice(price);
+        if (saveEl) {
+          const save = COMPARE_AT_PRICE * qty - price;
+          saveEl.textContent = save > 0 ? 'экономия ' + formatPrice(save) : '';
+        }
+      });
+    }
+    function setBundle(qty) {
+      state.bundle = qty;
+      state.basePrice = bundleAmount(qty);
+      while (state.items.length < qty) {
+        const i = state.items.length;
+        state.items.push({ house: HOUSE_ORDER[i % 4], size: primary().size });
+      }
+      state.items.length = qty;
+      document.querySelectorAll('.bundle-row').forEach(r => r.classList.toggle('selected', Number(r.dataset.bundle) === qty));
+      renderExtras();
+      jibekTrack('select_bundle', { bundle: qty });
+      updateUI();
+    }
+
+    function lookCard(item) {
+      const raw = item.label || (HOUSES[item.house] ? HOUSES[item.house].name : '');
+      const label = raw.toLocaleUpperCase('ru-RU');
+      let media;
+      if (item.video) {
+        media = '<video class="look-video absolute inset-0 w-full h-full object-cover" muted loop playsinline webkit-playsinline preload="none" poster="' + item.image + '" data-src="' + item.video + '"></video>';
+      } else if (item.image) {
+        media = '<img src="' + item.image + '" alt="" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" />';
+      } else {
+        media = '';
+      }
+      return '<article class="look-card">' +
+        media +
+        '<span class="look-chip">' + label + '</span>' +
+        '</article>';
+    }
+    function renderLooks() {
+      const scroller = document.getElementById('looksTrack');
+      scroller.innerHTML = LOOKS.map(lookCard).join('');
+      const videos = scroller.querySelectorAll('.look-video');
+      if (!videos.length) return;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const arm = v => {
+        if (v.dataset.src && !v.getAttribute('src')) v.src = v.dataset.src;
+        v.muted = true;
+        v.defaultMuted = true;
+        v.playsInline = true;
+      };
+      const play = v => {
+        arm(v);
+        const attempt = v.play();
+        if (attempt) attempt.catch(() => {});
+      };
+      if (reduceMotion) return;
+      if (!('IntersectionObserver' in window)) {
+        videos.forEach(play);
+        return;
+      }
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          const v = en.target;
+          if (en.isIntersecting && en.intersectionRatio >= 0.55) play(v);
+          else v.pause();
+        });
+      }, { root: scroller, threshold: [0, 0.25, 0.55, 0.85] });
+      videos.forEach(v => io.observe(v));
+    }
+
+    function renderHotspots() {
+      document.getElementById('hotspotLayer').innerHTML = HOTSPOTS.map(h =>
+        '<button type="button" class="hotspot" data-hotspot="' + h.id + '" style="left:' + h.x + '%;top:' + h.y + '%" aria-expanded="false" aria-label="' + h.title + '">+</button>'
+      ).join('');
+    }
+    function placePopup(hs) {
+      const pop = document.getElementById('hotspotPop');
+      const stage = document.getElementById('detailStage');
+      pop.classList.remove('hidden');
+      const sw = stage.clientWidth;
+      const sh = stage.clientHeight;
+      const pw = pop.offsetWidth;
+      const ph = pop.offsetHeight;
+      const ax = (hs.x / 100) * sw;
+      const ay = (hs.y / 100) * sh;
+      let left = ax - pw / 2;
+      if (hs.x >= 60) left = ax - pw + 14;
+      else if (hs.x <= 40) left = ax - 14;
+      let top = ay + 20;
+      if (top + ph > sh - 8) top = ay - ph - 20;
+      left = Math.max(8, Math.min(left, sw - pw - 8));
+      top = Math.max(8, Math.min(top, sh - ph - 8));
+      pop.style.left = left + 'px';
+      pop.style.top = top + 'px';
+    }
+    function setHotspot(id) {
+      openHotspot = openHotspot === id ? null : id;
+      document.querySelectorAll('.hotspot').forEach(b => {
+        b.setAttribute('aria-expanded', b.dataset.hotspot === openHotspot ? 'true' : 'false');
+        b.textContent = b.dataset.hotspot === openHotspot ? '×' : '+';
+      });
+      const pop = document.getElementById('hotspotPop');
+      if (!openHotspot) { pop.classList.add('hidden'); return; }
+      const hs = HOTSPOTS.find(h => h.id === openHotspot);
+      document.getElementById('hotspotTitle').textContent = hs.title;
+      document.getElementById('hotspotText').textContent = hs.text;
+      placePopup(hs);
+    }
+
+    function sizeTableHTML() {
+      const rows = SIZE_TABLE.map(s =>
+        '<tr class="border-t border-white/10"><td class="py-2.5 font-semibold">' + s.id + '</td><td>' + s.chest + '</td><td>' + s.length + '</td><td>' + s.sleeve + '</td></tr>'
+      ).join('');
+      return '<table class="w-full text-sm text-center">' +
+        '<thead class="bg-white/5 text-[11px] accent"><tr>' +
+        '<th class="py-2 font-medium">Размер</th><th class="py-2 font-medium">Грудь</th><th class="py-2 font-medium">Длина</th><th class="py-2 font-medium">Рукав</th>' +
+        '</tr></thead><tbody class="text-white/85">' + rows + '</tbody></table>' +
+        '<p class="text-[11px] text-white/40 mt-2 px-2 pb-2">Грудь — ширина подмышками, см. Ориентировочные замеры в разложенном виде, ±1,5 см. Крой свободный — если сомневаешься, бери свой обычный размер.</p>';
+    }
+
+    function paintPromo(kind, text) {
+      ['promoMsg', 'shipPromoMsg'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (!text) { el.textContent = ''; el.classList.add('hidden'); return; }
+        el.textContent = text;
+        el.className = (id === 'promoMsg' ? 'text-[11px]' : 'text-[12px]') + ' mt-1.5 ' + (kind === 'ok' ? 'text-emerald-400' : 'text-red-400');
+        el.classList.remove('hidden');
+      });
+    }
+    function syncPromoInputs(code) {
+      ['promoInput', 'shipPromo'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && document.activeElement !== el) el.value = code;
+      });
+    }
     function applyPromoCode(code, silent) {
       code = (code || '').toUpperCase().trim();
-      const msg = document.getElementById('promoMsg');
-      const input = document.getElementById('promoInput');
       if (!code) {
         state.promo = '';
-        recalcPrice();
-        msg.classList.add('hidden');
+        paintPromo('', '');
+        syncPromoInputs('');
         updateUI();
         return false;
       }
       if (!PARTNERS[code]) {
         state.promo = '';
-        recalcPrice();
-        msg.textContent = lang === 'kk' ? 'Промокод табылмады' : 'Промокод не найден';
-        msg.className = 'text-[11px] mt-1.5 text-red-400';
-        msg.classList.remove('hidden');
+        paintPromo('bad', 'Промокод не найден');
         if (!silent) jibekTrack('promo_invalid', { code });
         updateUI();
         return false;
       }
       state.promo = code;
-      recalcPrice();
-      if (input) input.value = code;
-      msg.textContent = (lang === 'kk' ? '−10% қолданылды · ' : '−10% · ') + PARTNERS[code].name;
-      msg.className = 'text-[11px] mt-1.5 text-emerald-400';
-      msg.classList.remove('hidden');
+      syncPromoInputs(code);
+      paintPromo('ok', 'Промокод применён: −10%');
       if (!silent) jibekTrack('apply_promo', { code, partner: PARTNERS[code].name });
       updateUI();
       return true;
     }
 
-    function setHouse(house) {
-      state.house = house;
-      const img = document.getElementById('heroImg');
-      img.style.opacity = '0';
-      setTimeout(() => { img.src = HOUSES[house].img; img.style.opacity = '1'; }, 150);
-      document.querySelectorAll('.house-thumb').forEach(b => b.classList.toggle('active', b.dataset.house === house));
-      document.querySelectorAll('.house-select').forEach(b => {
-        const on = b.dataset.house === house;
-        b.classList.toggle('active', on);
-        b.classList.toggle('border-[#D3A625]', on);
-        b.classList.toggle('border-white/15', !on);
+    function buildOrderMessage(delivery) {
+      const lines = ['Заказ с jibek.store', '', (state.items.length === 1 ? '1 худи' : state.items.length + ' худи')];
+      state.items.forEach((it, i) => {
+        const h = HOUSES[it.house];
+        const prefix = state.items.length > 1 ? (i + 1) + '. ' : '';
+        lines.push(prefix + h.name + ' · ' + it.size);
       });
-      jibekTrack('select_house', { house });
-      updateUI();
-    }
-    document.querySelectorAll('.house-thumb, .house-select').forEach(b => b.addEventListener('click', () => setHouse(b.dataset.house)));
-    document.querySelectorAll('.size-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.size = btn.dataset.size;
-        document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('active', b === btn));
-        jibekTrack('select_size', { size: state.size });
-        updateUI();
-      });
-    });
-    document.querySelectorAll('.bundle-row').forEach(row => {
-      row.addEventListener('click', () => {
-        state.bundle = parseInt(row.dataset.bundle, 10);
-        state.basePrice = parseInt(row.dataset.price, 10);
-        recalcPrice();
-        document.querySelectorAll('.bundle-row').forEach(r => {
-          const on = r === row;
-          r.classList.toggle('selected', on);
-          const dot = r.querySelector('.dot');
-          if (dot) { dot.classList.toggle('bg-[#D3A625]', on); dot.classList.toggle('bg-transparent', !on); }
-          const ring = r.querySelector('.w-5');
-          if (ring) { ring.classList.toggle('border-[#D3A625]', on); ring.classList.toggle('border-white/25', !on); }
-        });
-        jibekTrack('select_bundle', { bundle: state.bundle });
-        updateUI();
-      });
-    });
-
-    document.getElementById('promoApply').addEventListener('click', () => applyPromoCode(document.getElementById('promoInput').value));
-    document.getElementById('promoInput').addEventListener('keydown', e => { if (e.key === 'Enter') applyPromoCode(e.target.value); });
-    if (window.JIBEK_ATTR && window.JIBEK_ATTR.ref) applyPromoCode(window.JIBEK_ATTR.ref, true);
-
-    const sizeModal = document.getElementById('sizeModal');
-    document.getElementById('openSizeChart').addEventListener('click', () => { sizeModal.classList.remove('hidden'); sizeModal.classList.add('flex'); });
-    document.getElementById('closeSizeModal').addEventListener('click', () => { sizeModal.classList.add('hidden'); sizeModal.classList.remove('flex'); });
-    sizeModal.addEventListener('click', e => { if (e.target === sizeModal) { sizeModal.classList.add('hidden'); sizeModal.classList.remove('flex'); } });
-
-    function buildOrderMessage() {
-      const h = HOUSES[state.house];
-      let msg = '🔥 *Заказ с jibek.store*\n\n';
-      if (state.bundle === 1) msg += '📦 *1 Худи*\n🏠 ' + h.emoji + ' ' + h.name + '\n📏 ' + state.size + '\n💰 ' + formatPrice(state.price);
-      else if (state.bundle === 2) msg += '📦 *2 Худи*\n🏠 ' + h.emoji + ' ' + h.name + ' · ' + state.size + '\n💰 ' + formatPrice(state.price) + '\n\n(2-й факультет/размер — напишите)';
-      else msg += '📦 *4 Худи (Full)*\n🦁🐍🦅🦡\n📏 ' + state.size + '\n💰 ' + formatPrice(state.price);
-      if (state.promo) msg += '\n🏷 Промокод: *' + state.promo + '* (−10%)';
+      lines.push('Худи: ' + formatPrice(hoodieTotal()));
+      lines.push(visitorPromoOn()
+        ? 'Акционная цена применена (' + formatPrice(PROMO_PRICE) + ' за худи)'
+        : 'Акционная цена не действует, обычная цена ' + formatPrice(REGULAR_PRICE) + ' за худи');
+      if (state.promo) lines.push('Промокод: ' + state.promo + ' (−10% на худи)');
+      lines.push('Итого: ' + formatPrice(grandTotal()));
+      if (delivery) {
+        lines.push('', 'Доставка Казпочтой', 'ФИО: ' + delivery.name, 'Телефон: ' + delivery.phone, 'Область: ' + delivery.region, 'Город: ' + delivery.city);
+        if (delivery.street) lines.push('Улица: ' + delivery.street);
+        if (delivery.house) lines.push('Дом: ' + delivery.house);
+        if (delivery.apartment) lines.push('Квартира: ' + delivery.apartment);
+        lines.push('Индекс: ' + delivery.index);
+        if (delivery.comment) lines.push('Комментарий: ' + delivery.comment);
+      }
       const attr = window.JIBEK_ATTR || {};
-      if (attr.utm_source) msg += '\n📊 utm: ' + attr.utm_source;
-      msg += '\n\n📍 Қазақстан · Kazpost / CDEK\nЖду подтверждения! ✨';
-      return msg;
+      if (attr.utm_source) lines.push('utm: ' + attr.utm_source);
+      lines.push('', 'Казахстан', 'Жду подтверждения');
+      return lines.join('\n');
     }
 
     function saveOrderLocal(order) {
@@ -494,39 +1094,489 @@
       } catch (e) {}
     }
 
-    const checkoutModal = document.getElementById('checkoutModal');
-    document.getElementById('checkoutBtn').addEventListener('click', () => {
-      const msg = buildOrderMessage();
-      document.getElementById('orderPreview').textContent = msg.replace(/\*/g, '');
-      checkoutModal.dataset.message = msg;
-      checkoutModal.classList.remove('hidden');
-      checkoutModal.classList.add('flex');
-      jibekTrack('begin_checkout', { value: state.price, currency: 'KZT', promo: state.promo || undefined });
+    document.getElementById('housePicker').addEventListener('click', e => {
+      const btn = e.target.closest('[data-house]');
+      if (btn) setPrimaryHouse(btn.dataset.house);
     });
-    document.getElementById('cancelCheckout').addEventListener('click', () => {
-      checkoutModal.classList.add('hidden'); checkoutModal.classList.remove('flex');
+    document.getElementById('sizePicker').addEventListener('click', e => {
+      const btn = e.target.closest('[data-size]');
+      if (btn) setPrimarySize(btn.dataset.size);
     });
-    checkoutModal.addEventListener('click', e => {
-      if (e.target === checkoutModal) { checkoutModal.classList.add('hidden'); checkoutModal.classList.remove('flex'); }
+    document.getElementById('bundleList').addEventListener('click', e => {
+      const row = e.target.closest('.bundle-row');
+      if (row) setBundle(Number(row.dataset.bundle));
     });
-    document.getElementById('confirmWhatsApp').addEventListener('click', () => {
+    document.getElementById('extraItems').addEventListener('change', e => {
+      const houseSel = e.target.closest('[data-extra-house]');
+      const sizeSel = e.target.closest('[data-extra-size]');
+      if (houseSel) state.items[Number(houseSel.dataset.extraHouse)].house = houseSel.value;
+      if (sizeSel) state.items[Number(sizeSel.dataset.extraSize)].size = sizeSel.value;
+      updateUI();
+    });
+
+    document.querySelectorAll('.gal-thumb, .gal-dot').forEach(b => b.addEventListener('click', () => goTo(parseInt(b.dataset.index, 10), 'thumb')));
+    document.getElementById('galPrev').addEventListener('click', () => goTo(slideIndex - 1, 'arrow'));
+    document.getElementById('galNext').addEventListener('click', () => goTo(slideIndex + 1, 'arrow'));
+    const stage = document.getElementById('galleryStage');
+    let touch = null;
+    stage.addEventListener('touchstart', e => {
+      if (e.target.closest('button') || e.touches.length !== 1) { touch = null; return; }
+      touch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }, { passive: true });
+    stage.addEventListener('touchend', e => {
+      if (!touch) return;
+      const p = e.changedTouches[0];
+      const dx = p.clientX - touch.x;
+      const dy = p.clientY - touch.y;
+      touch = null;
+      if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) goTo(slideIndex + (dx < 0 ? 1 : -1), 'swipe');
+    }, { passive: true });
+    stage.addEventListener('touchcancel', () => { touch = null; }, { passive: true });
+    let mouse = null;
+    stage.addEventListener('mousedown', e => {
+      if (e.button !== 0 || e.target.closest('button')) return;
+      mouse = { x: e.clientX, y: e.clientY };
+      stage.classList.add('is-grabbing');
+    });
+    window.addEventListener('mouseup', e => {
+      if (!mouse) return;
+      const dx = e.clientX - mouse.x;
+      const dy = e.clientY - mouse.y;
+      mouse = null;
+      stage.classList.remove('is-grabbing');
+      if (Math.abs(dx) >= 50 && Math.abs(dx) > Math.abs(dy)) goTo(slideIndex + (dx < 0 ? 1 : -1), 'swipe');
+    });
+    stage.addEventListener('dragstart', e => e.preventDefault());
+
+    document.getElementById('hotspotLayer').addEventListener('click', e => {
+      const btn = e.target.closest('[data-hotspot]');
+      if (btn) setHotspot(btn.dataset.hotspot);
+    });
+    document.getElementById('hotspotClose').addEventListener('click', () => setHotspot(openHotspot));
+
+    document.getElementById('promoApply').addEventListener('click', () => applyPromoCode(document.getElementById('promoInput').value));
+    document.getElementById('promoInput').addEventListener('keydown', e => { if (e.key === 'Enter') applyPromoCode(e.target.value); });
+    if (window.JIBEK_ATTR && window.JIBEK_ATTR.ref) applyPromoCode(window.JIBEK_ATTR.ref, true);
+
+    const CITIES = ['Алматы', 'Астана', 'Шымкент'];
+    const OBLASTS = [
+      'Абайская область',
+      'Акмолинская область',
+      'Актюбинская область',
+      'Алматинская область',
+      'Атырауская область',
+      'Восточно-Казахстанская область',
+      'Жамбылская область',
+      'Жетысуская область',
+      'Западно-Казахстанская область',
+      'Карагандинская область',
+      'Костанайская область',
+      'Кызылординская область',
+      'Мангистауская область',
+      'Павлодарская область',
+      'Северо-Казахстанская область',
+      'Туркестанская область',
+      'Улытауская область'
+    ];
+    const SHIP_FIELDS = {
+      name: 'shipName',
+      phone: 'shipPhone',
+      region: 'shipRegion',
+      city: 'shipCity',
+      street: 'shipStreet',
+      house: 'shipHouse',
+      apartment: 'shipApartment',
+      index: 'shipIndex',
+      comment: 'shipComment'
+    };
+    function fillRegions() {
+      const sel = document.getElementById('shipRegion');
+      function group(label, names) {
+        const g = document.createElement('optgroup');
+        g.label = label;
+        names.forEach(name => {
+          const o = document.createElement('option');
+          o.value = name;
+          o.textContent = name;
+          g.appendChild(o);
+        });
+        sel.appendChild(g);
+      }
+      group('Города республиканского значения', CITIES);
+      group('Области', OBLASTS);
+    }
+    function nationalDigits(value) {
+      const raw = String(value || '');
+      let digits = raw.replace(/\D/g, '');
+      if (digits.startsWith('8') && digits.length > 10) digits = '7' + digits.slice(1);
+      const hasCountry = raw.trim().startsWith('+') || (digits.startsWith('7') && digits.length > 10);
+      if (hasCountry && digits.startsWith('7')) digits = digits.slice(1);
+      return digits.slice(0, 10);
+    }
+    function formatKzPhone(value) {
+      const raw = String(value || '');
+      if (!raw.replace(/\D/g, '')) return raw.includes('+') ? '+7' : '';
+      const rest = nationalDigits(raw);
+      if (!rest.length) return '+7';
+      let out = '+7 ' + rest.slice(0, 3);
+      if (rest.length > 3) out += ' ' + rest.slice(3, 6);
+      if (rest.length > 6) out += '-' + rest.slice(6, 8);
+      if (rest.length > 8) out += '-' + rest.slice(8, 10);
+      return out;
+    }
+    function setFieldError(input, message) {
+      if (!input) return;
+      const err = document.getElementById(input.id + 'Error');
+      input.classList.toggle('is-invalid', !!message);
+      input.setAttribute('aria-invalid', message ? 'true' : 'false');
+      if (!err) return;
+      err.textContent = message || '';
+      err.classList.toggle('hidden', !message);
+    }
+    function readDeliveryForm() {
+      const data = {};
+      Object.keys(SHIP_FIELDS).forEach(key => {
+        const el = document.getElementById(SHIP_FIELDS[key]);
+        data[key] = el ? el.value.trim() : '';
+      });
+      if (data.phone) data.phone = formatKzPhone(data.phone);
+      return data;
+    }
+    function saveDelivery() {
+      try { localStorage.setItem(DELIVERY_KEY, JSON.stringify(readDeliveryForm())); } catch (e) {}
+    }
+    function loadDelivery() {
+      let data = null;
+      try { data = JSON.parse(localStorage.getItem(DELIVERY_KEY) || 'null'); } catch (e) {}
+      if (!data) return;
+      Object.keys(SHIP_FIELDS).forEach(key => {
+        const el = document.getElementById(SHIP_FIELDS[key]);
+        if (!el || data[key] == null) return;
+        el.value = key === 'phone' && data[key] ? formatKzPhone(data[key]) : data[key];
+      });
+    }
+    function validateDelivery(data) {
+      const errors = {};
+      const letters = /[A-Za-zА-Яа-яЁёІіҢңҒғҮүҰұҚқӨөҺһӘә]/;
+      const words = data.name.split(/\s+/).filter(Boolean);
+      if (words.length < 2 || data.name.length < 5 || !letters.test(data.name)) errors.name = 'Укажите фамилию и имя';
+      const national = nationalDigits(data.phone);
+      if (!national) errors.phone = 'Укажите телефон';
+      else if (national.length !== 10) errors.phone = 'Введите 10 цифр после +7';
+      if (!data.region) errors.region = 'Выберите область';
+      if (data.city.length < 2) errors.city = 'Укажите город или населённый пункт';
+      if (!/^\d{6}$/.test(data.index)) errors.index = 'Индекс — 6 цифр';
+      return errors;
+    }
+    function renderShipSummary() {
+      const box = document.getElementById('shipSummary');
+      if (!box) return;
+      const qty = state.items.length;
+      const rows = state.items.map((it, i) => {
+        const prefix = qty > 1 ? (i + 1) + '. ' : '';
+        return '<div class="flex justify-between gap-3 text-sm"><span>' + escapeHtml(prefix + HOUSES[it.house].name) + '</span><span class="text-white/70">' + escapeHtml(it.size) + '</span></div>';
+      }).join('');
+      const promo = state.promo
+        ? '<div class="text-[12px] text-emerald-400 mt-2">Промокод ' + escapeHtml(state.promo) + ' · −10%</div>'
+        : '';
+      const compare = COMPARE_AT_PRICE * state.bundle;
+      const strike = compare > grandTotal()
+        ? '<span class="text-sm text-white/35 line-through ml-2">' + formatPrice(compare) + '</span>'
+        : '';
+      box.innerHTML =
+        '<div class="text-[11px] tracking-[0.16em] uppercase text-white/45 mb-2">' + qty + ' худи</div>' +
+        rows + promo +
+        '<div class="mt-3 pt-3 border-t border-white/10 flex items-baseline justify-between"><span class="text-sm text-white/60">Итого</span><span class="text-lg font-bold">' + formatPrice(grandTotal()) + strike + '</span></div>';
+    }
+    function openCheckout() {
+      renderShipSummary();
+      const promo = document.getElementById('shipPromo');
+      if (promo && document.activeElement !== promo) promo.value = state.promo || '';
+      document.getElementById('checkoutSheet').classList.remove('hidden');
+      document.body.classList.add('checkout-open');
+      jibekTrack('begin_checkout', {
+        value: grandTotal(),
+        currency: 'KZT',
+        promo: state.promo || undefined,
+        quantity: state.items.length
+      });
+      const name = document.getElementById('shipName');
+      if (name && !name.value) name.focus();
+      else document.getElementById('checkoutTitle').focus();
+    }
+    function closeCheckout() {
+      document.getElementById('checkoutSheet').classList.add('hidden');
+      document.body.classList.remove('checkout-open');
+      document.getElementById('checkoutBtn').focus();
+    }
+    function placeOrder(delivery) {
       const attr = window.JIBEK_ATTR || {};
+      const message = buildOrderMessage(delivery);
       const order = {
         id: 'local_' + Date.now(),
         created_at: new Date().toISOString(),
         promo_code: state.promo || '',
-        house: state.house, size: state.size, bundle: state.bundle,
-        amount_kzt: state.price, discount_kzt: state.basePrice - state.price,
+        house: primary().house,
+        size: primary().size,
+        bundle: state.bundle,
+        items: state.items.map(it => ({ house: it.house, size: it.size })),
+        delivery: {
+          name: delivery.name,
+          phone: delivery.phone,
+          region: delivery.region,
+          city: delivery.city,
+          street: delivery.street,
+          house: delivery.house,
+          apartment: delivery.apartment,
+          index: delivery.index,
+          comment: delivery.comment
+        },
+        amount_kzt: grandTotal(),
+        discount_kzt: state.basePrice - hoodieTotal(),
+        currency: 'KZT',
         status: 'pending',
-        utm_source: attr.utm_source || '', ref: attr.ref || state.promo || ''
+        message: message,
+        utm_source: attr.utm_source || '',
+        ref: attr.ref || state.promo || ''
       };
       saveOrderLocal(order);
-      jibekTrack('purchase', { value: state.price, currency: 'KZT', transaction_id: order.id });
-      window.open('https://wa.me/77473911201?text=' + encodeURIComponent(checkoutModal.dataset.message), '_blank');
-      checkoutModal.classList.add('hidden'); checkoutModal.classList.remove('flex');
+      jibekTrack('purchase-intent', {
+        value: order.amount_kzt,
+        currency: 'KZT',
+        transaction_id: order.id,
+        promo: state.promo || undefined,
+        quantity: state.items.length
+      });
+      return checkoutPayment.submit(order);
+    }
+
+    fillRegions();
+    loadDelivery();
+    document.getElementById('checkoutBtn').addEventListener('click', openCheckout);
+    document.getElementById('closeCheckout').addEventListener('click', closeCheckout);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !document.getElementById('checkoutSheet').classList.contains('hidden')) closeCheckout();
+    });
+    Object.keys(SHIP_FIELDS).forEach(key => {
+      const el = document.getElementById(SHIP_FIELDS[key]);
+      el.addEventListener('input', () => {
+        if (key === 'phone') el.value = formatKzPhone(el.value);
+        if (key === 'index') el.value = el.value.replace(/\D/g, '').slice(0, 6);
+        setFieldError(el, '');
+        saveDelivery();
+      });
+      el.addEventListener('change', saveDelivery);
+    });
+    document.getElementById('shipPhone').addEventListener('focus', () => {
+      const el = document.getElementById('shipPhone');
+      if (!el.value) el.value = '+7';
+    });
+    document.getElementById('shipPhone').addEventListener('blur', () => {
+      const el = document.getElementById('shipPhone');
+      if (!nationalDigits(el.value)) el.value = '';
+      saveDelivery();
+    });
+    document.getElementById('shipPromoApply').addEventListener('click', () => {
+      applyPromoCode(document.getElementById('shipPromo').value);
+    });
+    document.getElementById('shipPromo').addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); applyPromoCode(e.target.value); }
+    });
+    document.getElementById('checkoutForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const typed = document.getElementById('shipPromo').value.trim();
+      if (typed.toUpperCase() !== (state.promo || '')) {
+        const applied = applyPromoCode(typed);
+        if (typed && !applied) {
+          document.getElementById('shipPromo').focus();
+          return;
+        }
+      }
+      const data = readDeliveryForm();
+      const errors = validateDelivery(data);
+      Object.keys(SHIP_FIELDS).forEach(key => setFieldError(document.getElementById(SHIP_FIELDS[key]), ''));
+      const keys = Object.keys(errors);
+      if (keys.length) {
+        keys.forEach(key => setFieldError(document.getElementById(SHIP_FIELDS[key]), errors[key]));
+        const first = document.getElementById(SHIP_FIELDS[keys[0]]);
+        first.focus();
+        first.scrollIntoView({ block: 'center' });
+        return;
+      }
+      const phoneEl = document.getElementById('shipPhone');
+      phoneEl.value = data.phone;
+      saveDelivery();
+      placeOrder(data);
     });
 
-    applyLang('kk');
+    function escapeHtml(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[ch]));
+    }
+    function starRow(rating) {
+      const full = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
+      let stars = '';
+      for (let i = 1; i <= 5; i++) stars += i <= full ? '★' : '☆';
+      return stars;
+    }
+    function reviewWord(n) {
+      const n10 = n % 10;
+      const n100 = n % 100;
+      if (n10 === 1 && n100 !== 11) return 'отзыв';
+      if (n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)) return 'отзыва';
+      return 'отзывов';
+    }
+    function renderReviews() {
+      const section = document.getElementById('reviews');
+      if (!section) return;
+      if (!Array.isArray(REVIEWS) || !REVIEWS.length) {
+        section.hidden = true;
+        section.classList.add('hidden');
+        return;
+      }
+      const avg = REVIEWS.reduce((sum, review) => sum + Number(review.rating || 0), 0) / REVIEWS.length;
+      section.innerHTML = '<h2 class="font-display text-2xl mb-1">Отзывы</h2><p id="reviewsSummary" class="text-sm mb-4"></p><div id="reviewsList" class="space-y-3"></div>';
+      document.getElementById('reviewsSummary').innerHTML =
+        '<span class="accent tracking-wide">' + starRow(avg) + '</span> ' +
+        '<span class="font-semibold">' + avg.toFixed(1) + '</span> ' +
+        '<span class="text-white/50">· ' + REVIEWS.length + ' ' + reviewWord(REVIEWS.length) + '</span>';
+      document.getElementById('reviewsList').innerHTML = REVIEWS.map(review => {
+        const avatar = review.avatar
+          ? '<img src="' + escapeHtml(review.avatar) + '" alt="" width="40" height="40" loading="lazy" class="w-10 h-10 rounded-full object-cover" />'
+          : '<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold">' + escapeHtml((review.name || '?').slice(0, 1)) + '</div>';
+        const photo = review.photo
+          ? '<img src="' + escapeHtml(review.photo) + '" alt="" loading="lazy" class="mt-3 w-full max-h-52 object-cover rounded-xl" />'
+          : '';
+        return '<article class="rounded-2xl border border-white/10 bg-card p-3">' +
+          '<div class="flex items-center gap-3">' + avatar +
+          '<div class="min-w-0"><div class="text-sm font-semibold">' + escapeHtml(review.name) + '</div>' +
+          '<div class="text-[11px] text-white/45">' + escapeHtml(review.city) + '</div></div>' +
+          '<div class="ml-auto accent text-sm tracking-wide" aria-label="' + escapeHtml(review.rating) + ' из 5">' + starRow(review.rating) + '</div></div>' +
+          '<p class="text-sm text-white/75 mt-2 leading-relaxed">' + escapeHtml(review.text) + '</p>' + photo +
+          '</article>';
+      }).join('');
+      section.hidden = false;
+      section.classList.remove('hidden');
+    }
+    let promoPhase = null;
+    function renderPromoTimer() {
+      const el = document.getElementById('promoTimer');
+      const clock = document.getElementById('promoClock');
+      const on = visitorPromoOn();
+      if (promoPhase !== on) {
+        promoPhase = on;
+        state.basePrice = bundleAmount(state.bundle);
+        renderBundles();
+        updateUI();
+      }
+      if (!on) {
+        if (el) el.classList.add('hidden');
+        return false;
+      }
+      const left = Math.max(0, promoStartMs() + PROMO_HOURS * 3600000 - Date.now());
+      const total = Math.floor(left / 1000);
+      const hours = Math.floor(total / 3600);
+      const minutes = Math.floor((total % 3600) / 60);
+      const seconds = total % 60;
+      const pad = n => String(n).padStart(2, '0');
+      if (clock) clock.textContent = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+      if (el) el.classList.remove('hidden');
+      return true;
+    }
+    const kaspiSticker = document.getElementById('kaspiSticker');
+    if (kaspiSticker) {
+      if (KASPI_STICKER) kaspiSticker.textContent = KASPI_STICKER;
+      else kaspiSticker.remove();
+    }
+
+    const table = sizeTableHTML();
+    document.getElementById('sizeTableInline').innerHTML = table;
+    document.getElementById('sizeTableFull').innerHTML = table;
+    renderLooks();
+    renderHotspots();
+    function startSky() {
+      const canvas = document.getElementById('sky');
+      if (!canvas) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const ctx = canvas.getContext('2d');
+      const stars = Array.from({ length: 40 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        r: Math.random() * 1.15 + 0.25,
+        p: Math.random() * Math.PI * 2,
+        s: 0.6 + Math.random() * 1.3,
+        drift: Math.random() < 0.2
+      }));
+      let w = 0;
+      let h = 0;
+      let raf = 0;
+      let running = true;
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        w = canvas.clientWidth || 480;
+        h = canvas.clientHeight || window.innerHeight;
+        canvas.width = Math.max(1, Math.floor(w * dpr));
+        canvas.height = Math.max(1, Math.floor(h * dpr));
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      function draw(t) {
+        ctx.clearRect(0, 0, w, h);
+        stars.forEach(st => {
+          const y = (!reduce && st.drift) ? (st.y + (t / 32000) * st.s) % 1 : st.y;
+          const alpha = reduce ? 0.4 : 0.18 + 0.55 * (0.5 + 0.5 * Math.sin((t / 900) * st.s + st.p));
+          ctx.fillStyle = 'rgba(243,226,170,' + alpha.toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.arc(st.x * w, y * h, st.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+      function loop(t) {
+        if (!running) return;
+        draw(t || 0);
+        if (!reduce) raf = requestAnimationFrame(loop);
+      }
+      resize();
+      loop(0);
+      window.addEventListener('resize', () => { resize(); if (reduce) draw(0); });
+      document.addEventListener('visibilitychange', () => {
+        if (reduce) return;
+        if (document.hidden) {
+          running = false;
+          cancelAnimationFrame(raf);
+        } else if (!running) {
+          running = true;
+          raf = requestAnimationFrame(loop);
+        }
+      });
+    }
+
+    function setupReveal() {
+      const nodes = document.querySelectorAll('.reveal');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+        nodes.forEach(n => n.classList.add('in'));
+        return;
+      }
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.12 });
+      nodes.forEach(n => io.observe(n));
+    }
+    document.documentElement.classList.add('js');
+    renderReviews();
+    paintHouse();
+    startSky();
+    setupReveal();
+    if (renderPromoTimer()) {
+      const promoTick = setInterval(() => {
+        if (!renderPromoTimer()) clearInterval(promoTick);
+      }, 1000);
+    }
+    updateGalleryChrome(0);
     updateUI();
   </script>
 </body>
