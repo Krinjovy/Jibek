@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0B0A0C" />
-  <meta name="description" content="JIBEK.STORE — худи факультетов. Велюр 450 г/м², встроенная балаклава. Пошив под заказ, доставка 14–21 день по всему Казахстану. Оплата Kaspi." />
+  <meta name="description" content="JIBEK.STORE — худи факультетов. Плотная тёплая ткань, встроенная балаклава. Пошив под заказ, доставка 14–21 день по всему Казахстану. Оплата Kaspi." />
   <title>JIBEK.STORE — Худи факультета</title>
   <link rel="preload" as="image" href="images/gryffindor-front.jpg" fetchpriority="high" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -19,19 +19,36 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --accent: #D3A625; }
+    :root {
+      --accent: #D3A625;
+      --accent-ink: #1A0E00;
+      --accent-soft: rgba(211,166,37,0.16);
+      --seal: #740001;
+    }
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-    body { background: #070708; color: #F5F5F5; font-family: 'Inter', system-ui, sans-serif; }
-    #app { background: #0B0A0C; }
-    .font-display { font-family: 'Playfair Display', serif; }
-    .gold { color: #D3A625; }
+    body { background: #07060b; color: #F5F5F5; font-family: 'Inter', system-ui, sans-serif; }
+    #app { position: relative; z-index: 1; background: transparent; }
+    .font-display { font-family: 'Cinzel', serif; letter-spacing: 0.03em; }
+    .accent { color: var(--accent); }
+    .accent-fill { background: var(--accent); color: var(--accent-ink); }
+    .accent-line { border-color: var(--accent); }
+    .sky { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: min(100%, 480px); height: 100vh; z-index: 0; pointer-events: none; }
     .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
-    .house-select.active { border-color: #D3A625 !important; background: rgba(211,166,37,0.12); }
-    .size-btn.active { background: #D3A625; color: #0a0a0b; border-color: #D3A625; font-weight: 700; }
-    .bundle-row.selected { border-color: #D3A625; background: rgba(211,166,37,0.08); }
-    .check { color: #D3A625; font-weight: 700; }
+    .house-select.active { border-color: var(--accent) !important; background: var(--accent-soft); }
+    .size-btn.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+    .bundle-row.selected { border-color: var(--accent); background: var(--accent-soft); }
+    .check { color: var(--accent); font-weight: 700; }
+    input:focus { border-color: var(--accent); }
+    .wax-seal {
+      position: absolute; top: 50%; right: 7.25rem; transform: translateY(-50%);
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(circle at 35% 30%, color-mix(in srgb, white 28%, var(--seal)), var(--seal) 64%, #12080a);
+      color: #f6e7c1; font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.08em;
+      box-shadow: inset 0 0 0 2px rgba(246,231,193,0.55), 0 5px 10px rgba(0,0,0,0.45);
+    }
     details summary::-webkit-details-marker { display: none; }
     details summary { list-style: none; }
     details[open] .chev { transform: rotate(180deg); }
@@ -41,20 +58,20 @@
     #galleryStage.is-grabbing { cursor: grabbing; }
     #heroImg { transition: opacity .22s ease; }
     .gal-thumb { border: 2px solid transparent; background: #F3EEE4; }
-    .gal-thumb.active { border-color: #D3A625; }
+    .gal-thumb.active { border-color: var(--accent); }
     .gal-dot { width: 6px; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.28); transition: width .2s ease, background .2s ease; }
-    .gal-dot.active { width: 18px; background: #D3A625; }
+    .gal-dot.active { width: 18px; background: var(--accent); }
     select { color-scheme: dark; }
     .switch { width: 44px; height: 26px; border-radius: 999px; background: rgba(255,255,255,0.16); position: relative; flex-shrink: 0; }
-    .switch[aria-checked="true"] { background: #D3A625; }
+    .switch[aria-checked="true"] { background: var(--accent); }
     .switch i { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 999px; background: #fff; transition: transform .2s ease; }
     .switch[aria-checked="true"] i { transform: translateX(18px); }
     .looks-viewport { overflow: hidden; }
     .looks-track { display: flex; width: max-content; animation: looks 42s linear infinite; }
     .looks-viewport.is-paused .looks-track { animation-play-state: paused; }
     @keyframes looks { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .hotspot { position: absolute; transform: translate(-50%, -50%); width: 28px; height: 28px; border-radius: 999px; background: rgba(11,10,12,0.78); color: #F3EEE4; border: 1.5px solid #D3A625; font-size: 18px; line-height: 1; display: flex; align-items: center; justify-content: center; z-index: 2; }
-    .hotspot[aria-expanded="true"] { background: #D3A625; color: #0B0A0C; }
+    .hotspot { position: absolute; transform: translate(-50%, -50%); width: 28px; height: 28px; border-radius: 999px; background: rgba(11,10,12,0.78); color: #F3EEE4; border: 1.5px solid var(--accent); font-size: 18px; line-height: 1; display: flex; align-items: center; justify-content: center; z-index: 2; }
+    .hotspot[aria-expanded="true"] { background: var(--accent); color: var(--accent-ink); }
     .kaspi-sticker {
       display: inline-block;
       background: #F14635;
@@ -79,6 +96,7 @@
   <script src="analytics.js"></script>
 </head>
 <body>
+  <canvas id="sky" class="sky" aria-hidden="true"></canvas>
   <div id="app" class="max-w-[480px] mx-auto min-h-screen pb-28">
 
     <div class="bg-[#F5A623]/15 border-b border-[#F5A623]/30 text-center text-[12px] py-2 px-3 text-[#F5A623]">
@@ -90,7 +108,7 @@
 
     <header class="sticky top-0 z-40 bg-[#0B0A0C]/95 backdrop-blur-md border-b border-white/5">
       <div class="px-4 h-14 flex items-center justify-between">
-        <div class="font-bold tracking-[0.15em] text-sm">JIBEK<span class="gold">.STORE</span></div>
+        <div class="font-display text-[15px] tracking-[0.18em]">JIBEK<span class="accent">.STORE</span></div>
         <span class="text-xs text-white/50">₸ KZT</span>
       </div>
     </header>
@@ -138,9 +156,9 @@
 
       <!-- b. Options -->
       <section id="options" class="px-4 pt-6">
-        <p class="text-[11px] tracking-[0.16em] uppercase gold font-semibold mb-2">Волна 1 · факультеты</p>
+        <p class="text-[11px] tracking-[0.18em] uppercase accent font-display mb-2">Книга факультетов</p>
         <h1 class="font-display text-[2rem] leading-tight mb-1">The House Hoodie</h1>
-        <p class="text-sm text-white/55 mb-4">Велюр 450 г/м² · встроенная балаклава · oversize</p>
+        <p class="text-sm text-white/55 mb-4">Плотная тёплая ткань · встроенная балаклава · свободный крой</p>
         <div class="flex items-start justify-between gap-3 mb-5">
           <div class="min-w-0">
             <div class="flex items-baseline gap-3 flex-wrap">
@@ -161,7 +179,7 @@
               <span class="font-bold" data-bundle-price>23 000 ₸</span>
             </button>
             <button type="button" class="bundle-row relative w-full border border-white/15 rounded-xl p-3.5 flex items-center justify-between text-left" data-bundle="2">
-              <span class="absolute -top-2 right-3 bg-[#D3A625] text-dark text-[9px] font-bold px-2 py-0.5 rounded">ХИТ</span>
+              <span class="wax-seal" aria-hidden="true">ХИТ</span>
               <span><span class="block font-semibold text-sm">2 худи</span><span class="block text-[11px] text-white/45" data-bundle-save>экономия 26 010 ₸</span></span>
               <span class="font-bold" data-bundle-price>43 990 ₸</span>
             </button>
@@ -174,11 +192,11 @@
 
         <div class="mb-5">
           <div class="flex items-center justify-between mb-2">
-            <div class="text-xs text-white/50">Факультет</div>
-            <div id="primaryLabel" class="text-[11px] text-[#D3A625] hidden">Худи 1</div>
+            <div class="text-xs accent font-display tracking-wide">Выбери свой факультет</div>
+            <div id="primaryLabel" class="text-[11px] accent hidden">Худи 1</div>
           </div>
           <div id="housePicker" class="grid grid-cols-4 gap-2">
-            <button type="button" data-house="gryffindor" class="house-select active py-2 rounded-xl border border-[#D3A625] text-center text-[11px] font-medium leading-tight">🦁<br>Гриффиндор</button>
+            <button type="button" data-house="gryffindor" class="house-select active py-2 rounded-xl border border-white/15 text-center text-[11px] font-medium leading-tight">🦁<br>Гриффиндор</button>
             <button type="button" data-house="slytherin" class="house-select py-2 rounded-xl border border-white/15 text-center text-[11px] font-medium leading-tight">🐍<br>Слизерин</button>
             <button type="button" data-house="ravenclaw" class="house-select py-2 rounded-xl border border-white/15 text-center text-[11px] font-medium leading-tight">🦅<br>Когтевран</button>
             <button type="button" data-house="hufflepuff" class="house-select py-2 rounded-xl border border-white/15 text-center text-[11px] font-medium leading-tight">🦡<br>Пуффендуй</button>
@@ -188,7 +206,7 @@
         <div class="mb-5">
           <div class="mb-2 flex items-center justify-between">
             <div class="text-xs text-white/50">Размер</div>
-            <a href="#sizeChart" class="text-xs gold font-medium underline underline-offset-2">Размерная сетка</a>
+            <a href="#sizeChart" class="text-xs accent font-display tracking-wide underline underline-offset-2">Свиток размеров</a>
           </div>
           <div id="sizePicker" class="grid grid-cols-6 gap-1.5">
             <button type="button" data-size="S" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">S</button>
@@ -209,8 +227,8 @@
         <div class="mb-2">
           <div class="text-xs text-white/50 mb-2">Промокод партнёра</div>
           <div class="flex gap-2">
-            <input id="promoInput" type="text" placeholder="ALIYA10" autocomplete="off" class="flex-1 bg-card border border-white/15 rounded-xl px-3 py-3 text-sm uppercase tracking-wide outline-none focus:border-[#D3A625]" />
-            <button id="promoApply" type="button" class="px-4 py-3 rounded-xl border border-[#D3A625]/50 text-[#D3A625] text-sm font-semibold">OK</button>
+            <input id="promoInput" type="text" placeholder="ALIYA10" autocomplete="off" class="flex-1 bg-card border border-white/15 rounded-xl px-3 py-3 text-sm uppercase tracking-wide outline-none" />
+            <button id="promoApply" type="button" class="px-4 py-3 rounded-xl border accent accent-line text-sm font-semibold">OK</button>
           </div>
           <p id="promoMsg" class="text-[11px] mt-1.5 hidden"></p>
           <p class="text-[11px] text-white/35 mt-1.5">Скидка считается только с худи, не с дополнений.</p>
@@ -219,7 +237,7 @@
 
       <!-- c. Add-ons -->
       <section id="addons" class="px-4 py-8">
-        <h2 class="font-display text-2xl mb-1">Подбери образ</h2>
+        <h2 class="font-display text-2xl mb-1">К свитку заказа</h2>
         <p class="text-sm text-white/50 mb-4">Будущие товары. Цены и фото временные — включённые позиции попадут в заказ и в итог.</p>
         <div id="addonList" class="space-y-3"></div>
       </section>
@@ -242,11 +260,11 @@
         </div>
         <div class="space-y-2">
           <details class="rounded-xl border border-white/10 bg-card">
-            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Размерная сетка <span class="chev text-white/40">⌄</span></summary>
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Свиток размеров <span class="chev text-white/40">⌄</span></summary>
             <div class="px-3 pb-3" id="sizeTableInline"></div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
-            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Сроки доставки <span class="chev text-white/40">⌄</span></summary>
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Совиная почта — доставка <span class="chev text-white/40">⌄</span></summary>
             <div class="px-4 pb-3.5 text-sm text-white/60 leading-relaxed">Шьём под заказ, не со склада. После подтверждения в WhatsApp доставка занимает 14–21 день по всему Казахстану.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
@@ -259,7 +277,7 @@
       <!-- e. Looks -->
       <section id="looks" class="py-8 border-t border-white/5">
         <div class="px-4 mb-4">
-          <h2 class="font-display text-2xl mb-1">Смотри вживую</h2>
+          <h2 class="font-display text-2xl mb-1">При свечах</h2>
           <p class="text-sm text-white/50">Капюшон закрыт, открыт или молния расстёгнута — как обычное худи. Видео добавим сюда, пока стоят фото.</p>
         </div>
         <div class="looks-viewport" id="looksViewport">
@@ -269,7 +287,7 @@
 
       <!-- f. Hotspots -->
       <section id="details" class="px-4 py-8 border-t border-white/5">
-        <h2 class="font-display text-2xl mb-1">Каждая деталь</h2>
+        <h2 class="font-display text-2xl mb-1">Тайные метки</h2>
         <p class="text-sm text-white/50 mb-4">Нажмите на плюс. На фото — Гриффиндор, у остальных факультетов те же элементы и свои цвета.</p>
         <div id="detailStage" class="relative aspect-square rounded-[1.6rem] overflow-hidden bg-[#F3EEE4] ring-1 ring-white/10">
           <img src="images/gryffindor-front.jpg" alt="Детали худи Гриффиндора" width="1024" height="1024" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" />
@@ -286,8 +304,8 @@
 
       <!-- g. Size chart -->
       <section id="sizeChart" class="px-4 py-8 border-t border-white/5">
-        <h2 class="font-display text-2xl mb-1">Размерная сетка</h2>
-        <p class="text-sm text-white/50 mb-4">Oversize. Для обычной посадки берите свой размер.</p>
+        <h2 class="font-display text-2xl mb-1">Свиток размеров</h2>
+        <p class="text-sm text-white/50 mb-4">Свободный крой. Для обычной посадки берите свой размер.</p>
         <div class="rounded-xl border border-white/10 overflow-hidden" id="sizeTableFull"></div>
       </section>
 
@@ -295,7 +313,7 @@
 
       <!-- h. FAQ -->
       <section id="faq" class="px-4 py-8 border-t border-white/5">
-        <h2 class="font-display text-2xl mb-4">Частые вопросы</h2>
+        <h2 class="font-display text-2xl mb-4">Вопросы учеников</h2>
         <div class="space-y-2">
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Когда отправите заказ? <span class="chev text-white/40">⌄</span></summary>
@@ -303,11 +321,11 @@
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как отследить заказ? <span class="chev text-white/40">⌄</span></summary>
-            <div class="px-4 pb-3.5 text-sm text-white/60">Трек-номер пришлём в WhatsApp, когда передадим посылку. Отследить отправление Казпочты можно на <a href="https://post.kz/services/postal" class="text-[#D3A625] underline underline-offset-2" target="_blank" rel="noopener">post.kz</a>.</div>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Трек-номер пришлём в WhatsApp, когда передадим посылку. Отследить отправление Казпочты можно на <a href="https://post.kz/services/postal" class="accent underline underline-offset-2" target="_blank" rel="noopener">post.kz</a>.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Качество худи <span class="chev text-white/40">⌄</span></summary>
-            <div class="px-4 pb-3.5 text-sm text-white/60">Плотный велюр 450 г/м², встроенная балаклава, металлическая молния во всю длину и манжеты в рубчик. Крой oversize.</div>
+            <div class="px-4 pb-3.5 text-sm text-white/60">Плотная тёплая ткань, встроенная балаклава, металлическая молния во всю длину и манжеты в рубчик. Крой свободный. Точный состав ткани пришлём, когда будут данные поставщика.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Как стирать? <span class="chev text-white/40">⌄</span></summary>
@@ -350,7 +368,7 @@
             <div class="text-[11px] text-white/55 truncate" id="summaryText">Гриффиндор · M</div>
             <div class="text-lg font-bold leading-none mt-0.5" id="totalPrice">23 000 ₸</div>
           </div>
-          <button type="button" id="checkoutBtn" class="flex-shrink-0 px-6 py-3.5 rounded-2xl bg-[#D3A625] text-dark font-bold text-sm active:scale-[0.97] transition">Заказать</button>
+          <button type="button" id="checkoutBtn" class="accent-fill flex-shrink-0 px-6 py-3.5 rounded-2xl font-bold text-sm active:scale-[0.97] transition">Заказать</button>
         </div>
       </div>
     </div>
@@ -460,11 +478,11 @@
       { id: 'balaclava', x: 50, y: 17, title: 'Встроенная балаклава', text: 'Под капюшоном отдельный слой. Молния у лица закрывается в маску или остаётся открытой — тогда это обычное худи.' },
       { id: 'crest', x: 60, y: 29, title: 'Герб факультета', text: 'Маленький герб у молнии капюшона. У каждого дома свой.' },
       { id: 'zipper', x: 50, y: 60, title: 'Металлическая молния', text: 'Молния идёт от балаклавы до подола, на всю длину.' },
-      { id: 'print', x: 64, y: 41, title: 'Принт факультета', text: 'На груди имя факультета, его символ и надпись Hogwarts.' },
+      { id: 'print', x: 64, y: 41, title: 'Принт факультета', text: 'На груди имя факультета и его символ.' },
       { id: 'pocket', x: 36, y: 68, title: 'Карман-кенгуру', text: 'Широкий карман спереди, как у классического худи.' },
       { id: 'platform', x: 84, y: 72, title: '«9¾» на рукаве', text: 'На рукаве — платформа девять и три четверти. Мелкая деталь для своих.' },
       { id: 'cuffs', x: 23, y: 91, title: 'Полоски на манжетах', text: 'На манжетах полоски в цветах факультета. У Гриффиндора это золото.' },
-      { id: 'velour', x: 28, y: 54, title: 'Велюр 450 г/м²', text: 'Плотное полотно 450 г/м². Мягкий велюр с винтажным видом.' }
+      { id: 'cloth', x: 28, y: 54, title: 'Плотная ткань', text: 'Тёплое плотное полотно. Точный состав пришлём вместе с биркой поставщика.' }
     ];
 
     const GALLERY = [
@@ -561,13 +579,26 @@
       }
     }
 
+    const HOUSE_THEME = {
+      gryffindor: { accent: '#D3A625', ink: '#1A0E00', soft: 'rgba(211,166,37,0.16)', seal: '#740001' },
+      slytherin:  { accent: '#D5D8DC', ink: '#0C1612', soft: 'rgba(213,216,220,0.16)', seal: '#1A472A' },
+      ravenclaw:  { accent: '#C4894A', ink: '#140E08', soft: 'rgba(196,137,74,0.18)', seal: '#0E1A40' },
+      hufflepuff: { accent: '#F0C75E', ink: '#1A1408', soft: 'rgba(240,199,94,0.18)', seal: '#14120C' }
+    };
+    function applyHouseTheme(house) {
+      const theme = HOUSE_THEME[house] || HOUSE_THEME.gryffindor;
+      const root = document.documentElement;
+      root.style.setProperty('--accent', theme.accent);
+      root.style.setProperty('--accent-ink', theme.ink);
+      root.style.setProperty('--accent-soft', theme.soft);
+      root.style.setProperty('--seal', theme.seal);
+      document.body.dataset.house = house;
+    }
     function paintHouse() {
       const house = primary().house;
+      applyHouseTheme(house);
       document.querySelectorAll('.house-select').forEach(b => {
-        const on = b.dataset.house === house;
-        b.classList.toggle('active', on);
-        b.classList.toggle('border-[#D3A625]', on);
-        b.classList.toggle('border-white/15', !on);
+        b.classList.toggle('active', b.dataset.house === house);
       });
     }
     function paintSize() {
@@ -708,7 +739,7 @@
         const houseSel = a.house
           ? '<select data-addon-house="' + a.id + '" class="mt-2 w-full bg-black/40 border border-white/15 rounded-xl px-2 py-2 text-xs">' + houseOptions(st.house) + '</select>'
           : '';
-        const badge = a.placeholder ? '<span class="ml-1 text-[10px] font-medium text-[#D3A625]">временная цена</span>' : '';
+        const badge = a.placeholder ? '<span class="ml-1 text-[10px] font-medium accent">временная цена</span>' : '';
         return '<article class="rounded-2xl border border-white/10 bg-card p-3 flex gap-3">' +
           '<div class="w-16 h-16 rounded-xl overflow-hidden bg-[#F3EEE4] shrink-0 ring-1 ring-black/10">' + addonMedia(a) + '</div>' +
           '<div class="flex-1 min-w-0">' +
@@ -802,7 +833,7 @@
         '<tr class="border-t border-white/10"><td class="py-2.5 font-semibold">' + s.id + '</td><td>' + s.chest + '</td><td>' + s.length + '</td><td>' + s.sleeve + '</td></tr>'
       ).join('');
       return '<table class="w-full text-sm text-center">' +
-        '<thead class="bg-white/5 text-[11px] text-[#D3A625]"><tr>' +
+        '<thead class="bg-white/5 text-[11px] accent"><tr>' +
         '<th class="py-2 font-medium">Размер</th><th class="py-2 font-medium">Грудь</th><th class="py-2 font-medium">Длина</th><th class="py-2 font-medium">Рукав</th>' +
         '</tr></thead><tbody class="text-white/85">' + rows + '</tbody></table>' +
         '<p class="text-[11px] text-white/40 mt-2 px-2 pb-2">Грудь — ширина подмышками, см. Замеры в разложенном виде, ±1,5 см.</p>';
@@ -1028,7 +1059,7 @@
       const avg = REVIEWS.reduce((sum, review) => sum + Number(review.rating || 0), 0) / REVIEWS.length;
       section.innerHTML = '<h2 class="font-display text-2xl mb-1">Отзывы</h2><p id="reviewsSummary" class="text-sm mb-4"></p><div id="reviewsList" class="space-y-3"></div>';
       document.getElementById('reviewsSummary').innerHTML =
-        '<span class="text-[#D3A625] tracking-wide">' + starRow(avg) + '</span> ' +
+        '<span class="accent tracking-wide">' + starRow(avg) + '</span> ' +
         '<span class="font-semibold">' + avg.toFixed(1) + '</span> ' +
         '<span class="text-white/50">· ' + REVIEWS.length + ' ' + reviewWord(REVIEWS.length) + '</span>';
       document.getElementById('reviewsList').innerHTML = REVIEWS.map(review => {
@@ -1042,7 +1073,7 @@
           '<div class="flex items-center gap-3">' + avatar +
           '<div class="min-w-0"><div class="text-sm font-semibold">' + escapeHtml(review.name) + '</div>' +
           '<div class="text-[11px] text-white/45">' + escapeHtml(review.city) + '</div></div>' +
-          '<div class="ml-auto text-[#D3A625] text-sm tracking-wide" aria-label="' + escapeHtml(review.rating) + ' из 5">' + starRow(review.rating) + '</div></div>' +
+          '<div class="ml-auto accent text-sm tracking-wide" aria-label="' + escapeHtml(review.rating) + ' из 5">' + starRow(review.rating) + '</div></div>' +
           '<p class="text-sm text-white/75 mt-2 leading-relaxed">' + escapeHtml(review.text) + '</p>' + photo +
           '</article>';
       }).join('');
@@ -1086,7 +1117,65 @@
     renderAddons();
     renderLooks();
     renderHotspots();
+    function startSky() {
+      const canvas = document.getElementById('sky');
+      if (!canvas) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const ctx = canvas.getContext('2d');
+      const stars = Array.from({ length: 40 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        r: Math.random() * 1.15 + 0.25,
+        p: Math.random() * Math.PI * 2,
+        s: 0.6 + Math.random() * 1.3,
+        drift: Math.random() < 0.2
+      }));
+      let w = 0;
+      let h = 0;
+      let raf = 0;
+      let running = true;
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        w = canvas.clientWidth || 480;
+        h = canvas.clientHeight || window.innerHeight;
+        canvas.width = Math.max(1, Math.floor(w * dpr));
+        canvas.height = Math.max(1, Math.floor(h * dpr));
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      function draw(t) {
+        ctx.clearRect(0, 0, w, h);
+        stars.forEach(st => {
+          const y = (!reduce && st.drift) ? (st.y + (t / 32000) * st.s) % 1 : st.y;
+          const alpha = reduce ? 0.4 : 0.18 + 0.55 * (0.5 + 0.5 * Math.sin((t / 900) * st.s + st.p));
+          ctx.fillStyle = 'rgba(243,226,170,' + alpha.toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.arc(st.x * w, y * h, st.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+      function loop(t) {
+        if (!running) return;
+        draw(t || 0);
+        if (!reduce) raf = requestAnimationFrame(loop);
+      }
+      resize();
+      loop(0);
+      window.addEventListener('resize', () => { resize(); if (reduce) draw(0); });
+      document.addEventListener('visibilitychange', () => {
+        if (reduce) return;
+        if (document.hidden) {
+          running = false;
+          cancelAnimationFrame(raf);
+        } else if (!running) {
+          running = true;
+          raf = requestAnimationFrame(loop);
+        }
+      });
+    }
+
     renderReviews();
+    paintHouse();
+    startSky();
     if (renderPromoTimer()) {
       const promoTick = setInterval(() => {
         if (!renderPromoTimer()) clearInterval(promoTick);
