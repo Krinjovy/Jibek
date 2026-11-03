@@ -36,12 +36,20 @@
     body { background: #07060b; color: #F5F5F5; font-family: 'Inter', system-ui, sans-serif; }
     #app { position: relative; z-index: 1; background: transparent; }
     .font-display { font-family: 'Cinzel', serif; letter-spacing: 0.03em; }
-    .accent { color: var(--accent); }
+    .accent { color: var(--accent-text, var(--accent)); }
     .accent-fill { background: var(--accent); color: var(--accent-ink); }
     .accent-line { border-color: var(--accent); }
     .jibek-mark { height: 46px; width: auto; display: block; }
     .sky { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: min(100%, 480px); height: 100vh; z-index: 0; pointer-events: none; }
     .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    .house-mark {
+      width: 14px; height: 16px; flex-shrink: 0;
+      clip-path: polygon(50% 0, 100% 16%, 100% 62%, 50% 100%, 0 62%, 0 16%);
+    }
+    .house-select[data-house="gryffindor"] .house-mark { background: linear-gradient(#740001 52%, #D3A625 52%); }
+    .house-select[data-house="slytherin"] .house-mark { background: linear-gradient(#1A472A 52%, #C5C9CC 52%); }
+    .house-select[data-house="ravenclaw"] .house-mark { background: linear-gradient(#0E1A40 46%, #222F5B 46% 72%, #946B2D 72%); }
+    .house-select[data-house="hufflepuff"] .house-mark { background: linear-gradient(#E6B325 52%, #14120C 52%); }
     .house-select.active { border-color: var(--accent) !important; background: var(--accent-soft); }
     .size-btn.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
     .bundle-row.selected { border-color: var(--accent); background: var(--accent-soft); }
@@ -183,8 +191,8 @@
 
       <!-- b. Options -->
       <section id="options" class="px-4 pt-6">
-        <p class="text-[11px] tracking-[0.18em] uppercase accent font-display mb-2">Книга факультетов</p>
-        <h1 class="font-display text-[2rem] leading-tight mb-1">The House Hoodie</h1>
+        <p class="text-[11px] tracking-[0.18em] uppercase accent font-display mb-2">Коллекция факультетов</p>
+        <h1 class="font-display text-[2rem] leading-tight mb-1">Худи факультета</h1>
         <p class="text-sm text-white/55 mb-4">Мягкий бейби-велюр · худи на молнии · капюшон-маска · свободный крой</p>
         <div class="flex items-start justify-between gap-3 mb-5">
           <div class="min-w-0">
@@ -222,18 +230,18 @@
             <div class="text-xs accent font-display tracking-wide">Выбери свой факультет</div>
             <div id="primaryLabel" class="text-[11px] accent hidden">Худи 1</div>
           </div>
-          <div id="housePicker" class="grid grid-cols-4 gap-2">
-            <button type="button" data-house="gryffindor" class="house-select active py-2 rounded-xl border border-white/15 text-center text-[11px] font-medium leading-tight">🦁<br>Гриффиндор</button>
-            <button type="button" data-house="slytherin" class="house-select py-2 rounded-xl border border-white/15 text-center text-[11px] font-medium leading-tight">🐍<br>Слизерин</button>
-            <button type="button" data-house="ravenclaw" class="house-select py-2 rounded-xl border border-white/15 text-center text-[11px] font-medium leading-tight">🦅<br>Когтевран</button>
-            <button type="button" data-house="hufflepuff" class="house-select py-2 rounded-xl border border-white/15 text-center text-[11px] font-medium leading-tight">🦡<br>Пуффендуй</button>
+          <div id="housePicker" class="grid grid-cols-2 gap-2">
+            <button type="button" data-house="gryffindor" class="house-select active flex items-center gap-2.5 px-3 py-3 rounded-xl border border-white/15 text-sm font-medium"><span class="house-mark" aria-hidden="true"></span>Гриффиндор</button>
+            <button type="button" data-house="slytherin" class="house-select flex items-center gap-2.5 px-3 py-3 rounded-xl border border-white/15 text-sm font-medium"><span class="house-mark" aria-hidden="true"></span>Слизерин</button>
+            <button type="button" data-house="ravenclaw" class="house-select flex items-center gap-2.5 px-3 py-3 rounded-xl border border-white/15 text-sm font-medium"><span class="house-mark" aria-hidden="true"></span>Когтевран</button>
+            <button type="button" data-house="hufflepuff" class="house-select flex items-center gap-2.5 px-3 py-3 rounded-xl border border-white/15 text-sm font-medium"><span class="house-mark" aria-hidden="true"></span>Пуффендуй</button>
           </div>
         </div>
 
         <div class="mb-5">
           <div class="mb-2 flex items-center justify-between">
             <div class="text-xs text-white/50">Размер</div>
-            <a href="#sizeChart" class="text-xs accent font-display tracking-wide underline underline-offset-2">Свиток размеров</a>
+            <a href="#sizeChart" class="text-xs accent font-display tracking-wide underline underline-offset-2">Размерная сетка</a>
           </div>
           <div id="sizePicker" class="grid grid-cols-6 gap-1.5">
             <button type="button" data-size="S" class="size-btn py-3 rounded-xl border border-white/15 text-sm font-medium">S</button>
@@ -252,10 +260,10 @@
         </div>
 
         <div class="mb-2">
-          <div class="text-xs text-white/50 mb-2">Промокод партнёра</div>
+          <div class="text-xs text-white/50 mb-2">Промокод</div>
           <div class="flex gap-2">
-            <input id="promoInput" type="text" placeholder="ALIYA10" autocomplete="off" class="flex-1 bg-card border border-white/15 rounded-xl px-3 py-3 text-sm uppercase tracking-wide outline-none" />
-            <button id="promoApply" type="button" class="px-4 py-3 rounded-xl border accent accent-line text-sm font-semibold">OK</button>
+            <input id="promoInput" type="text" placeholder="Введите промокод" autocomplete="off" class="flex-1 bg-card border border-white/15 rounded-xl px-3 py-3 text-sm outline-none" />
+            <button id="promoApply" type="button" class="px-4 py-3 rounded-xl border accent accent-line text-sm font-semibold">ОК</button>
           </div>
           <p id="promoMsg" class="text-[11px] mt-1.5 hidden"></p>
           <p class="text-[11px] text-white/35 mt-1.5">Скидка считается только с худи, не с дополнений.</p>
@@ -264,7 +272,7 @@
 
       <!-- c. Add-ons -->
       <section id="addons" class="px-4 py-8">
-        <h2 class="font-display text-2xl mb-1">К свитку заказа</h2>
+        <h2 class="font-display text-2xl mb-1">Дополнения</h2>
         <p class="text-sm text-white/50 mb-4">Будущие товары. Цены и фото временные — включённые позиции попадут в заказ и в итог.</p>
         <div id="addonList" class="space-y-3"></div>
       </section>
@@ -287,11 +295,11 @@
         </div>
         <div class="space-y-2">
           <details class="rounded-xl border border-white/10 bg-card">
-            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Свиток размеров <span class="chev text-white/40">⌄</span></summary>
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Размерная сетка <span class="chev text-white/40">⌄</span></summary>
             <div class="px-3 pb-3" id="sizeTableInline"></div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
-            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Совиная почта — доставка <span class="chev text-white/40">⌄</span></summary>
+            <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Доставка <span class="chev text-white/40">⌄</span></summary>
             <div class="px-4 pb-3.5 text-sm text-white/60 leading-relaxed">Шьём под заказ, не со склада. После подтверждения в WhatsApp доставка занимает 14–21 день по всему Казахстану.</div>
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
@@ -304,8 +312,8 @@
       <!-- e. Looks -->
       <section id="looks" class="py-8 border-t border-white/5">
         <div class="px-4 mb-4">
-          <h2 class="font-display text-2xl mb-1">При свечах</h2>
-          <p class="text-sm text-white/50">Молния доходит до самой маски: лицо можно закрыть или оставить капюшон открытым. Видео добавим сюда, пока стоят фото.</p>
+          <h2 class="font-display text-2xl mb-1">Худи в жизни</h2>
+          <p class="text-sm text-white/50">Как худи смотрится на самом деле</p>
         </div>
         <div class="looks-viewport" id="looksViewport">
           <div class="looks-track" id="looksTrack"></div>
@@ -314,8 +322,8 @@
 
       <!-- f. Hotspots -->
       <section id="details" class="px-4 py-8 border-t border-white/5">
-        <h2 class="font-display text-2xl mb-1">Тайные метки</h2>
-        <p class="text-sm text-white/50 mb-4">Нажмите на плюс. На фото — Гриффиндор, у остальных факультетов те же элементы и свои цвета.</p>
+        <h2 class="font-display text-2xl mb-1">Детали худи</h2>
+        <p class="text-sm text-white/50 mb-4">Нажмите на «+», чтобы узнать подробнее</p>
         <div id="detailStage" class="relative aspect-square rounded-[1.6rem] overflow-hidden bg-[#F3EEE4] ring-1 ring-white/10">
           <img src="images/gryffindor-front.jpg" alt="Детали худи Гриффиндора" width="1024" height="1024" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" />
           <div id="hotspotLayer"></div>
@@ -331,7 +339,7 @@
 
       <!-- g. Size chart -->
       <section id="sizeChart" class="px-4 py-8 border-t border-white/5">
-        <h2 class="font-display text-2xl mb-1">Свиток размеров</h2>
+        <h2 class="font-display text-2xl mb-1">Размерная сетка</h2>
         <p class="text-sm text-white/50 mb-4">Ориентировочные замеры. Крой свободный — если сомневаешься, бери свой обычный размер.</p>
         <div class="rounded-xl border border-white/10 overflow-hidden" id="sizeTableFull"></div>
       </section>
@@ -340,7 +348,7 @@
 
       <!-- h. FAQ -->
       <section id="faq" class="px-4 py-8 border-t border-white/5">
-        <h2 class="font-display text-2xl mb-4">Вопросы учеников</h2>
+        <h2 class="font-display text-2xl mb-4">Частые вопросы</h2>
         <div class="space-y-2">
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex justify-between gap-3">Когда отправите заказ? <span class="chev text-white/40">⌄</span></summary>
@@ -391,7 +399,7 @@
       <div class="bg-[#0B0A0C]/95 backdrop-blur-md border-t border-white/10 safe-bottom">
         <div class="px-4 py-3 flex items-center gap-3">
           <div class="flex-1 min-w-0">
-            <div class="text-[11px] text-white/45 truncate">The House Hoodie</div>
+            <div class="text-[11px] text-white/45 truncate">Худи факультета</div>
             <div class="text-[11px] text-white/55 truncate" id="summaryText">Гриффиндор · M</div>
             <div class="text-lg font-bold leading-none mt-0.5" id="totalPrice">23 000 ₸</div>
           </div>
@@ -418,7 +426,7 @@
     const KASPI_STICKER = 'Оплата Kaspi';
 
     /* Цены. Акционная действует PROMO_HOURS часов с первого визита этого браузера
-       (метка jibek_promo_start), потом включается обычная. Промокод партнёра −10%
+       (метка jibek_promo_start), потом включается обычная. Промокод −10%
        считается уже от активной цены набора. */
     const PROMO_PRICE = 23000;
     const REGULAR_PRICE = 29000;
@@ -435,10 +443,10 @@
 
     /* --- Справочники. --- */
     const HOUSES = {
-      gryffindor: { name: 'Гриффиндор', emoji: '🦁' },
-      slytherin:  { name: 'Слизерин', emoji: '🐍' },
-      ravenclaw:  { name: 'Когтевран', emoji: '🦅' },
-      hufflepuff: { name: 'Пуффендуй', emoji: '🦡' }
+      gryffindor: { name: 'Гриффиндор' },
+      slytherin:  { name: 'Слизерин' },
+      ravenclaw:  { name: 'Когтевран' },
+      hufflepuff: { name: 'Пуффендуй' }
     };
     const HOUSE_ORDER = ['gryffindor', 'slytherin', 'ravenclaw', 'hufflepuff'];
     const SIZES = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
@@ -487,8 +495,9 @@
       }
     ];
 
-    /* Смотри вживую. video — путь к mp4 или пусто.
-       Пустое video показывает image. Ролик: autoplay, без звука, по кругу, playsinline, ленивая загрузка. */
+    /* Блок «Худи в жизни». video — путь к mp4 или пусто.
+       Пока video пустой, покупатель видит фото. Не пишите на странице, что ролики появятся позже.
+       Ролик: autoplay, без звука, по кругу, playsinline, ленивая загрузка. */
     const LOOKS = [
       { house: 'gryffindor', video: '', image: 'images/gryffindor-front.jpg' },
       { house: 'gryffindor', video: '', image: 'images/gryffindor-back.jpg' },
@@ -609,7 +618,7 @@
     const HOUSE_THEME = {
       gryffindor: { accent: '#D3A625', ink: '#1A0E00', soft: 'rgba(211,166,37,0.16)', seal: '#740001' },
       slytherin:  { accent: '#D5D8DC', ink: '#0C1612', soft: 'rgba(213,216,220,0.16)', seal: '#1A472A' },
-      ravenclaw:  { accent: '#C4894A', ink: '#140E08', soft: 'rgba(196,137,74,0.18)', seal: '#0E1A40' },
+      ravenclaw:  { accent: '#222F5B', ink: '#F6F1E6', soft: 'rgba(34,47,91,0.55)', seal: '#946B2D', text: '#946B2D' },
       hufflepuff: { accent: '#F0C75E', ink: '#1A1408', soft: 'rgba(240,199,94,0.18)', seal: '#14120C' }
     };
     function applyHouseTheme(house) {
@@ -618,6 +627,7 @@
       root.style.setProperty('--accent', theme.accent);
       root.style.setProperty('--accent-ink', theme.ink);
       root.style.setProperty('--accent-soft', theme.soft);
+      root.style.setProperty('--accent-text', theme.text || theme.accent);
       root.style.setProperty('--seal', theme.seal);
       document.body.dataset.house = house;
     }
@@ -635,7 +645,7 @@
     function updateGalleryChrome(index) {
       const slide = GALLERY[index];
       document.getElementById('galleryCount').textContent = (index + 1) + ' / ' + GALLERY.length;
-      document.getElementById('galleryHouse').textContent = HOUSES[slide.house].emoji + ' ' + HOUSES[slide.house].name;
+      document.getElementById('galleryHouse').textContent = HOUSES[slide.house].name;
       document.getElementById('galleryView').textContent = viewName(slide.view);
       document.getElementById('heroImg').alt = HOUSES[slide.house].name + ' — ' + viewName(slide.view).toLowerCase();
       document.querySelectorAll('.gal-thumb').forEach((b, i) => {
@@ -887,7 +897,7 @@
       }
       state.promo = code;
       if (input) input.value = code;
-      msg.textContent = '−10% на худи · ' + PARTNERS[code].name;
+      msg.textContent = 'Промокод применён: −10%';
       msg.className = 'text-[11px] mt-1.5 text-emerald-400';
       msg.classList.remove('hidden');
       if (!silent) jibekTrack('apply_promo', { code, partner: PARTNERS[code].name });
@@ -900,7 +910,7 @@
       state.items.forEach((it, i) => {
         const h = HOUSES[it.house];
         const prefix = state.items.length > 1 ? (i + 1) + '. ' : '';
-        lines.push(prefix + h.emoji + ' ' + h.name + ' · ' + it.size);
+        lines.push(prefix + h.name + ' · ' + it.size);
       });
       lines.push('Худи: ' + formatPrice(hoodieTotal()));
       lines.push(visitorPromoOn()
