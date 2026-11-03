@@ -76,10 +76,6 @@
     .gal-dot { width: 6px; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.28); transition: width .2s ease, background .2s ease; }
     .gal-dot.active { width: 18px; background: var(--accent); }
     select { color-scheme: dark; }
-    .switch { width: 44px; height: 26px; border-radius: 999px; background: rgba(255,255,255,0.16); position: relative; flex-shrink: 0; }
-    .switch[aria-checked="true"] { background: var(--accent); }
-    .switch i { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 999px; background: #fff; transition: transform .2s ease; }
-    .switch[aria-checked="true"] i { transform: translateX(18px); }
     .looks-scroller {
       display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory; scroll-padding-inline: 16px;
@@ -171,10 +167,6 @@
       border: 1px solid rgba(212,175,55,0.28); border-radius: 12px;
       color: #F5F5F5; padding: 10px 28px 10px 12px; font-size: 13px;
     }
-    .switch { background: rgba(255,255,255,0.06); border: 1px solid rgba(212,175,55,0.4); }
-    .switch[aria-checked="true"] { background: linear-gradient(180deg, #F6E3A1, #9C7A2B); border-color: #F6E3A1; }
-    .switch i { background: #E8D7A2; }
-    .switch[aria-checked="true"] i { background: #1A1206; }
     .wa-lux {
       width: 42px; height: 42px; border-radius: 999px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
@@ -319,7 +311,6 @@
               <span class="text-2xl font-bold" id="priceDisplay">23 000 ₸</span>
               <span class="text-sm text-white/40 line-through" id="comparePrice">35 000 ₸</span>
             </div>
-            <p id="priceNote" class="text-[11px] text-white/40 mt-1 hidden"></p>
             <p id="promoTimer" class="hidden text-[13px] text-white/80 mt-3">Акционная цена действует ещё <span id="promoClock" class="font-semibold tabular-nums text-[#F3EEE4]"></span></p>
           </div>
           <div id="kaspiSticker" class="kaspi-sticker shrink-0 mt-1"></div>
@@ -385,15 +376,8 @@
             <button id="promoApply" type="button" class="px-4 py-3 rounded-xl border accent accent-line text-sm font-semibold">ОК</button>
           </div>
           <p id="promoMsg" class="text-[11px] mt-1.5 hidden"></p>
-          <p class="text-[11px] text-white/35 mt-1.5">Скидка считается только с худи, не с дополнений.</p>
+          <p class="text-[11px] text-white/35 mt-1.5">Скидка −10% считается с худи.</p>
         </div>
-      </section>
-
-      <!-- c. Add-ons -->
-      <section id="addons" class="reveal px-4 py-12">
-        <h2 class="font-display text-2xl mb-1">Дополнения</h2>
-        <p class="text-sm text-white/50 mb-4">Будущие товары. Цены и фото временные — включённые позиции попадут в заказ и в итог.</p>
-        <div id="addonList" class="space-y-3"></div>
       </section>
 
       <!-- d. Trust + accordions -->
@@ -423,7 +407,7 @@
           </details>
           <details class="rounded-xl border border-white/10 bg-card">
             <summary class="px-4 py-3.5 text-sm font-medium cursor-pointer flex items-center justify-between gap-3">Условия заказа <span class="chev text-white/40">⌄</span></summary>
-            <div class="px-4 pb-3.5 text-sm text-white/60 leading-relaxed">Состав заказа уходит в WhatsApp. Оплата — Kaspi Gold или Kaspi QR, реквизиты пришлём в чате. Факультет и размер можно заменить, пока худи не сдали в доставку. Дополнения с пометкой «временно» — это будущие товары, цену подтвердим до оплаты.</div>
+            <div class="px-4 pb-3.5 text-sm text-white/60 leading-relaxed">Состав заказа уходит в WhatsApp. Оплата — Kaspi Gold или Kaspi QR, реквизиты пришлём в чате. Факультет и размер можно заменить, пока худи не сдали в доставку.</div>
           </details>
         </div>
       </section>
@@ -575,43 +559,6 @@
       { id: '2XL', chest: 74, length: 77, sleeve: 70 },
       { id: '3XL', chest: 77, length: 80, sleeve: 72 }
     ];
-    /* Подбери образ. Меняйте название, цену, фото и подпись здесь.
-       placeholder: true — показываем, что цена и фото временные.
-       image: путь к картинке или '' — тогда рисуется заглушка.
-       house: true — дать выбрать факультет. */
-    const ADDONS = [
-      {
-        id: 'pendant',
-        name: 'Кулон «Хроноворот»',
-        hint: 'Крутится и подходит к любому факультету',
-        price: 6900,
-        placeholder: true,
-        image: '',
-        icon: 'pendant',
-        house: false
-      },
-      {
-        id: 'scarf',
-        name: 'Шарф в цветах факультета',
-        hint: 'Полоски в цветах выбранного дома',
-        price: 13900,
-        placeholder: true,
-        image: '',
-        icon: 'scarf',
-        house: true
-      },
-      {
-        id: 'keychain',
-        name: 'Брелок с гербом',
-        hint: 'Герб факультета на ключах',
-        price: 6000,
-        placeholder: true,
-        image: '',
-        icon: 'key',
-        house: true
-      }
-    ];
-
     /* Блок «Смотри, как сидит». Первый слот — распаковка.
        video — путь к mp4 или пустая строка. Пока video пустой, покупатель видит image.
        Не пишите на странице, что ролики появятся позже.
@@ -655,10 +602,8 @@
       items: [{ house: 'gryffindor', size: 'M' }],
       bundle: 1,
       basePrice: 23000,
-      promo: '',
-      addons: {}
+      promo: ''
     };
-    ADDONS.forEach(a => { state.addons[a.id] = { on: false, house: 'gryffindor' }; });
 
     let slideIndex = 0;
     let shownSrc = GALLERY[0].src;
@@ -701,10 +646,7 @@
     function hoodieTotal() {
       return state.promo ? Math.round(state.basePrice * (1 - DISCOUNT)) : state.basePrice;
     }
-    function addonsTotal() {
-      return ADDONS.reduce((sum, a) => sum + (state.addons[a.id].on ? a.price : 0), 0);
-    }
-    function grandTotal() { return hoodieTotal() + addonsTotal(); }
+    function grandTotal() { return hoodieTotal(); }
     function primary() { return state.items[0]; }
     function viewName(view) { return view === 'front' ? 'Спереди' : 'Сзади'; }
 
@@ -719,19 +661,11 @@
       document.getElementById('totalPrice').textContent = formatPrice(total);
       document.getElementById('summaryText').textContent = summaryLine();
       const compareEl = document.getElementById('comparePrice');
-      const strike = COMPARE_AT_PRICE * state.bundle + addonsTotal();
+      const strike = COMPARE_AT_PRICE * state.bundle;
       if (strike > total) {
         compareEl.textContent = formatPrice(strike);
         compareEl.classList.remove('hidden');
       } else compareEl.classList.add('hidden');
-      const note = document.getElementById('priceNote');
-      if (addonsTotal() > 0) {
-        note.textContent = 'Худи ' + formatPrice(hoodieTotal()) + ' + образ ' + formatPrice(addonsTotal());
-        note.classList.remove('hidden');
-      } else {
-        note.textContent = '';
-        note.classList.add('hidden');
-      }
     }
 
     const HOUSE_THEME = {
@@ -884,31 +818,6 @@
       updateUI();
     }
 
-    function addonMedia(addon) {
-      if (addon.image) return '<img src="' + addon.image + '" alt="" loading="lazy" class="w-full h-full object-cover" />';
-      const icon = addon.icon === 'scarf' ? '🧣' : addon.icon === 'key' ? '🔑' : '✧';
-      return '<div class="w-full h-full flex flex-col items-center justify-center text-[#6b6256]"><span class="text-xl leading-none">' + icon + '</span><span class="text-[9px] mt-1 tracking-wide">ФОТО</span></div>';
-    }
-    function renderAddons() {
-      document.getElementById('addonList').innerHTML = ADDONS.map(a => {
-        const st = state.addons[a.id];
-        const houseSel = a.house
-          ? '<select data-addon-house="' + a.id + '" class="lux-select mt-2 w-full">' + houseOptions(st.house) + '</select>'
-          : '';
-        const badge = a.placeholder ? '<span class="ml-1 text-[10px] font-medium accent">временная цена</span>' : '';
-        return '<article class="rounded-2xl border border-white/10 bg-card p-3 flex gap-3">' +
-          '<div class="w-16 h-16 rounded-xl overflow-hidden bg-[#F3EEE4] shrink-0 ring-1 ring-black/10">' + addonMedia(a) + '</div>' +
-          '<div class="flex-1 min-w-0">' +
-            '<div class="flex items-start justify-between gap-2">' +
-              '<div class="min-w-0"><div class="text-sm font-semibold leading-tight">' + a.name + '</div><div class="text-[11px] text-white/45 mt-0.5">' + a.hint + '</div></div>' +
-              '<button type="button" class="switch mt-0.5" role="switch" aria-checked="' + (st.on ? 'true' : 'false') + '" aria-label="' + a.name + '" data-addon="' + a.id + '"><i></i></button>' +
-            '</div>' +
-            '<div class="text-sm font-bold mt-1.5">' + formatPrice(a.price) + badge + '</div>' +
-            houseSel +
-          '</div></article>';
-      }).join('');
-    }
-
     function lookCard(item) {
       const raw = item.label || (HOUSES[item.house] ? HOUSES[item.house].name : '');
       const label = raw.toLocaleUpperCase('ru-RU');
@@ -1047,15 +956,6 @@
       lines.push(visitorPromoOn()
         ? 'Акционная цена применена (' + formatPrice(PROMO_PRICE) + ' за худи)'
         : 'Акционная цена не действует, обычная цена ' + formatPrice(REGULAR_PRICE) + ' за худи');
-      ADDONS.forEach(a => {
-        const st = state.addons[a.id];
-        if (!st.on) return;
-        let line = '+ ' + a.name;
-        if (a.house) line += ' · ' + HOUSES[st.house].name;
-        line += ' — ' + formatPrice(a.price);
-        if (a.placeholder) line += ' (цена временная)';
-        lines.push(line);
-      });
       if (state.promo) lines.push('Промокод: ' + state.promo + ' (−10% на худи)');
       lines.push('Итого: ' + formatPrice(grandTotal()));
       const attr = window.JIBEK_ATTR || {};
@@ -1090,20 +990,6 @@
       if (houseSel) state.items[Number(houseSel.dataset.extraHouse)].house = houseSel.value;
       if (sizeSel) state.items[Number(sizeSel.dataset.extraSize)].size = sizeSel.value;
       updateUI();
-    });
-    document.getElementById('addonList').addEventListener('click', e => {
-      const btn = e.target.closest('[data-addon]');
-      if (!btn) return;
-      const id = btn.dataset.addon;
-      state.addons[id].on = !state.addons[id].on;
-      btn.setAttribute('aria-checked', state.addons[id].on ? 'true' : 'false');
-      jibekTrack('toggle_addon', { id, on: state.addons[id].on });
-      updateUI();
-    });
-    document.getElementById('addonList').addEventListener('change', e => {
-      const sel = e.target.closest('[data-addon-house]');
-      if (!sel) return;
-      state.addons[sel.dataset.addonHouse].house = sel.value;
     });
 
     document.querySelectorAll('.gal-thumb, .gal-dot').forEach(b => b.addEventListener('click', () => goTo(parseInt(b.dataset.index, 10), 'thumb')));
@@ -1179,7 +1065,6 @@
         size: primary().size,
         bundle: state.bundle,
         items: state.items,
-        addons: ADDONS.filter(a => state.addons[a.id].on).map(a => ({ id: a.id, house: a.house ? state.addons[a.id].house : '', price: a.price })),
         amount_kzt: grandTotal(),
         discount_kzt: state.basePrice - hoodieTotal(),
         status: 'pending',
@@ -1277,7 +1162,6 @@
     const table = sizeTableHTML();
     document.getElementById('sizeTableInline').innerHTML = table;
     document.getElementById('sizeTableFull').innerHTML = table;
-    renderAddons();
     renderLooks();
     renderHotspots();
     function startSky() {
