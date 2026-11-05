@@ -5,7 +5,7 @@ const CODE_RE = /^[A-Z][A-Z0-9]{2,15}$/;
 const TRACK_CODE_RE = /^[A-Z0-9]{3,16}$/;
 const VID_RE = /^[A-Za-z0-9_-]{8,64}$/;
 const TYPES = new Set(['visit', 'checkout_open', 'address_filled', 'whatsapp_click', 'order_sent']);
-const STATUSES = new Set(['new', 'confirmed', 'cancelled', 'paid']);
+const STATUSES = new Set(['new', 'paid', 'cancelled']);
 export const DEFAULT_PAYOUT = 5000;
 const DAY = 86400000;
 const ALMATY = 5 * 3600000;
@@ -161,12 +161,22 @@ export async function recordTrack(input) {
   return { ok: true };
 }
 
+function storedStatus(status) {
+  if (status === 'confirmed') return 'paid';
+  return status;
+}
+
+function isPaid(order) {
+  return order.status === 'paid' || order.status === 'confirmed';
+}
+
 export async function setOrderStatus(id, status) {
   const orderId = String(id || '');
-  if (!/^ord_[a-z0-9_]+$/i.test(orderId) || !STATUSES.has(status)) return null;
+  const next = storedStatus(status);
+  if (!/^ord_[a-z0-9_]+$/i.test(orderId) || !STATUSES.has(next)) return null;
   const order = await readJson('orders/' + orderId + '.json');
   if (!order) return null;
-  order.status = status;
+  order.status = next;
   await writeJson('orders/' + order.id + '.json', order);
   return publicOrder(order);
 }
@@ -208,7 +218,7 @@ export function publicOrder(order) {
     promo: order.promo,
     firstName: order.firstName || '',
     city: order.city || '',
-    status: order.status,
+    status: order.status === 'confirmed' ? 'paid' : order.status,
     items: order.items || []
   };
 }
@@ -219,7 +229,7 @@ export function buildStats({ payoutKzt, events, orders, payouts, now = Date.now(
     const start = windowStart(name, now);
     const ev = events.filter(event => new Date(event.ts).getTime() >= start);
     const inOrders = orders.filter(order => new Date(order.ts).getTime() >= start);
-    const confirmed = inOrders.filter(order => order.status === 'confirmed' || order.status === 'paid').length;
+    const confirmed = inOrders.filter(isPaid).length;
     const paidOut = payouts.filter(payout => payoutTime(payout) >= start).reduce((sum, payout) => sum + (payout.amount || 0), 0);
     windows[name] = {
       visits: new Set(ev.filter(event => event.type === 'visit').map(event => event.visitorId)).size,

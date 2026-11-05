@@ -135,12 +135,29 @@ response = res();
 await adminOverview(req('GET', '/api/admin/overview', null, { cookie: partnerCookie }), response);
 check('partner cannot open admin', response.statusCode === 401);
 
-response = res();
-await adminOrders(req('POST', '/api/admin/orders', { id: order.id, status: 'confirmed' }, { cookie: adminCookie }), response);
-check('confirm order', response.json().order.status === 'confirmed');
+const orderKey = 'orders/' + order.id + '.json';
+const legacy = JSON.parse(memory.get(orderKey));
+legacy.status = 'confirmed';
+memory.set(orderKey, JSON.stringify(legacy));
 response = res();
 await partnerDash(req('GET', '/api/partner/dashboard', null, { cookie: partnerCookie }), response);
-check('earned payout', response.json().windows.all.earned === 5000 && response.json().balance === 5000);
+check('legacy confirmed counts as paid', response.json().orders[0].status === 'paid' && response.json().windows.all.earned === 5000);
+
+response = res();
+await adminOrders(req('POST', '/api/admin/orders', { id: order.id, status: 'confirmed' }, { cookie: adminCookie }), response);
+check('confirmed is stored as paid', response.json().order.status === 'paid' && JSON.parse(memory.get(orderKey)).status === 'paid');
+response = res();
+await adminOrders(req('POST', '/api/admin/orders', { id: order.id, status: 'new' }, { cookie: adminCookie }), response);
+check('revert to new', response.json().order.status === 'new');
+response = res();
+await partnerDash(req('GET', '/api/partner/dashboard', null, { cookie: partnerCookie }), response);
+check('new order does not earn', response.json().windows.all.earned === 0);
+response = res();
+await adminOrders(req('POST', '/api/admin/orders', { id: order.id, status: 'paid' }, { cookie: adminCookie }), response);
+check('mark paid', response.json().order.status === 'paid');
+response = res();
+await partnerDash(req('GET', '/api/partner/dashboard', null, { cookie: partnerCookie }), response);
+check('earned payout', response.json().windows.all.earned === 5000 && response.json().balance === 5000 && response.json().orders[0].status === 'paid');
 
 response = res();
 await adminPayouts(req('POST', '/api/admin/payouts', { code: 'ALIYA10', amount: 2000, date: '2026-11-05' }, { cookie: adminCookie }), response);
