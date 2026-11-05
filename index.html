@@ -6,6 +6,13 @@
   <meta name="theme-color" content="#0B0A0C" />
   <meta name="description" content="JIBEK.STORE — худи факультетов на молнии. Мягкий бейби-велюр, капюшон-маска, свободный крой. Доставка 14–21 день по всему Казахстану. Оплата Kaspi." />
   <title>JIBEK.STORE — Худи факультета</title>
+  <script>
+    !function (w, d, t) {
+      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+      ttq.load('DBM4KRJC77UENJ6BR1QG');
+      ttq.page();
+    }(window, document, 'ttq');
+  </script>
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
   <meta property="og:title" content="JIBEK.STORE — Худи факультета" />
   <meta property="og:description" content="Худи факультетов на молнии. Мягкий бейби-велюр, капюшон-маска, свободный крой. Доставка 14–21 день по всему Казахстану." />
@@ -1297,6 +1304,59 @@
         rows + promo +
         '<div class="mt-3 pt-3 border-t border-white/10 flex items-baseline justify-between"><span class="text-sm text-white/60">Итого</span><span class="text-lg font-bold">' + formatPrice(grandTotal()) + strike + '</span></div>';
     }
+    function ttqProps() {
+      const contents = state.items.map(it => {
+        const house = HOUSES[it.house] ? HOUSES[it.house].name : it.house;
+        return {
+          content_id: it.house + '-' + it.size,
+          content_type: 'product',
+          content_name: house + ' ' + it.size,
+          quantity: 1
+        };
+      });
+      const first = contents[0] || {};
+      return {
+        contents: contents,
+        content_type: 'product',
+        content_id: first.content_id || '',
+        content_name: first.content_name || '',
+        value: grandTotal(),
+        currency: 'KZT',
+        quantity: state.items.length
+      };
+    }
+    function ttqTrack(eventName, eventId) {
+      try {
+        if (!window.ttq || typeof window.ttq.track !== 'function') return;
+        const props = ttqProps();
+        if (eventId) window.ttq.track(eventName, props, { event_id: eventId });
+        else window.ttq.track(eventName, props);
+      } catch (e) {}
+    }
+    async function hashE164Phone(value) {
+      try {
+        const national = nationalDigits(value);
+        if (national.length !== 10 || !window.crypto || !crypto.subtle) return '';
+        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('+7' + national));
+        return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+      } catch (e) {
+        return '';
+      }
+    }
+    function ttqPlaceOrder(phone, eventId) {
+      const fire = () => {
+        ttqTrack('PlaceAnOrder', eventId);
+        ttqTrack('CompletePayment', eventId);
+      };
+      hashE164Phone(phone).then(hash => {
+        try {
+          if (hash && window.ttq && typeof window.ttq.identify === 'function') {
+            window.ttq.identify({ phone_number: hash });
+          }
+        } catch (e) {}
+        fire();
+      }).catch(fire);
+    }
     function openCheckout() {
       renderShipSummary();
       const promo = document.getElementById('shipPromo');
@@ -1310,6 +1370,8 @@
         quantity: state.items.length
       });
       if (window.jibekEvent) window.jibekEvent('checkout_open');
+      ttqTrack('AddToCart');
+      ttqTrack('InitiateCheckout');
       const name = document.getElementById('shipName');
       if (name && !name.value) name.focus();
       else document.getElementById('checkoutTitle').focus();
@@ -1372,6 +1434,7 @@
         promo: state.promo || undefined,
         quantity: state.items.length
       });
+      ttqPlaceOrder(delivery.phone, order.id);
       return checkoutPayment.submit(order);
     }
 
@@ -1437,6 +1500,7 @@
           city: data.city
         });
       }
+      ttqTrack('AddPaymentInfo');
       placeOrder(data);
     });
 
@@ -1609,6 +1673,13 @@
     }
     updateGalleryChrome(0);
     updateUI();
+    ttqTrack('ViewContent');
+    const waFloat = document.getElementById('waFloat');
+    if (waFloat) waFloat.addEventListener('click', () => {
+      try {
+        if (window.ttq && typeof window.ttq.track === 'function') window.ttq.track('Contact');
+      } catch (e) {}
+    });
   </script>
 </body>
 </html>
