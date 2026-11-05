@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0B0A0C" />
+  <title>JIBEK — Админ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #07060b; color: #F5F5F5; font-family: Inter, system-ui, sans-serif; }
+    h1, h2 { font-family: 'Cormorant Garamond', serif; font-weight: 500; }
+    .card { background: rgba(14,13,16,0.78); border: 1px solid rgba(212,175,55,0.22); border-radius: 18px; }
+    .field { width: 100%; min-height: 48px; border-radius: 14px; border: 1px solid rgba(212,175,55,0.28); background: rgba(12,11,14,0.92); color: #F5F5F5; padding: 12px 14px; font-size: 16px; outline: none; }
+    .field:focus { border-color: #E4C56A; }
+    .gold-btn, .ghost-btn { min-height: 44px; border-radius: 12px; padding: 0 14px; font-size: 14px; }
+    .gold-btn { border: 0; color: #1A1206; font-weight: 600; background: linear-gradient(180deg, #F6E3A1, #D4AF37 55%, #9C7A2B); }
+    .ghost-btn { border: 1px solid rgba(212,175,55,0.4); color: #F6E3A1; background: transparent; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="text-center mb-6">
+      <div class="text-[11px] tracking-[0.18em] uppercase text-[#D4AF37]">JIBEK.STORE</div>
+      <h1 class="text-3xl mt-1">Админ</h1>
+    </div>
+    <form id="loginBox" class="card p-5 space-y-3 max-w-md mx-auto">
+      <label class="block text-xs text-white/55" for="login">Логин</label>
+      <input id="login" class="field" autocomplete="username" required />
+      <label class="block text-xs text-white/55" for="password">Пароль</label>
+      <input id="password" class="field" type="password" autocomplete="current-password" required />
+      <p id="loginError" class="text-xs text-red-300 hidden"></p>
+      <button class="gold-btn w-full" type="submit">Войти</button>
+    </form>
+
+    <div id="app" class="hidden space-y-4">
+      <div class="flex justify-end"><button id="logoutBtn" type="button" class="text-xs text-[#E4C56A] underline">Выйти</button></div>
+      <section class="card p-4">
+        <h2 class="text-2xl mb-2">Все партнёры</h2>
+        <div id="totals" class="text-sm text-white/70"></div>
+      </section>
+      <section class="card p-4">
+        <h2 class="text-2xl mb-3">Новый партнёр</h2>
+        <form id="createForm" class="grid gap-2 sm:grid-cols-2">
+          <input id="newCode" class="field uppercase" placeholder="Код, например ALIYA10" required />
+          <input id="newName" class="field" placeholder="Имя" required />
+          <input id="newContact" class="field" placeholder="Контакт" />
+          <input id="newPayout" class="field" type="number" min="0" step="1" value="5000" placeholder="Выплата ₸" />
+          <button class="gold-btn sm:col-span-2" type="submit">Создать и показать PIN</button>
+        </form>
+        <p id="createError" class="text-xs text-red-300 mt-2 hidden"></p>
+        <div id="pinOnce" class="hidden mt-3 rounded-xl border border-[#D4AF37] p-3 text-sm">PIN: <strong id="pinValue" class="text-[#F6E3A1] text-lg"></strong>. Он больше не покажется.</div>
+      </section>
+      <section id="partnerList" class="space-y-2"></section>
+      <section id="detail" class="card p-4 hidden"></section>
+    </div>
+  </div>
+  <script>
+    const STATUS = { new: 'новый', confirmed: 'подтверждён', cancelled: 'отменён', paid: 'оплачен' };
+    const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    const money = n => Math.round(n || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₸';
+    const when = iso => { try { return new Date(iso).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return iso; } };
+    let selected = '';
+    function err(id, text) {
+      const el = document.getElementById(id);
+      el.textContent = text || '';
+      el.classList.toggle('hidden', !text);
+    }
+    async function api(url, options) {
+      const res = await fetch(url, Object.assign({ credentials: 'same-origin' }, options || {}));
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Ошибка');
+      return data;
+    }
+    function renderTotals(data) {
+      const all = data.totals.windows.all;
+      document.getElementById('totals').innerHTML = 'Визиты ' + all.visits + ' · оформление ' + all.checkoutOpens + ' · адрес ' + all.addressFilled + ' · WhatsApp ' + all.whatsappClicks + ' · заказы ' + all.ordersSent + ' · подтверждено ' + all.confirmed + '<br>Заработано ' + money(all.earned) + ' · выплачено ' + money(all.paidOut) + ' · баланс ' + money(data.totals.balance);
+    }
+    function renderPartners(data) {
+      const rows = data.partners || [];
+      document.getElementById('partnerList').innerHTML = rows.length ? rows.map(row =>
+        '<button type="button" data-code="' + esc(row.code) + '" class="card w-full text-left p-3"><div class="flex justify-between gap-2"><strong>' + esc(row.code) + '</strong><span class="text-xs ' + (row.active ? 'text-emerald-300' : 'text-white/35') + '">' + (row.active ? 'активен' : 'выключен') + '</span></div><div class="text-sm text-white/70">' + esc(row.name) + (row.contact ? ' · ' + esc(row.contact) : '') + '</div><div class="text-[12px] text-white/45 mt-1">Заказы ' + esc(row.ordersSent) + ' · подтверждено ' + esc(row.confirmed) + ' · баланс ' + esc(money(row.balance)) + '</div></button>'
+      ).join('') : '<p class="text-sm text-white/40">Партнёров пока нет</p>';
+    }
+    async function loadOverview() {
+      const data = await api('/api/admin/overview');
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
+      renderTotals(data);
+      renderPartners(data);
+      if (selected) loadDetail(selected);
+    }
+    async function loadDetail(code) {
+      selected = code;
+      const data = await api('/api/admin/partner?code=' + encodeURIComponent(code));
+      const box = document.getElementById('detail');
+      box.classList.remove('hidden');
+      const all = data.windows.all;
+      const orders = (data.orders || []).map(order =>
+        '<article class="rounded-xl border border-white/10 p-3 text-sm mb-2"><div class="flex justify-between"><span>' + esc(when(order.ts)) + '</span><span>' + esc(STATUS[order.status] || order.status) + '</span></div><div>' + esc(order.house) + ' · ' + esc(order.size) + ' · ' + esc(order.qty) + ' шт. · ' + esc(money(order.total)) + '</div><div class="text-white/50 text-[12px]">' + esc(order.firstName || '—') + (order.city ? ' · ' + esc(order.city) : '') + '</div><div class="flex flex-wrap gap-2 mt-2"><button type="button" class="ghost-btn" data-status="confirmed" data-id="' + esc(order.id) + '">Подтвердить</button><button type="button" class="ghost-btn" data-status="paid" data-id="' + esc(order.id) + '">Оплачен</button><button type="button" class="ghost-btn" data-status="cancelled" data-id="' + esc(order.id) + '">Отменить</button></div></article>'
+      ).join('') || '<p class="text-sm text-white/40">Заказов нет</p>';
+      box.innerHTML = '<h2 class="text-2xl">' + esc(data.partner.name) + ' · ' + esc(data.partner.code) + '</h2><p class="text-sm text-white/55 mt-1">' + esc(data.link) + '</p><p class="text-sm mt-2">Выплата ' + esc(money(data.partner.payoutKzt)) + ' · заказы ' + esc(all.ordersSent) + ' · подтверждено ' + esc(all.confirmed) + ' · баланс ' + esc(money(data.balance)) + '</p><div class="flex flex-wrap gap-2 mt-3"><button type="button" id="resetPin" class="ghost-btn">Новый PIN</button><button type="button" id="toggleActive" class="ghost-btn">' + (data.partner.active ? 'Выключить' : 'Включить') + '</button></div><form id="payoutForm" class="grid gap-2 sm:grid-cols-3 mt-4"><input id="payoutAmount" class="field" type="number" min="1" placeholder="Сумма ₸" required /><input id="payoutDate" class="field" type="date" required /><button class="gold-btn" type="submit">Записать выплату</button></form><div class="mt-4">' + orders + '</div>';
+      document.getElementById('resetPin').onclick = async () => {
+        const result = await api('/api/admin/partner', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'reset_pin', code }) });
+        document.getElementById('pinOnce').classList.remove('hidden');
+        document.getElementById('pinValue').textContent = result.pin + ' · ' + code;
+      };
+      document.getElementById('toggleActive').onclick = async () => {
+        await api('/api/admin/partner', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'set_active', code, active: !data.partner.active }) });
+        await loadOverview();
+      };
+      document.getElementById('payoutForm').onsubmit = async event => {
+        event.preventDefault();
+        await api('/api/admin/payouts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, amount: document.getElementById('payoutAmount').value, date: document.getElementById('payoutDate').value }) });
+        await loadOverview();
+      };
+      box.querySelectorAll('[data-status]').forEach(button => {
+        button.onclick = async () => {
+          await api('/api/admin/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: button.dataset.id, status: button.dataset.status }) });
+          await loadOverview();
+        };
+      });
+    }
+    document.getElementById('loginBox').addEventListener('submit', async event => {
+      event.preventDefault();
+      err('loginError', '');
+      try {
+        await api('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ login: document.getElementById('login').value, password: document.getElementById('password').value }) });
+        await loadOverview();
+      } catch (e) { err('loginError', e.message); }
+    });
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/admin/logout', { method: 'POST', credentials: 'same-origin' });
+      location.reload();
+    });
+    document.getElementById('createForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      err('createError', '');
+      try {
+        const result = await api('/api/admin/partner', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'create', code: document.getElementById('newCode').value, name: document.getElementById('newName').value, contact: document.getElementById('newContact').value, payoutKzt: document.getElementById('newPayout').value }) });
+        document.getElementById('pinOnce').classList.remove('hidden');
+        document.getElementById('pinValue').textContent = result.pin + ' · ' + result.partner.code;
+        event.target.reset();
+        document.getElementById('newPayout').value = '5000';
+        await loadOverview();
+      } catch (e) { err('createError', e.message); }
+    });
+    document.getElementById('partnerList').addEventListener('click', event => {
+      const button = event.target.closest('[data-code]');
+      if (button) loadDetail(button.dataset.code).catch(e => err('createError', e.message));
+    });
+    loadOverview().catch(() => {});
+  </script>
+</body>
+</html>

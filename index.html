@@ -697,7 +697,6 @@
     let openHotspot = null;
 
     const cfg = window.JIBEK_CONFIG || {};
-    const PARTNERS = cfg.PARTNERS || {};
     const DISCOUNT = cfg.PROMO_DISCOUNT || 0.1;
     const ORDERS_KEY = 'jibek_orders';
     const DELIVERY_KEY = 'jibek_delivery';
@@ -1034,7 +1033,8 @@
         if (el && document.activeElement !== el) el.value = code;
       });
     }
-    function applyPromoCode(code, silent) {
+    window.jibekPromoCode = function () { return state.promo || ''; };
+    async function applyPromoCode(code, silent) {
       code = (code || '').toUpperCase().trim();
       if (!code) {
         state.promo = '';
@@ -1043,7 +1043,17 @@
         updateUI();
         return false;
       }
-      if (!PARTNERS[code]) {
+      let data = null;
+      try {
+        const res = await fetch('/api/promo?code=' + encodeURIComponent(code), { headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error('promo');
+        data = await res.json();
+      } catch (e) {
+        paintPromo('bad', 'Не удалось проверить промокод. Попробуйте ещё раз.');
+        if (!silent) jibekTrack('promo_invalid', { code });
+        return false;
+      }
+      if (!data || !data.valid) {
         state.promo = '';
         paintPromo('bad', 'Промокод не найден');
         if (!silent) jibekTrack('promo_invalid', { code });
@@ -1053,7 +1063,7 @@
       state.promo = code;
       syncPromoInputs(code);
       paintPromo('ok', 'Промокод применён: −10%');
-      if (!silent) jibekTrack('apply_promo', { code, partner: PARTNERS[code].name });
+      if (!silent) jibekTrack('apply_promo', { code });
       updateUI();
       return true;
     }
@@ -1299,6 +1309,7 @@
         promo: state.promo || undefined,
         quantity: state.items.length
       });
+      if (window.jibekEvent) window.jibekEvent('checkout_open');
       const name = document.getElementById('shipName');
       if (name && !name.value) name.focus();
       else document.getElementById('checkoutTitle').focus();
@@ -1339,6 +1350,21 @@
         ref: attr.ref || state.promo || ''
       };
       saveOrderLocal(order);
+      if (window.jibekEvent) {
+        window.jibekEvent('order_sent', {
+          firstName: (delivery.name || '').trim().split(/\s+/)[0] || '',
+          city: delivery.city,
+          order: {
+            house: HOUSES[primary().house].name,
+            size: primary().size,
+            qty: state.items.length,
+            bundle: state.bundle,
+            total: grandTotal(),
+            promo: state.promo || '',
+            items: state.items.map(it => ({ house: HOUSES[it.house].name, size: it.size }))
+          }
+        });
+      }
       jibekTrack('purchase-intent', {
         value: order.amount_kzt,
         currency: 'KZT',
@@ -1381,11 +1407,11 @@
     document.getElementById('shipPromo').addEventListener('keydown', e => {
       if (e.key === 'Enter') { e.preventDefault(); applyPromoCode(e.target.value); }
     });
-    document.getElementById('checkoutForm').addEventListener('submit', e => {
+    document.getElementById('checkoutForm').addEventListener('submit', async e => {
       e.preventDefault();
       const typed = document.getElementById('shipPromo').value.trim();
       if (typed.toUpperCase() !== (state.promo || '')) {
-        const applied = applyPromoCode(typed);
+        const applied = await applyPromoCode(typed);
         if (typed && !applied) {
           document.getElementById('shipPromo').focus();
           return;
@@ -1405,6 +1431,12 @@
       const phoneEl = document.getElementById('shipPhone');
       phoneEl.value = data.phone;
       saveDelivery();
+      if (window.jibekEvent) {
+        window.jibekEvent('address_filled', {
+          firstName: (data.name || '').trim().split(/\s+/)[0] || '',
+          city: data.city
+        });
+      }
       placeOrder(data);
     });
 
