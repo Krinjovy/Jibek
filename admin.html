@@ -58,7 +58,7 @@
     </div>
   </div>
   <script>
-    const STATUS = { new: 'новый', confirmed: 'подтверждён', cancelled: 'отменён', paid: 'оплачен' };
+    const STATUS = { new: 'новый', confirmed: 'Оплачен', cancelled: 'отменён', paid: 'Оплачен' };
     const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
     const money = n => Math.round(n || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₸';
     const when = iso => { try { return new Date(iso).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return iso; } };
@@ -74,14 +74,25 @@
       if (!res.ok) throw new Error(data.error || 'Ошибка');
       return data;
     }
+    function orderActions(order) {
+      const id = esc(order.id);
+      const paid = order.status === 'paid' || order.status === 'confirmed';
+      if (paid) {
+        return '<button type="button" class="ghost-btn" data-status="new" data-id="' + id + '">Вернуть в новые</button><button type="button" class="ghost-btn" data-status="cancelled" data-id="' + id + '">Отменить</button>';
+      }
+      if (order.status === 'cancelled') {
+        return '<button type="button" class="gold-btn" data-status="paid" data-id="' + id + '">Оплачен</button><button type="button" class="ghost-btn" data-status="new" data-id="' + id + '">Вернуть в новые</button>';
+      }
+      return '<button type="button" class="gold-btn" data-status="paid" data-id="' + id + '">Оплачен</button><button type="button" class="ghost-btn" data-status="cancelled" data-id="' + id + '">Отменить</button>';
+    }
     function renderTotals(data) {
       const all = data.totals.windows.all;
-      document.getElementById('totals').innerHTML = 'Визиты ' + all.visits + ' · оформление ' + all.checkoutOpens + ' · адрес ' + all.addressFilled + ' · WhatsApp ' + all.whatsappClicks + ' · заказы ' + all.ordersSent + ' · подтверждено ' + all.confirmed + '<br>Заработано ' + money(all.earned) + ' · выплачено ' + money(all.paidOut) + ' · баланс ' + money(data.totals.balance);
+      document.getElementById('totals').innerHTML = 'Визиты ' + all.visits + ' · оформление ' + all.checkoutOpens + ' · адрес ' + all.addressFilled + ' · WhatsApp ' + all.whatsappClicks + ' · заказы ' + all.ordersSent + ' · оплачено ' + all.confirmed + '<br>Заработано ' + money(all.earned) + ' · выплачено ' + money(all.paidOut) + ' · баланс ' + money(data.totals.balance);
     }
     function renderPartners(data) {
       const rows = data.partners || [];
       document.getElementById('partnerList').innerHTML = rows.length ? rows.map(row =>
-        '<button type="button" data-code="' + esc(row.code) + '" class="card w-full text-left p-3"><div class="flex justify-between gap-2"><strong>' + esc(row.code) + '</strong><span class="text-xs ' + (row.active ? 'text-emerald-300' : 'text-white/35') + '">' + (row.active ? 'активен' : 'выключен') + '</span></div><div class="text-sm text-white/70">' + esc(row.name) + (row.contact ? ' · ' + esc(row.contact) : '') + '</div><div class="text-[12px] text-white/45 mt-1">Заказы ' + esc(row.ordersSent) + ' · подтверждено ' + esc(row.confirmed) + ' · баланс ' + esc(money(row.balance)) + '</div></button>'
+        '<button type="button" data-code="' + esc(row.code) + '" class="card w-full text-left p-3"><div class="flex justify-between gap-2"><strong>' + esc(row.code) + '</strong><span class="text-xs ' + (row.active ? 'text-emerald-300' : 'text-white/35') + '">' + (row.active ? 'активен' : 'выключен') + '</span></div><div class="text-sm text-white/70">' + esc(row.name) + (row.contact ? ' · ' + esc(row.contact) : '') + '</div><div class="text-[12px] text-white/45 mt-1">Заказы ' + esc(row.ordersSent) + ' · оплачено ' + esc(row.confirmed) + ' · баланс ' + esc(money(row.balance)) + '</div></button>'
       ).join('') : '<p class="text-sm text-white/40">Партнёров пока нет</p>';
     }
     async function loadOverview() {
@@ -99,9 +110,9 @@
       box.classList.remove('hidden');
       const all = data.windows.all;
       const orders = (data.orders || []).map(order =>
-        '<article class="rounded-xl border border-white/10 p-3 text-sm mb-2"><div class="flex justify-between"><span>' + esc(when(order.ts)) + '</span><span>' + esc(STATUS[order.status] || order.status) + '</span></div><div>' + esc(order.house) + ' · ' + esc(order.size) + ' · ' + esc(order.qty) + ' шт. · ' + esc(money(order.total)) + '</div><div class="text-white/50 text-[12px]">' + esc(order.firstName || '—') + (order.city ? ' · ' + esc(order.city) : '') + '</div><div class="flex flex-wrap gap-2 mt-2"><button type="button" class="ghost-btn" data-status="confirmed" data-id="' + esc(order.id) + '">Подтвердить</button><button type="button" class="ghost-btn" data-status="paid" data-id="' + esc(order.id) + '">Оплачен</button><button type="button" class="ghost-btn" data-status="cancelled" data-id="' + esc(order.id) + '">Отменить</button></div></article>'
+        '<article class="rounded-xl border border-white/10 p-3 text-sm mb-2"><div class="flex justify-between"><span>' + esc(when(order.ts)) + '</span><span>' + esc(STATUS[order.status] || order.status) + '</span></div><div>' + esc(order.house) + ' · ' + esc(order.size) + ' · ' + esc(order.qty) + ' шт. · ' + esc(money(order.total)) + '</div><div class="text-white/50 text-[12px]">' + esc(order.firstName || '—') + (order.city ? ' · ' + esc(order.city) : '') + '</div><div class="flex flex-wrap gap-2 mt-2">' + orderActions(order) + '</div></article>'
       ).join('') || '<p class="text-sm text-white/40">Заказов нет</p>';
-      box.innerHTML = '<h2 class="text-2xl">' + esc(data.partner.name) + ' · ' + esc(data.partner.code) + '</h2><p class="text-sm text-white/55 mt-1">' + esc(data.link) + '</p><p class="text-sm mt-2">Выплата ' + esc(money(data.partner.payoutKzt)) + ' · заказы ' + esc(all.ordersSent) + ' · подтверждено ' + esc(all.confirmed) + ' · баланс ' + esc(money(data.balance)) + '</p><div class="flex flex-wrap gap-2 mt-3"><button type="button" id="resetPin" class="ghost-btn">Новый PIN</button><button type="button" id="toggleActive" class="ghost-btn">' + (data.partner.active ? 'Выключить' : 'Включить') + '</button></div><form id="payoutForm" class="grid gap-2 sm:grid-cols-3 mt-4"><input id="payoutAmount" class="field" type="number" min="1" placeholder="Сумма ₸" required /><input id="payoutDate" class="field" type="date" required /><button class="gold-btn" type="submit">Записать выплату</button></form><div class="mt-4">' + orders + '</div>';
+      box.innerHTML = '<h2 class="text-2xl">' + esc(data.partner.name) + ' · ' + esc(data.partner.code) + '</h2><p class="text-sm text-white/55 mt-1">' + esc(data.link) + '</p><p class="text-sm mt-2">Выплата ' + esc(money(data.partner.payoutKzt)) + ' · заказы ' + esc(all.ordersSent) + ' · оплачено ' + esc(all.confirmed) + ' · баланс ' + esc(money(data.balance)) + '</p><div class="flex flex-wrap gap-2 mt-3"><button type="button" id="resetPin" class="ghost-btn">Новый PIN</button><button type="button" id="toggleActive" class="ghost-btn">' + (data.partner.active ? 'Выключить' : 'Включить') + '</button></div><form id="payoutForm" class="grid gap-2 sm:grid-cols-3 mt-4"><input id="payoutAmount" class="field" type="number" min="1" placeholder="Сумма ₸" required /><input id="payoutDate" class="field" type="date" required /><button class="gold-btn" type="submit">Записать выплату</button></form><div class="mt-4">' + orders + '</div>';
       document.getElementById('resetPin').onclick = async () => {
         const result = await api('/api/admin/partner', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'reset_pin', code }) });
         document.getElementById('pinOnce').classList.remove('hidden');
