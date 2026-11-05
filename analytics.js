@@ -89,4 +89,51 @@
   };
 
   window.jibekTrack('page_view', { page: location.pathname });
+
+  const VID_KEY = 'jibek_vid';
+  function visitorId() {
+    try {
+      let id = localStorage.getItem(VID_KEY);
+      if (!id) {
+        id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+        localStorage.setItem(VID_KEY, id);
+      }
+      return id;
+    } catch (e) {
+      return 'v' + Date.now().toString(36);
+    }
+  }
+  function partnerCode(explicit) {
+    const fromArg = explicit || (window.jibekPromoCode && window.jibekPromoCode()) || (window.JIBEK_ATTR && window.JIBEK_ATTR.ref) || '';
+    return String(fromArg).toUpperCase().trim();
+  }
+  window.jibekEvent = function (type, extra) {
+    extra = extra || {};
+    const code = partnerCode(extra.code);
+    if (!code) return;
+    const payload = {
+      type: type,
+      code: code,
+      visitorId: visitorId(),
+      firstName: extra.firstName || '',
+      city: extra.city || '',
+      order: extra.order || null
+    };
+    const body = JSON.stringify(payload);
+    try {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/api/track', new Blob([body], { type: 'application/json' }));
+      } else {
+        fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true });
+      }
+    } catch (e) {}
+  };
+  document.addEventListener('click', function (event) {
+    const link = event.target && event.target.closest && event.target.closest('a[href*="wa.me"]');
+    if (!link) return;
+    window.jibekEvent('whatsapp_click');
+  });
+  const landing = new URLSearchParams(location.search);
+  const landingRef = (landing.get('ref') || landing.get('promo') || '').toUpperCase().trim();
+  if (landingRef) window.jibekEvent('visit', { code: landingRef });
 })();

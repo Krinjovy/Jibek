@@ -2,131 +2,167 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0B0A0C" />
   <title>JIBEK — Панель партнёра</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="config.js"></script>
   <style>
-    body { background: #0B0A0C; color: #F5F5F5; font-family: system-ui, sans-serif; }
-    .wa-float {
-      position: fixed; z-index: 80; right: 16px;
-      bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-      width: 52px; height: 52px; border-radius: 999px;
-      display: flex; align-items: center; justify-content: center;
-      background: #100e0c; border: 1.5px solid rgba(228,197,106,0.9);
-      box-shadow: 0 0 18px rgba(212,175,55,0.32), 0 10px 22px rgba(0,0,0,0.45);
-    }
-    .gold { color: #D3A625; }
-    .card { background: #141416; border: 1px solid rgba(255,255,255,0.08); }
+    body { background: #07060b; color: #F5F5F5; font-family: Inter, system-ui, sans-serif; }
+    h1, h2 { font-family: 'Cormorant Garamond', serif; font-weight: 500; }
+    .card { background: rgba(14,13,16,0.78); border: 1px solid rgba(212,175,55,0.22); border-radius: 18px; }
+    .field { width: 100%; min-height: 48px; border-radius: 14px; border: 1px solid rgba(212,175,55,0.28); background: rgba(12,11,14,0.92); color: #F5F5F5; padding: 12px 14px; font-size: 16px; outline: none; }
+    .field:focus { border-color: #E4C56A; }
+    .gold-btn { width: 100%; min-height: 48px; border: 0; border-radius: 14px; color: #1A1206; font-weight: 600; background: linear-gradient(180deg, #F6E3A1, #D4AF37 55%, #9C7A2B); }
+    .wa-float { position: fixed; z-index: 80; right: 16px; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); width: 52px; height: 52px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: #100e0c; border: 1.5px solid rgba(228,197,106,0.9); box-shadow: 0 0 18px rgba(212,175,55,0.32); }
+    .metric { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 8px; }
   </style>
 </head>
 <body class="min-h-screen">
-  <div class="max-w-md mx-auto px-4 py-8">
-    <div class="text-center mb-8">
-      <div class="text-xs tracking-[0.2em] uppercase text-white/40 mb-1">JIBEK.STORE</div>
-      <h1 class="text-2xl font-bold">Панель партнёра</h1>
+  <div class="max-w-md mx-auto px-4 py-8 pb-24">
+    <div class="text-center mb-6">
+      <div class="text-[11px] tracking-[0.18em] uppercase text-[#D4AF37]">JIBEK.STORE</div>
+      <h1 class="text-3xl mt-1">Панель партнёра</h1>
     </div>
 
-    <div id="loginBox" class="card rounded-2xl p-5 space-y-4">
-      <div>
-        <label class="text-xs text-white/50 block mb-1.5">Промокод</label>
-        <input id="loginCode" type="text" placeholder="ALIYA10" class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-sm uppercase outline-none focus:border-[#D3A625]" />
-      </div>
-      <div>
-        <label class="text-xs text-white/50 block mb-1.5">PIN</label>
-        <input id="loginPin" type="password" inputmode="numeric" placeholder="••••" class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#D3A625]" />
-      </div>
-      <p id="loginError" class="text-xs text-red-400 hidden"></p>
-      <button id="loginBtn" class="w-full py-3.5 rounded-xl bg-[#D3A625] text-[#0B0A0C] font-bold text-sm">Войти</button>
+    <form id="loginBox" class="card p-5 space-y-3">
+      <label class="block text-xs text-white/55" for="loginCode">Промокод</label>
+      <input id="loginCode" class="field uppercase" autocomplete="username" placeholder="ALIYA10" required />
+      <label class="block text-xs text-white/55" for="loginPin">PIN</label>
+      <input id="loginPin" class="field" type="password" inputmode="numeric" autocomplete="current-password" placeholder="6 цифр" required />
+      <p id="loginError" class="text-xs text-red-300 hidden"></p>
+      <button class="gold-btn" type="submit">Войти</button>
       <p class="text-[11px] text-white/35 text-center">Код и PIN выдаёт менеджер JIBEK</p>
-    </div>
+    </form>
 
-    <div id="dashBox" class="hidden space-y-4">
+    <div id="dash" class="hidden space-y-4">
       <div class="flex items-center justify-between">
         <div>
-          <div class="text-sm text-white/50">Партнёр</div>
-          <div class="font-semibold text-lg" id="partnerName">—</div>
+          <div class="text-xs text-white/45">Партнёр</div>
+          <div id="partnerName" class="text-xl"></div>
         </div>
-        <button id="logoutBtn" class="text-xs text-white/40 underline">Выйти</button>
+        <button id="logoutBtn" type="button" class="text-xs text-[#E4C56A] underline">Выйти</button>
       </div>
-      <div class="card rounded-2xl p-4">
-        <div class="text-xs text-white/45 mb-1">Промокод</div>
-        <div class="text-xl font-bold gold" id="partnerCode">—</div>
-        <div class="mt-3 text-xs text-white/45 mb-1">Ссылка</div>
-        <code id="partnerLink" class="text-[11px] text-white/70 break-all">—</code>
-        <p class="text-[11px] text-white/35 mt-3">Клиент −10%. Тебе $10 с оплаченного заказа.</p>
-      </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div class="card rounded-2xl p-4"><div class="text-[11px] text-white/45">Заказов</div><div class="text-2xl font-bold mt-1" id="statOrders">0</div></div>
-        <div class="card rounded-2xl p-4"><div class="text-[11px] text-white/45">Оплачено</div><div class="text-2xl font-bold mt-1 gold" id="statPaid">0</div></div>
-        <div class="card rounded-2xl p-4"><div class="text-[11px] text-white/45">К выплате</div><div class="text-2xl font-bold mt-1" id="statDue">$0</div></div>
-        <div class="card rounded-2xl p-4"><div class="text-[11px] text-white/45">Выплачено</div><div class="text-2xl font-bold mt-1" id="statPaidOut">$0</div></div>
-      </div>
-      <div class="card rounded-2xl p-4">
-        <div class="text-sm font-semibold mb-3">Заказы</div>
-        <div id="ordersList" class="space-y-2 text-sm"><p class="text-white/40 text-xs">Пока нет заказов</p></div>
-      </div>
-      <p class="text-[11px] text-white/30 text-center" id="dataSourceHint">localStorage (демо)</p>
+      <section class="card p-4">
+        <div class="text-xs text-white/45">Ваша ссылка</div>
+        <div id="partnerLink" class="text-sm mt-1 break-all text-[#F6E3A1]"></div>
+        <button id="copyBtn" type="button" class="mt-3 px-4 py-2 rounded-xl border border-[#D4AF37]/50 text-sm">Скопировать</button>
+        <p id="payoutNote" class="text-[12px] text-white/45 mt-3"></p>
+      </section>
+      <section class="card p-4">
+        <h2 class="text-2xl mb-3">Сводка</h2>
+        <div id="windows"></div>
+        <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+          <div class="metric"><div class="text-[10px] text-white/45">Заработано</div><div id="earned" class="text-sm font-semibold"></div></div>
+          <div class="metric"><div class="text-[10px] text-white/45">Выплачено</div><div id="paidOut" class="text-sm font-semibold"></div></div>
+          <div class="metric"><div class="text-[10px] text-white/45">Баланс</div><div id="balance" class="text-sm font-semibold text-[#F6E3A1]"></div></div>
+        </div>
+      </section>
+      <section class="card p-4">
+        <h2 class="text-2xl mb-3">Воронка</h2>
+        <div id="funnel"></div>
+      </section>
+      <section class="card p-4">
+        <h2 class="text-2xl mb-3">Заказы</h2>
+        <div id="orders" class="space-y-2"></div>
+      </section>
     </div>
   </div>
   <a class="wa-float" href="https://wa.me/77757550302?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%85%D1%83%D0%B4%D0%B8" target="_blank" rel="noopener" aria-label="Вопрос в WhatsApp">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="#E4C56A" aria-hidden="true"><path d="M12.04 2C6.58 2 2.15 6.4 2.15 11.83c0 1.74.46 3.44 1.34 4.94L2 22l5.39-1.4a10.1 10.1 0 0 0 4.65 1.18h.01c5.46 0 9.89-4.4 9.89-9.83C21.94 6.4 17.5 2 12.04 2zm5.76 14.15c-.24.68-1.4 1.3-1.94 1.38-.5.07-1.12.1-1.81-.11-.41-.13-.95-.31-1.64-.61-2.89-1.25-4.77-4.16-4.92-4.35-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.26-.29.58-.36.77-.36h.55c.18 0 .42-.07.66.5.24.58.82 2 .89 2.15.07.14.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.37-.42.49-.14.14-.28.29-.12.56.16.27.7 1.16 1.51 1.88 1.04.92 1.91 1.21 2.18 1.35.27.13.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.22.6-.13.24.09 1.54.73 1.8.86.27.13.44.2.51.31.06.11.06.64-.18 1.32z"/></svg>
   </a>
   <script>
-    const cfg = window.JIBEK_CONFIG || {};
-    const SESSION_KEY = 'jibek_partner_session';
-    const ORDERS_KEY = 'jibek_orders';
-    const PAYOUT = cfg.PARTNER_PAYOUT_USD || 10;
-    function partnersMap() { return cfg.PARTNERS || {}; }
-    function getLocalOrders(code) {
-      try {
-        return JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]').filter(o => (o.promo_code || '').toUpperCase() === code);
-      } catch (e) { return []; }
+    const STATUS = { new: 'новый', confirmed: 'подтверждён', cancelled: 'отменён', paid: 'оплачен' };
+    const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    const money = n => Math.round(n || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₸';
+    const when = iso => { try { return new Date(iso).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return iso; } };
+    function showError(text) {
+      const el = document.getElementById('loginError');
+      el.textContent = text || '';
+      el.classList.toggle('hidden', !text);
     }
-    function formatKzt(n) { return new Intl.NumberFormat('ru-KZ').format(n) + ' ₸'; }
-    function formatDate(iso) {
-      try { return new Date(iso).toLocaleString('ru-RU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); }
-      catch (e) { return iso; }
+    function windowCard(title, row) {
+      const lines = [
+        ['Визиты', row.visits],
+        ['Оформление', row.checkoutOpens],
+        ['Адрес', row.addressFilled],
+        ['WhatsApp', row.whatsappClicks],
+        ['Заказы', row.ordersSent],
+        ['Подтверждено', row.confirmed]
+      ];
+      return '<div class="mb-3"><div class="text-[11px] tracking-wide uppercase text-[#E4C56A] mb-1">' + title + '</div><div class="grid grid-cols-3 gap-2">' +
+        lines.map(([name, value]) => '<div class="metric"><div class="text-[10px] text-white/40">' + name + '</div><div class="font-semibold">' + value + '</div></div>').join('') +
+        '</div></div>';
     }
-    function showDash(code) {
-      const p = partnersMap()[code];
-      if (!p) return;
+    function render(data) {
       document.getElementById('loginBox').classList.add('hidden');
-      document.getElementById('dashBox').classList.remove('hidden');
-      document.getElementById('partnerName').textContent = p.name;
-      document.getElementById('partnerCode').textContent = code;
-      document.getElementById('partnerLink').textContent = 'https://jibek.store/?ref=' + code;
-      const orders = getLocalOrders(code);
-      const paid = orders.filter(o => o.status === 'paid');
-      document.getElementById('statOrders').textContent = String(orders.length);
-      document.getElementById('statPaid').textContent = String(paid.length);
-      document.getElementById('statDue').textContent = '$' + (paid.length * PAYOUT);
-      document.getElementById('statPaidOut').textContent = '$0';
-      const list = document.getElementById('ordersList');
-      if (!orders.length) list.innerHTML = '<p class="text-white/40 text-xs">Нет заказов по коду</p>';
-      else list.innerHTML = orders.map(o => {
-        const st = o.status === 'paid' ? '<span class="text-emerald-400">оплачен</span>' : '<span class="text-white/45">ожидает</span>';
-        return '<div class="flex justify-between py-2 border-b border-white/5"><div><div>' + formatKzt(o.amount_kzt || 0) + '</div><div class="text-[11px] text-white/35">' + formatDate(o.created_at) + '</div></div><div class="text-[11px]">' + st + '</div></div>';
-      }).join('');
+      document.getElementById('dash').classList.remove('hidden');
+      document.getElementById('partnerName').textContent = data.partner.name;
+      document.getElementById('partnerLink').textContent = data.link;
+      document.getElementById('payoutNote').textContent = 'Клиент получает −10%. С подтверждённого заказа вам ' + money(data.partner.payoutKzt) + '.';
+      document.getElementById('windows').innerHTML = windowCard('Сегодня', data.windows.today) + windowCard('7 дней', data.windows.d7) + windowCard('Всё время', data.windows.all);
+      document.getElementById('earned').textContent = money(data.windows.all.earned);
+      document.getElementById('paidOut').textContent = money(data.windows.all.paidOut);
+      document.getElementById('balance').textContent = money(data.balance);
+      const funnel = [
+        ['Визиты', data.windows.all.visits],
+        ['Открыли оформление', data.windows.all.checkoutOpens],
+        ['Заполнили адрес', data.windows.all.addressFilled],
+        ['Написали в WhatsApp', data.windows.all.whatsappClicks],
+        ['Заказы', data.windows.all.ordersSent],
+        ['Подтверждено', data.windows.all.confirmed]
+      ];
+      const max = Math.max(1, ...funnel.map(step => step[1]));
+      document.getElementById('funnel').innerHTML = funnel.map(([label, count]) =>
+        '<div class="mb-2"><div class="flex justify-between text-[12px] text-white/70"><span>' + label + '</span><span>' + count + '</span></div><div class="h-1.5 rounded-full bg-white/10 mt-1"><div class="h-1.5 rounded-full bg-[#D4AF37]" style="width:' + Math.round(count / max * 100) + '%"></div></div></div>'
+      ).join('');
+      const orders = data.orders || [];
+      document.getElementById('orders').innerHTML = orders.length ? orders.map(order =>
+        '<article class="rounded-xl border border-white/10 p-3 text-sm"><div class="flex justify-between gap-2"><span>' + esc(when(order.ts)) + '</span><span class="text-[#E4C56A]">' + esc(STATUS[order.status] || order.status) + '</span></div><div class="mt-1">' + esc(order.house) + ' · ' + esc(order.size) + ' · ' + esc(order.qty) + ' шт.</div><div class="text-white/55 text-[12px] mt-1">' + esc(order.firstName || '—') + (order.city ? ' · ' + esc(order.city) : '') + ' · ' + esc(money(order.total)) + '</div></article>'
+      ).join('') : '<p class="text-sm text-white/40">Пока нет заказов</p>';
     }
-    document.getElementById('loginBtn').addEventListener('click', () => {
-      const code = (document.getElementById('loginCode').value || '').toUpperCase().trim();
-      const pin = (document.getElementById('loginPin').value || '').trim();
-      const err = document.getElementById('loginError');
-      const p = partnersMap()[code];
-      if (!p || String(p.pin) !== pin) { err.textContent = 'Неверный код или PIN'; err.classList.remove('hidden'); return; }
-      err.classList.add('hidden');
-      sessionStorage.setItem(SESSION_KEY, code);
-      showDash(code);
+    async function loadDash() {
+      const res = await fetch('/api/partner/dashboard', { credentials: 'same-origin' });
+      if (!res.ok) return;
+      render(await res.json());
+    }
+    document.getElementById('loginBox').addEventListener('submit', async e => {
+      e.preventDefault();
+      showError('');
+      const res = await fetch('/api/partner/login', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: document.getElementById('loginCode').value, pin: document.getElementById('loginPin').value })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { showError(data.error || 'Не удалось войти'); return; }
+      loadDash();
     });
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      sessionStorage.removeItem(SESSION_KEY);
-      document.getElementById('dashBox').classList.add('hidden');
-      document.getElementById('loginBox').classList.remove('hidden');
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/partner/logout', { method: 'POST', credentials: 'same-origin' });
+      location.reload();
     });
-    const sess = sessionStorage.getItem(SESSION_KEY);
-    if (sess && partnersMap()[sess]) showDash(sess);
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const link = document.getElementById('partnerLink').textContent;
+      try { await navigator.clipboard.writeText(link); document.getElementById('copyBtn').textContent = 'Скопировано'; }
+      catch (e) { document.getElementById('copyBtn').textContent = link; }
+    });
+    loadDash();
+    document.addEventListener('click', event => {
+      const link = event.target.closest && event.target.closest('a[href*="wa.me"]');
+      if (!link) return;
+      let code = '';
+      let visitorId = '';
+      try {
+        code = (JSON.parse(localStorage.getItem('jibek_attr') || 'null') || {}).ref || '';
+        visitorId = localStorage.getItem('jibek_vid') || '';
+      } catch (e) {}
+      if (!code || !visitorId || !navigator.sendBeacon) return;
+      const body = JSON.stringify({ type: 'whatsapp_click', code: String(code).toUpperCase(), visitorId });
+      navigator.sendBeacon('/api/track', new Blob([body], { type: 'application/json' }));
+    });
   </script>
 </body>
 </html>

@@ -1,0 +1,11 @@
+{
+  "name": "jibek-store",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test/flow.mjs"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.8.2"
+  }
+}
